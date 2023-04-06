@@ -12,49 +12,68 @@ import useSessionStorage from "../../hooks/useSessionStorage";
 export default function App() {
   const SMART = useSMART();
   const [institutions, setInstitutions] = useState([] as Array<Institution>);
-  const [exported, setExported] = useSessionStorage("exported", false);
-  const { client, loading, setInstitution, completeAuthorization } = SMART;
+  const {
+    client,
+    loading,
+    setInstitution,
+    toExport,
+    setToExport,
+    completeAuthorization,
+  } = SMART;
 
-  async function ehiExport(client: Client | null) {
-    const { response } = await client?.request({
-      url: `/Patient/${client.getPatientId()}/$ehi-export`,
-      method: "POST",
-      includeResponse: true,
-    });
-    const link = response.headers.get("Link");
-
-    if (link) {
-      console.log("=>", link);
-      const [href, rel] = link.split(/\s*;\s*/);
-      console.log(href, rel);
-      if (href && rel === 'rel="patient-interaction"') {
-        window.location.href = href;
-      }
-    }
-  }
-
+  // Load available institutions on the initial render
   useEffect(() => {
     getInstitutions().then((institutions: Array<Institution>) =>
       setInstitutions(institutions)
     );
   }, []);
 
+  // On PageLoad, try to authorize
   useEffect(() => {
     completeAuthorization();
   }, []);
 
-  // useEffect(() => {
-  //   if (!loading && client && !exported) {
-  //     ehiExport(client);
-  //     setExported(true);
-  //   }
-  // }, [loading, client]);
+  // After Authorization is complete, load jobs
+  useEffect(() => {
+    if (!loading && client) {
+    }
+  }, [loading, client]);
+
+  // After Loading jobs and authorizing, export if necessary
+
+  useEffect(() => {
+    async function ehiExport(client: Client) {
+      const { response } = await client?.request({
+        url: `/Patient/${client.getPatientId()}/$ehi-export`,
+        method: "POST",
+        includeResponse: true,
+      });
+      const link = response.headers.get("Link");
+
+      if (link) {
+        console.log("=>", link);
+        const [href, rel] = link.split(/\s*;\s*/);
+        console.log(href, rel);
+        if (href && rel === 'rel="patient-interaction"') {
+          window.location.href = href;
+        }
+      }
+      setToExport(false);
+    }
+    if (!loading && client && toExport) {
+      ehiExport(client);
+    }
+  }, [loading, client, toExport, setToExport]);
 
   return (
     <>
       <InstitutionList
         institutions={institutions}
-        setInstitution={setInstitution}
+        setInstitution={(i: Institution) => {
+          setInstitution(i);
+          console.log("setting to export");
+          setToExport(true);
+        }}
       />
       <h1>Debugging Purposes</h1>
       <CodeBlock>{JSON.stringify(SMART, null, 4)}</CodeBlock>

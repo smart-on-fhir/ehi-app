@@ -2,7 +2,7 @@ import { Institution } from "../../types";
 
 type InstitutionListProps = {
   institutions: Array<Institution>;
-  setInstitution: React.Dispatch<React.SetStateAction<Institution>>;
+  setInstitution: Function;
 };
 
 export default function InstitutionList({

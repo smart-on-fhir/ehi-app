@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // Given a particular key, use session storage to track data with that key, or use preexisting data
-// Based on https://usehooks.com/useSessionStorage/
+// Based on https://usehooks.com/useLocalStorage/
 export default function useSessionStorage(key: any, defaultValue: any) {
   // Initial value should pull from session storage if there's data
   function getSessionStorage() {

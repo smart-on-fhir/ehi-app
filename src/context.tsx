@@ -4,6 +4,7 @@ import { oauth2 as SMART } from "fhirclient";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Institution } from "./types";
+import useSessionStorage from "./hooks/useSessionStorage";
 
 interface SMARTContextInterface {
   client: Client | null;
@@ -11,7 +12,8 @@ interface SMARTContextInterface {
   institution: Institution | null;
   setInstitution: any;
   loading: boolean;
-  authorized: boolean;
+  toExport: boolean;
+  setToExport: any;
   startAuthorization: (options?: fhirclient.AuthorizeParams) => Promise<any>;
   completeAuthorization: () => Promise<void>;
 }
@@ -20,6 +22,8 @@ let SMARTContext = React.createContext<SMARTContextInterface>(null!);
 
 export function SMARTProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+
+  const [toExport, setToExport] = useSessionStorage("exported", false);
 
   const [error, setError] = React.useState<Error | null>(null);
   const [institution, setInstitution] = React.useState<Institution | null>(
@@ -33,7 +37,6 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
   }, [institution, navigate]);
 
   const [client, setClient] = React.useState<Client | null>(null);
-  const [authorized, setAuthorized] = React.useState(false);
   const [loading, setLoading] = React.useState<boolean>(false);
 
   function startAuthorization(options?: fhirclient.AuthorizeParams) {
@@ -52,32 +55,8 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
 
       // Override with custom options if any
       ...options,
-    }).then(() => setAuthorized(true));
-  }
-
-  async function ehiExport() {
-    const { response } = await client?.request({
-      url: `/Patient/${client.getPatientId()}/$ehi-export`,
-      method: "POST",
-      includeResponse: true,
     });
-    const link = response.headers.get("Link");
-    console.log(ehiExport);
-    if (link) {
-      console.log("=>", link);
-      const [href, rel] = link.split(/\s*;\s*/);
-      console.log(href, rel);
-      if (href && rel === 'rel="patient-interaction"') {
-        window.location.href = href;
-      }
-    }
   }
-
-  React.useEffect(() => {
-    if (client) {
-      ehiExport();
-    }
-  }, [client]);
 
   function completeAuthorization() {
     setLoading(true);
@@ -97,7 +76,8 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
         setInstitution,
         startAuthorization,
         completeAuthorization,
-        authorized,
+        toExport,
+        setToExport,
         error,
         client,
         loading,
