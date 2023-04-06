@@ -1,5 +1,6 @@
 {
-    "cSpell.words": [
-        "fhirclient"
-    ]
+  "cSpell.words": ["fhirclient"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file"
 }
