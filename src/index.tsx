@@ -7,6 +7,7 @@ import App from "./pages/App";
 import Launch from "./pages/Launch";
 import ExportLaunch from "./pages/ExportLaunch";
 import { SMARTProvider } from "./context/smartContext";
+import { InstitutionProvider } from "./context/institutionContext";
 // Necessary for getting access to tailwind styles
 import "./index.css";
 
@@ -18,14 +19,16 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <SMARTProvider>
-        <AppWrapper>
-          <Routes>
-            <Route path="/exportLaunch" element={<ExportLaunch />} />
-            <Route path="/launch" element={<Launch />} />
-            <Route path="/" element={<App />} />
-            <Route element={<b>Not Found</b>} />
-          </Routes>
-        </AppWrapper>
+        <InstitutionProvider>
+          <AppWrapper>
+            <Routes>
+              <Route path="/exportLaunch" element={<ExportLaunch />} />
+              <Route path="/launch" element={<Launch />} />
+              <Route path="/" element={<App />} />
+              <Route element={<b>Not Found</b>} />
+            </Routes>
+          </AppWrapper>
+        </InstitutionProvider>
       </SMARTProvider>
     </BrowserRouter>
   </React.StrictMode>

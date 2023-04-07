@@ -1,10 +1,10 @@
 import Client from "fhirclient/lib/Client";
 import { useEffect } from "react";
-import { useSMART } from "../../context/smartContext";
+import { useSMARTContext } from "../../context/smartContext";
 import CodeBlock from "../../components/CodeBlock";
 
 export default function App() {
-  const SMART = useSMART();
+  const SMART = useSMARTContext();
   const { client, completeAuthorization } = SMART;
 
   // After Loading jobs and authorizing, export if necessary

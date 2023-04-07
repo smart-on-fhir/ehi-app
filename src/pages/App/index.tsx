@@ -1,27 +1,22 @@
 import Client from "fhirclient/lib/Client";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSMART } from "../../context/smartContext";
+import { useSMARTContext } from "../../context/smartContext";
+import { useInstitutionContext } from "../../context/institutionContext";
 import "./App.css";
 // import Button from "../../components/Button";
 import CodeBlock from "../../components/CodeBlock";
 import InstitutionList from "../../components/InstitutionList";
 import { Institution } from "../../types";
 import getInstitutions from "../../lib/getInstitutions";
-import useSessionStorage from "../../hooks/useSessionStorage";
 
 export default function App() {
   const navigate = useNavigate();
-  const SMART = useSMART();
-  const [toExport, setToExport] = useSessionStorage("exported", false);
+  const SMART = useSMARTContext();
+  const { institution, setInstitution } = useInstitutionContext();
+  // List of institutions to be loaded
   const [institutions, setInstitutions] = useState<Institution[]>([]);
-  const {
-    client,
-    institution,
-    loading,
-    setInstitution,
-    completeAuthorization,
-  } = SMART;
+  const { completeAuthorization } = SMART;
 
   // Load available institutions on the initial render
   useEffect(() => {
@@ -47,10 +42,7 @@ export default function App() {
     <>
       <InstitutionList
         institutions={institutions}
-        setInstitution={(i: Institution) => {
-          setInstitution(i);
-          setToExport(true);
-        }}
+        setInstitution={setInstitution}
       />
       <h1>Debugging Purposes</h1>
       <CodeBlock>{JSON.stringify(SMART, null, 4)}</CodeBlock>

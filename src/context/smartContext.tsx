@@ -2,13 +2,10 @@ import Client from "fhirclient/lib/Client";
 import { fhirclient } from "fhirclient/lib/types";
 import { oauth2 as SMART } from "fhirclient";
 import * as React from "react";
-import { Institution } from "../types";
 
 interface SMARTContextInterface {
   client: Client | null;
   error: Error | null;
-  institution: Institution | null;
-  setInstitution: any;
   loading: boolean;
   startAuthorization: (options?: fhirclient.AuthorizeParams) => Promise<any>;
   completeAuthorization: () => Promise<Client | void>;
@@ -18,9 +15,6 @@ let SMARTContext = React.createContext<SMARTContextInterface>(null!);
 
 export function SMARTProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = React.useState<Error | null>(null);
-  const [institution, setInstitution] = React.useState<Institution | null>(
-    null
-  );
   const [client, setClient] = React.useState<Client | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -36,7 +30,7 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
       redirectUri: "/exportLaunch",
 
       // Passing iss makes this a standalone launch
-      iss: institution?.fhirUrl || "https://ehi-server.herokuapp.com/fhir",
+      iss: "https://ehi-server.herokuapp.com/fhir",
 
       // Override with custom options if any
       ...options,
@@ -62,8 +56,6 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
   return (
     <SMARTContext.Provider
       value={{
-        institution,
-        setInstitution,
         startAuthorization,
         completeAuthorization,
         error,
@@ -76,6 +68,6 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useSMART() {
+export function useSMARTContext() {
   return React.useContext(SMARTContext);
 }

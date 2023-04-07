@@ -1,11 +1,15 @@
 import { useEffect } from "react";
-import { useSMART } from "../context/smartContext";
+import { useSMARTContext } from "../context/smartContext";
+import { useInstitutionContext } from "../context/institutionContext";
 
 export default function Launch() {
-  const { startAuthorization } = useSMART();
+  const { startAuthorization } = useSMARTContext();
+  const { institution } = useInstitutionContext();
 
   useEffect(() => {
-    startAuthorization();
+    startAuthorization({
+      iss: institution?.fhirUrl,
+    });
   }, [startAuthorization]);
 
   return <b>Launching...</b>;
