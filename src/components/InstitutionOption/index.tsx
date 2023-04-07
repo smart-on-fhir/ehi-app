@@ -14,11 +14,11 @@ export default function InstitutionOption({
     <li
       key={institution.displayName}
       className={`flex h-12 items-center border-b border-gray-600 px-2 last:border-none hover:bg-blend-darken  ${
-        institution.clickable
-          ? "cursor-pointer hover:bg-gray-200"
-          : "bg-gray-300 italic text-gray-600"
+        institution.disabled
+          ? "bg-gray-300 italic text-gray-600"
+          : "cursor-pointer hover:bg-gray-200"
       }`}
-      onClick={() => institution.clickable && setInstitution(institution)}
+      onClick={() => institution.disabled && setInstitution(institution)}
     >
       <img
         src={institution.imgUrl}

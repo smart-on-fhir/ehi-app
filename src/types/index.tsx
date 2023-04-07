@@ -3,5 +3,5 @@ export interface Institution {
   imgUrl: string;
   location?: string;
   fhirUrl: string;
-  clickable: boolean;
+  disabled: boolean;
 }
