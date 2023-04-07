@@ -11,7 +11,7 @@ import useSessionStorage from "../../hooks/useSessionStorage";
 
 export default function App() {
   const SMART = useSMART();
-  const [institutions, setInstitutions] = useState([] as Array<Institution>);
+  const [institutions, setInstitutions] = useState<Institution[]>([]);
   const {
     client,
     loading,
@@ -23,7 +23,7 @@ export default function App() {
 
   // Load available institutions on the initial render
   useEffect(() => {
-    getInstitutions().then((institutions: Array<Institution>) =>
+    getInstitutions().then((institutions: Institution[]) =>
       setInstitutions(institutions)
     );
   }, []);
@@ -58,10 +58,9 @@ export default function App() {
           window.location.href = href;
         }
       }
-      setToExport(false);
     }
     if (!loading && client && toExport) {
-      ehiExport(client);
+      ehiExport(client).then(() => setToExport(false));
     }
   }, [loading, client, toExport, setToExport]);
 
@@ -71,7 +70,6 @@ export default function App() {
         institutions={institutions}
         setInstitution={(i: Institution) => {
           setInstitution(i);
-          console.log("setting to export");
           setToExport(true);
         }}
       />

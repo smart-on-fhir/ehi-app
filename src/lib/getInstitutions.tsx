@@ -1,6 +1,6 @@
 import { Institution } from "../types";
 
-export default async function getInstitutions(): Promise<Array<Institution>> {
+export default async function getInstitutions(): Promise<Institution[]> {
   return [
     {
       displayName: "Boston Children's Hospital",
