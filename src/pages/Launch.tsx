@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useSMART } from "../context";
+import { useSMART } from "../context/smartContext";
 
-export default function Launcher() {
+export default function Launch() {
   const { startAuthorization } = useSMART();
 
   useEffect(() => {

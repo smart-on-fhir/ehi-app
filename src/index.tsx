@@ -4,8 +4,9 @@ import { Route, BrowserRouter } from "react-router-dom";
 import { Routes } from "react-router";
 import AppWrapper from "./components/AppWrapper";
 import App from "./pages/App";
-import Launcher from "./pages/Launcher";
-import { SMARTProvider } from "./context";
+import Launch from "./pages/Launch";
+import ExportLaunch from "./pages/ExportLaunch";
+import { SMARTProvider } from "./context/smartContext";
 // Necessary for getting access to tailwind styles
 import "./index.css";
 
@@ -19,7 +20,8 @@ root.render(
       <SMARTProvider>
         <AppWrapper>
           <Routes>
-            <Route path="/launch" element={<Launcher />} />
+            <Route path="/exportLaunch" element={<ExportLaunch />} />
+            <Route path="/launch" element={<Launch />} />
             <Route path="/" element={<App />} />
             <Route element={<b>Not Found</b>} />
           </Routes>

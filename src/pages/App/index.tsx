@@ -1,6 +1,7 @@
 import Client from "fhirclient/lib/Client";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSMART } from "../../context";
+import { useSMART } from "../../context/smartContext";
 import "./App.css";
 // import Button from "../../components/Button";
 import CodeBlock from "../../components/CodeBlock";
@@ -10,14 +11,15 @@ import getInstitutions from "../../lib/getInstitutions";
 import useSessionStorage from "../../hooks/useSessionStorage";
 
 export default function App() {
+  const navigate = useNavigate();
   const SMART = useSMART();
+  const [toExport, setToExport] = useSessionStorage("exported", false);
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const {
     client,
+    institution,
     loading,
     setInstitution,
-    toExport,
-    setToExport,
     completeAuthorization,
   } = SMART;
 
@@ -28,41 +30,18 @@ export default function App() {
     );
   }, []);
 
+  // If an institution has been selected, go to the launch page
+  useEffect(() => {
+    if (institution) {
+      navigate("/launch");
+    }
+  }, [institution, navigate]);
+
   // On PageLoad, try to authorize
   useEffect(() => {
     completeAuthorization();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // After Authorization is complete, load jobs
-  useEffect(() => {
-    if (!loading && client) {
-    }
-  }, [loading, client]);
-
-  // After Loading jobs and authorizing, export if necessary
-
-  useEffect(() => {
-    async function ehiExport(client: Client) {
-      const { response } = await client?.request({
-        url: `/Patient/${client.getPatientId()}/$ehi-export`,
-        method: "POST",
-        includeResponse: true,
-      });
-      const link = response.headers.get("Link");
-
-      if (link) {
-        console.log("=>", link);
-        const [href, rel] = link.split(/\s*;\s*/);
-        console.log(href, rel);
-        if (href && rel === 'rel="patient-interaction"') {
-          window.location.href = href;
-        }
-      }
-    }
-    if (!loading && client && toExport) {
-      ehiExport(client).then(() => setToExport(false));
-    }
-  }, [loading, client, toExport, setToExport]);
 
   return (
     <>
