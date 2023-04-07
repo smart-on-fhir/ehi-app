@@ -1,23 +1,26 @@
-import * as React from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import { Institution } from "../types";
 
 interface InstitutionContextInterface {
   institution: Institution | null;
-  setInstitution: (i: Institution) => void;
+  setInstitution: Dispatch<SetStateAction<Institution | null>>;
 }
 
 type InstitutionProviderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
-let InstitutionContext = React.createContext<InstitutionContextInterface>(
-  null!
-);
+let InstitutionContext = createContext<InstitutionContextInterface>(null!);
 
 export function InstitutionProvider({ children }: InstitutionProviderProps) {
-  const [institution, setInstitution] = React.useState<Institution | null>(
-    null
-  );
+  const [institution, setInstitution] = useState<Institution | null>(null);
 
   return (
     <InstitutionContext.Provider
@@ -32,5 +35,5 @@ export function InstitutionProvider({ children }: InstitutionProviderProps) {
 }
 
 export function useInstitutionContext() {
-  return React.useContext(InstitutionContext);
+  return useContext(InstitutionContext);
 }

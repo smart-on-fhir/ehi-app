@@ -1,8 +1,9 @@
+import { Dispatch, SetStateAction } from "react";
 import { Institution } from "../../types";
 
 type InstitutionOptionProps = {
   institution: Institution;
-  setInstitution: Function;
+  setInstitution: Dispatch<SetStateAction<Institution | null>>;
 };
 
 export default function InstitutionOption({
