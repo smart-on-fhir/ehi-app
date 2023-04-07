@@ -18,7 +18,7 @@ export default function InstitutionOption({
           ? "bg-gray-300 italic text-gray-600"
           : "cursor-pointer hover:bg-gray-200"
       }`}
-      onClick={() => institution.disabled && setInstitution(institution)}
+      onClick={() => !institution.disabled && setInstitution(institution)}
     >
       <img
         src={institution.imgUrl}
