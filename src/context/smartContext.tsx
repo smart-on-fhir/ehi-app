@@ -29,7 +29,7 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
       // where to go after auth to actually start the app
       redirectUri: "/exportLaunch",
 
-      // Passing iss makes this a standalone launch
+      // Passing iss makes this a standalone launch; default is the EHI server
       iss: "https://ehi-server.herokuapp.com/fhir",
 
       // Override with custom options if any
