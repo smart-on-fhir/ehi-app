@@ -7,6 +7,6 @@ export interface Institution {
   location?: string;
   // A URL pointing to this institution's FHIR server
   fhirUrl: string;
-  // Whether or not this institution should be displayed in the
+  // Whether or not this institution should be displayed in the UI
   disabled: boolean;
 }
