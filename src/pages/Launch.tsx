@@ -10,7 +10,7 @@ export default function Launch() {
     startAuthorization({
       iss: institution?.fhirUrl,
     });
-  }, [startAuthorization]);
+  }, [startAuthorization, institution]);
 
   return <b>Launching...</b>;
 }

@@ -39,7 +39,6 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
 
   function completeAuthorization() {
     setLoading(true);
-    console.log("completing auth");
     return SMART.ready()
       .then(
         (client) => {

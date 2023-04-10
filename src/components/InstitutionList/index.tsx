@@ -20,6 +20,7 @@ export default function InstitutionList({
         <ul className="border border-gray-600">
           {institutions.map((institution) => (
             <InstitutionOption
+              key={institution.displayName}
               institution={institution}
               setInstitution={setInstitution}
             />
