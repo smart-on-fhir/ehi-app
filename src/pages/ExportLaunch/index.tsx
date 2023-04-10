@@ -7,8 +7,9 @@ export default function App() {
   const SMART = useSMARTContext();
   const { client, completeAuthorization } = SMART;
 
-  // After Loading jobs and authorizing, export if necessary
+  // Export after completing authorization
   useEffect(() => {
+    let unmounted = false;
     async function ehiExport(client: Client | null) {
       const { response } = await client?.request({
         url: `/Patient/${client.getPatientId()}/$ehi-export`,
@@ -28,14 +29,16 @@ export default function App() {
     }
     completeAuthorization().then((client) => {
       if (client) {
-        ehiExport(client);
+        // Only run export if we haven't unmounted
+        !unmounted && ehiExport(client);
       } else {
         console.log("there was an error in authorization, export impossible");
       }
     });
-    console.log(
-      "no client available, there must have been some mistake in the handshake process"
-    );
+    // Cleanup flag to avoid duplicate export requests
+    return () => {
+      unmounted = true;
+    };
   }, []);
 
   return (
