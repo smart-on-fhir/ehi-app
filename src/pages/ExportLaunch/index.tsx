@@ -14,11 +14,7 @@ function ClientError({ error }: { error: Error | null }) {
   );
 }
 function Loading() {
-  return (
-    <>
-      <h1>Kicking off ehi export...</h1>
-    </>
-  );
+  return <h1>Kicking off ehi export...</h1>;
 }
 function EhiError({ ehiError }: { ehiError: Error | null }) {
   return (
@@ -104,6 +100,6 @@ export default function App() {
     );
   } else {
     // Export was successful, there was no link, we should redirect to the main page in above effects
-    return <></>;
+    return null;
   }
 }

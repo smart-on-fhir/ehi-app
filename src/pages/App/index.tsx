@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useSMARTContext } from "../../context/smartContext";
 import "./App.css";
@@ -8,13 +7,6 @@ import Button from "../../components/Button";
 export default function App() {
   const SMART = useSMARTContext();
   const navigate = useNavigate();
-  const { completeAuthorization } = SMART;
-
-  useEffect(() => {
-    // On PageLoad, try to authorize
-    completeAuthorization();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>
