@@ -33,11 +33,12 @@ export default function App() {
           }
         })
         .catch((error) => {
-          setEhiError(error);
+          setEhiError((prevError) => error);
         });
     }
     return () => {
       abortController.abort();
+      setEhiError((prevError) => null);
     };
   }, [client, error, loading, navigate]);
 
@@ -60,7 +61,7 @@ export default function App() {
   } else if (ehiLink) {
     // Export succeeded, but there is additional user interaction needed
     return (
-      <div className="mt-4 max-w-screen-sm rounded-md border bg-white p-4">
+      <div className="mx-auto mt-4 max-w-screen-sm rounded-md border bg-white p-4">
         <h1 className="text-lg font-bold">Additional information required</h1>
         <p>
           In order for the EHI Export request to be processed, there is an
