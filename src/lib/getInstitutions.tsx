@@ -6,7 +6,7 @@ export default async function getInstitutions(): Promise<Institution[]> {
       displayName: "Boston Children's Hospital",
       imgUrl:
         "http://4.bp.blogspot.com/-vVLgy5iebg4/TkCYKBpHF6I/AAAAAAAAB6Y/-1Q-V85ymww/s1600/childrens_hospital_boston.jpg",
-      fhirUrl: "http://localhost:49632/fhir",
+      fhirUrl: "https://ehi-server.herokuapp.com/fhir",
       location: "300 Longwood Avenue Boston, MA 02115",
       disabled: false,
     },
