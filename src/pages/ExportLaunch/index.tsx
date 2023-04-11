@@ -13,7 +13,7 @@ export default function App() {
   const [ehiError, setEhiError] = useState<Error | null>(null);
   const [ehiLink, setEhiLink] = useState<string | null>(null);
 
-  // Complete authorization on initial page load
+  // Matches redirectUri, should complete authorization on load
   useEffect(() => {
     completeAuthorization();
     // eslint-disable-next-line react-hooks/exhaustive-deps
