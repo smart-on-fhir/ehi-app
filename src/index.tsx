@@ -5,6 +5,7 @@ import { Routes } from "react-router";
 import AppWrapper from "./components/AppWrapper";
 import App from "./pages/App";
 import Launch from "./pages/Launch";
+import InstitutionSelection from "./pages/InstitutionSelection";
 import ExportLaunch from "./pages/ExportLaunch";
 import { SMARTProvider } from "./context/smartContext";
 import { InstitutionProvider } from "./context/institutionContext";
@@ -24,6 +25,10 @@ root.render(
             <Routes>
               <Route path="/exportLaunch" element={<ExportLaunch />} />
               <Route path="/launch" element={<Launch />} />
+              <Route
+                path="/institutionSelection"
+                element={<InstitutionSelection />}
+              />
               <Route path="/" element={<App />} />
               <Route element={<b>Not Found</b>} />
             </Routes>
