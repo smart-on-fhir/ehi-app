@@ -12,7 +12,7 @@ export default function InstitutionList({
   setInstitution,
 }: InstitutionListProps) {
   if (institutions.length === 0) {
-    return <></>;
+    return null;
   } else {
     return (
       <div className="my-2 max-h-[500px] max-w-lg overflow-auto">
