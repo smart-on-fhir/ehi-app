@@ -1,29 +1,10 @@
-import Client from "fhirclient/lib/Client";
 import { useEffect, useState } from "react";
 import { useSMARTContext } from "../../context/smartContext";
-import CodeBlock from "../../components/CodeBlock";
 import { useNavigate } from "react-router";
+import ehiExport from "../../lib/ehiExport";
 import Button from "../../components/Button";
-
-function ClientError({ error }: { error: Error | null }) {
-  return (
-    <>
-      <h1>There was an error in authenticating to the client</h1>
-      <CodeBlock>{JSON.stringify(error)}</CodeBlock>
-    </>
-  );
-}
-function Loading() {
-  return <h1>Kicking off ehi export...</h1>;
-}
-function EhiError({ ehiError }: { ehiError: Error | null }) {
-  return (
-    <>
-      <h1>There was an error with EHI Export</h1>
-      <CodeBlock>{JSON.stringify(ehiError)}</CodeBlock>
-    </>
-  );
-}
+import ErrorMessage from "../../components/ErrorMessage";
+import Loading from "../../components/Loading";
 
 export default function App() {
   const SMART = useSMARTContext();
@@ -40,44 +21,42 @@ export default function App() {
 
   // Trigger EHI Export when there is an authorized client
   useEffect(() => {
-    let unmounted = false;
-    async function ehiExport(client: Client | null) {
-      const { response } = await client
-        ?.request({
-          url: `/Patient/${client.getPatientId()}/$ehi-export`,
-          method: "POST",
-          includeResponse: true,
-        })
-        .catch((err) => setEhiError(err));
-      const link = response.headers.get("Link");
-      if (link) {
-        // If there is a patient-interaction link, redirect the user there
-        const [href, rel] = link.split(/\s*;\s*/);
-        if (href && rel === 'rel="patient-interaction"') {
-          setEhiLink(href);
-        }
-      } else {
-        // Otherwise return to the homepage
-        navigate("/");
-      }
-    }
-    // Only run export if we haven't unmounted and there is a client
+    const abortController = new AbortController();
+    const signal = abortController.signal;
     if (client) {
-      !unmounted && ehiExport(client);
+      ehiExport(client, signal)
+        .then((link) => {
+          if (link) {
+            setEhiLink(link);
+          } else {
+            navigate("/");
+          }
+        })
+        .catch((error) => {
+          setEhiError(error);
+        });
     }
-    // Cleanup flag to avoid duplicate export requests
-    // TODO on next PR, replace with AbortController
     return () => {
-      unmounted = true;
+      abortController.abort();
     };
   }, [client, error, loading, navigate]);
 
   if (loading) {
-    return <Loading />;
+    return <Loading display="Loading client for export" />;
   } else if (error) {
-    return <ClientError error={error} />;
+    return (
+      <ErrorMessage
+        display="There was an error in authenticating to the client"
+        error={error}
+      />
+    );
   } else if (ehiError) {
-    return <EhiError ehiError={ehiError} />;
+    return (
+      <ErrorMessage
+        display="There was an error with EHI Export"
+        error={ehiError}
+      />
+    );
   } else if (ehiLink) {
     // Export succeeded, but there is additional user interaction needed
     return (
@@ -97,7 +76,7 @@ export default function App() {
       </div>
     );
   } else {
-    // Export was successful, there was no link, we should redirect to the main page in above effects
+    // Export was successful, there was no link; we should be redirecting to the main page in above effect
     return null;
   }
 }

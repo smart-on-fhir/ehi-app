@@ -3,31 +3,45 @@ import { useEffect, useState } from "react";
 import InstitutionList from "../../components/InstitutionList";
 import getInstitutions from "../../lib/getInstitutions";
 import { Institution } from "../../types";
+import Loading from "../../components/Loading";
+import ErrorMessage from "../../components/ErrorMessage";
 
 export default function InstitutionSelection() {
   const navigate = useNavigate();
-  const [institution, setInstitution] = useState<Institution | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
   const [institutions, setInstitutions] = useState<Institution[]>([]);
 
   useEffect(() => {
-    // If an institution has been selected, go to the launch page
-    if (institution) {
-      navigate("/launch", { state: { institution } });
-    }
-    // Load available institutions on the initial render
-    getInstitutions().then((institutions: Institution[]) =>
-      setInstitutions(institutions)
-    );
+    setLoading(true);
+    getInstitutions()
+      .then((institutions: Institution[]) => setInstitutions(institutions))
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [institution, navigate]);
+  }, []);
 
-  return (
-    <>
+  if (loading) {
+    return <Loading display="Loading institutions..." />;
+  } else if (error) {
+    return (
+      <ErrorMessage
+        error={error}
+        display="There was an error loading institutions"
+      />
+    );
+  } else {
+    return (
       <InstitutionList
         institutions={institutions}
-        setInstitution={setInstitution}
+        setInstitution={(institution) => {
+          navigate("/launch", { state: { institution } });
+        }}
       />
-      <h1>Debugging Purposes</h1>
-    </>
-  );
+    );
+  }
 }
