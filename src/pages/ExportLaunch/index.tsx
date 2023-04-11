@@ -72,31 +72,29 @@ export default function App() {
     };
   }, [client, error, loading, navigate]);
 
-  if (error) {
+  if (loading) {
+    return <Loading />;
+  } else if (error) {
     return <ClientError error={error} />;
   } else if (ehiError) {
     return <EhiError ehiError={ehiError} />;
-  } else if (loading) {
-    return <Loading />;
   } else if (ehiLink) {
     // Export succeeded, but there is additional user interaction needed
     return (
-      <>
-        <div className="mt-4 max-w-screen-sm rounded-md border bg-white p-4">
-          <h1 className="text-lg font-bold">Additional information required</h1>
-          <p>
-            In order for the EHI Export request to be processed, there is an
-            additional form to complete.
-          </p>
-          <div className="mt-2 flex justify-between">
-            <Button onClick={() => navigate("/")} display="Finish Later" />
-            <Button
-              onClick={() => (window.location.href = ehiLink)}
-              display="Complete Form"
-            />
-          </div>
+      <div className="mt-4 max-w-screen-sm rounded-md border bg-white p-4">
+        <h1 className="text-lg font-bold">Additional information required</h1>
+        <p>
+          In order for the EHI Export request to be processed, there is an
+          additional form to complete.
+        </p>
+        <div className="mt-2 flex justify-between">
+          <Button onClick={() => navigate("/")} display="Finish Later" />
+          <Button
+            onClick={() => (window.location.href = ehiLink)}
+            display="Complete Form"
+          />
         </div>
-      </>
+      </div>
     );
   } else {
     // Export was successful, there was no link, we should redirect to the main page in above effects
