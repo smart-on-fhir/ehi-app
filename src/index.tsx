@@ -9,7 +9,7 @@ import InstitutionSelection from "./pages/InstitutionSelection";
 import ExportLaunch from "./pages/ExportLaunch";
 import { SMARTProvider } from "./context/smartContext";
 import { InstitutionProvider } from "./context/institutionContext";
-// Necessary for getting access to tailwind styles
+// Necessary for tailwind styles
 import "./index.css";
 
 const root = ReactDOM.createRoot(

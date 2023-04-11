@@ -44,8 +44,6 @@ export default function App() {
   return (
     <>
       <h1>Kicking off ehi export...</h1>
-      <h1>Debugging Purposes</h1>
-      <CodeBlock>{JSON.stringify(SMART, null, 4)}</CodeBlock>
     </>
   );
 }

@@ -1,16 +1,19 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router";
+import { fhirclient } from "fhirclient/lib/types";
 import { useSMARTContext } from "../context/smartContext";
-import { useInstitutionContext } from "../context/institutionContext";
 
 export default function Launch() {
   const { startAuthorization } = useSMARTContext();
-  const { institution } = useInstitutionContext();
+  let location = useLocation();
 
   useEffect(() => {
-    startAuthorization({
-      iss: institution?.fhirUrl,
-    });
-  }, [startAuthorization, institution]);
+    let config: fhirclient.AuthorizeParams = {};
+    if (location.state.institution) {
+      config.iss = location.state.institution.fhirUrl;
+    }
+    startAuthorization(config);
+  }, [location.state.institution, startAuthorization]);
 
   return <b>Launching...</b>;
 }
