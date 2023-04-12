@@ -11,10 +11,9 @@ export default function App() {
   return (
     <>
       <p>Placeholder for list of jobs</p>
-      <Button
-        onClick={() => navigate("/institutionSelection")}
-        display="Add Record"
-      />
+      <Button onClick={() => navigate("/institutionSelection")}>
+        Add Record
+      </Button>
       <h1>Debugging Purposes</h1>
       <CodeBlock>{JSON.stringify(SMART, null, 4)}</CodeBlock>
     </>

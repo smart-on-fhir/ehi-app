@@ -71,11 +71,10 @@ export default function App() {
           additional form to complete.
         </p>
         <div className="mt-2 flex justify-between">
-          <Button onClick={() => navigate("/")} display="Finish Later" />
-          <Button
-            onClick={() => (window.location.href = ehiLink)}
-            display="Complete Form"
-          />
+          <Button onClick={() => navigate("/")}>Finish Later</Button>
+          <Button onClick={() => (window.location.href = ehiLink)}>
+            Complete Form
+          </Button>
         </div>
       </div>
     );
