@@ -6,17 +6,17 @@ import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 export default function ExportJobCard({ job }: { job: ExportJob }) {
   const navigate = useNavigate();
   return (
-    <div className="grid columns-4 grid-flow-col items-center space-x-2 border p-4 first:border-b-0 last:border-t-0 only:border">
+    <div className="grid columns-4 grid-flow-col items-center space-x-2 border border-t-0 p-4 first:border-t only:border">
       <ExportJobStatusIndicator status={job.status} />
       <div className="col-span-2 mr-auto">
         <h1 className="text-lg font-bold">Job #{job.id}</h1>
-        <p className="italic opacity-50">
+        <pre className="text-xs italic opacity-50">
           {[
-            job.patientId,
-            job.createdAt,
-            `#${job.attachments.length} Attachments`,
-          ].join(" // ")}
-        </p>
+            `Patient ${job.patientId}`,
+            new Date(job.createdAt).toLocaleString(),
+            `${job.attachments.length} Attachments`,
+          ].join("\n")}
+        </pre>
       </div>
       <Button className="" onClick={() => navigate(`/admin/job/${job.id}`)}>
         Details
