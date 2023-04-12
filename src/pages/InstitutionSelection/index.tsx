@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import InstitutionList from "../../components/InstitutionList";
-import getInstitutions from "../../lib/getInstitutions";
+import { getInstitutions } from "../../lib/institutionHelpers";
 import { Institution } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";

@@ -7,7 +7,10 @@ export default function ExportJobListItemLarge({ job }: { job: ExportJob }) {
   const navigate = useNavigate();
   return (
     <li className="flex items-center space-x-4 border border-t-0 p-4 first:border-t only:border">
-      <ExportJobStatusIndicator status={job.status} />
+      <div className="flex flex-col items-center text-center">
+        <ExportJobStatusIndicator status={job.status} />
+        <p className="text-xs">{job.status.split("-").join(" ")}</p>
+      </div>
       <div className="flex w-full items-center justify-between">
         <div>
           <h1 className="text-lg font-bold">Job #{job.id}</h1>
