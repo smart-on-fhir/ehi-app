@@ -56,7 +56,7 @@ export default function ExportJobStatusIndicator({
     }
   }
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex w-24 flex-col items-center">
       {getStatusIcon("awaiting-input")}
       <p className="text-xs">{status.split("-").join(" ")}</p>
     </div>
