@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import Button from "../../components/Button";
-import ExportJobCard from "../../components/ExportJobCard";
+import ExportJobListItemLarge from "../../components/ExportJobListItemLarge";
 import getExportJobs from "../../lib/getExportJobs";
 import { ExportJob } from "../../types";
 import Loading from "../../components/Loading";
@@ -45,29 +44,31 @@ export default function ExportJobList() {
     };
   }, []);
 
+  function PageBody() {
+    if (loading) {
+      return <Loading display={"Loading current export jobs"} />;
+    } else if (error) {
+      return (
+        <ErrorMessage
+          error={error}
+          display="An error occurred in fetching jobs"
+        />
+      );
+    } else {
+      return (
+        <ul className="mt-4">
+          {jobs.map((job, i) => (
+            <ExportJobListItemLarge key={job.id} job={job} />
+          ))}
+        </ul>
+      );
+    }
+  }
+
   return (
     <>
       <h1>Jobs</h1>
-      {(() => {
-        if (loading) {
-          return <Loading display={"Loading current export jobs"} />;
-        } else if (error) {
-          return (
-            <ErrorMessage
-              error={error}
-              display="An error occurred in fetching jobs"
-            />
-          );
-        } else {
-          return (
-            <ul className="mt-4">
-              {jobs.map((job, i) => (
-                <ExportJobCard key={job.id} job={job} />
-              ))}
-            </ul>
-          );
-        }
-      })()}
+      <PageBody />
     </>
   );
 }

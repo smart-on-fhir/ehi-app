@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import ExportJobListItemSmall from "../ExportJobListItemSmall";
 import Button from "../../components/Button";
 import { ExportJob } from "../../types";
 import getExportJobs from "../../lib/getExportJobs";
@@ -43,7 +44,7 @@ export default function UserExportJobList() {
     };
   }, []);
   if (loading) {
-    return <Loading display="Loading active health-record requests" />;
+    return <Loading display="Loading health record requests" />;
   } else if (error) {
     return (
       <ErrorMessage
@@ -57,10 +58,13 @@ export default function UserExportJobList() {
         <div className="mb-4 border">
           <h1 className="border-b px-4 py-2">My Health Records</h1>
           <ul className="px-4 py-2">
-            {jobs &&
-              jobs.map((job) => {
-                return <li>{JSON.stringify(job)}</li>;
-              })}
+            {jobs && jobs.length > 0 ? (
+              jobs.map((job) => (
+                <ExportJobListItemSmall key={job.id} job={job} />
+              ))
+            ) : (
+              <p>No jobs were found on the server</p>
+            )}
           </ul>
           <Button
             className="m-4"

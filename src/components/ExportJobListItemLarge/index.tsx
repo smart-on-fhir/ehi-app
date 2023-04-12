@@ -3,10 +3,10 @@ import { ExportJob } from "../../types";
 import Button from "../Button";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 
-export default function ExportJobCard({ job }: { job: ExportJob }) {
+export default function ExportJobListItemLarge({ job }: { job: ExportJob }) {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center space-x-4 border border-t-0 p-4 first:border-t only:border">
+    <li className="flex items-center space-x-4 border border-t-0 p-4 first:border-t only:border">
       <ExportJobStatusIndicator status={job.status} />
       <div className="flex w-full items-center justify-between">
         <div>
@@ -14,7 +14,7 @@ export default function ExportJobCard({ job }: { job: ExportJob }) {
           <pre className="whitespace-pre-wrap text-xs italic opacity-50">
             {[
               `Patient ${job.patientId}`,
-              new Date(job.createdAt).toLocaleString(),
+              `Created ${new Date(job.createdAt).toLocaleString()}`,
               `${job.attachments.length} Attachments`,
             ].join("\n")}
           </pre>
@@ -26,6 +26,6 @@ export default function ExportJobCard({ job }: { job: ExportJob }) {
           Details
         </Button>
       </div>
-    </div>
+    </li>
   );
 }
