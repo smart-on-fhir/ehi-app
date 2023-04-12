@@ -32,13 +32,16 @@ export default function App() {
             navigate("/");
           }
         })
-        .catch((error) => {
-          setEhiError((prevError) => error);
+        .catch((error: Error) => {
+          // Track any non-abort errors with state
+          if (error.name !== "AbortError") {
+            setEhiError(error);
+          }
         });
     }
     return () => {
       abortController.abort();
-      setEhiError((prevError) => null);
+      setEhiError(null);
     };
   }, [client, error, loading, navigate]);
 
