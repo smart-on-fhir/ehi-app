@@ -9,7 +9,7 @@ export default function ErrorMessage({
 }) {
   return (
     <>
-      <h1>{display}</h1>
+      <h1 className="mb-2">{display}</h1>
       <CodeBlock>{String(error)}</CodeBlock>
     </>
   );

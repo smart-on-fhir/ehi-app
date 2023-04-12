@@ -9,7 +9,7 @@ export default function App() {
   return (
     <>
       <UserExportJobList />
-      <h1>Debugging Purposes</h1>
+      <h1 className="mb-2">Debugging Purposes</h1>
       <CodeBlock>{JSON.stringify(SMART, null, 4)}</CodeBlock>
     </>
   );

@@ -62,10 +62,13 @@ export default function UserExportJobList() {
                 return <li>{JSON.stringify(job)}</li>;
               })}
           </ul>
+          <Button
+            className="m-4"
+            onClick={() => navigate("/institutionSelection")}
+          >
+            Add Record
+          </Button>
         </div>
-        <Button onClick={() => navigate("/institutionSelection")}>
-          Add Record
-        </Button>
       </>
     );
   }
