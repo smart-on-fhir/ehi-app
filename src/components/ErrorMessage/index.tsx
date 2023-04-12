@@ -10,7 +10,7 @@ export default function ErrorMessage({
   return (
     <>
       <h1>{display}</h1>
-      <CodeBlock>{JSON.stringify(error)}</CodeBlock>
+      <CodeBlock>{String(error)}</CodeBlock>
     </>
   );
 }

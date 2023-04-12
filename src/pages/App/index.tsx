@@ -1,19 +1,14 @@
-import { useNavigate } from "react-router";
 import { useSMARTContext } from "../../context/smartContext";
 import "./App.css";
 import CodeBlock from "../../components/CodeBlock";
-import Button from "../../components/Button";
+import UserExportJobList from "../../components/UserExportJobList";
 
 export default function App() {
   const SMART = useSMARTContext();
-  const navigate = useNavigate();
 
   return (
     <>
-      <p>Placeholder for list of jobs</p>
-      <Button onClick={() => navigate("/institutionSelection")}>
-        Add Record
-      </Button>
+      <UserExportJobList />
       <h1>Debugging Purposes</h1>
       <CodeBlock>{JSON.stringify(SMART, null, 4)}</CodeBlock>
     </>

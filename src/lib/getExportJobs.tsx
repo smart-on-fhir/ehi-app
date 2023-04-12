@@ -1,9 +1,10 @@
 import { ExportJob } from "../types";
+import { EHISERVERBASEURL } from "./constants";
 
 export default async function getExportJobs(
   signal?: AbortSignal
 ): Promise<ExportJob[]> {
-  const baseUrl = "https://ehi-server.herokuapp.com";
+  const baseUrl = EHISERVERBASEURL;
   const exportJobUrl = `${baseUrl}/jobs`;
   const response = await fetch(exportJobUrl, { signal });
   console.log(response);

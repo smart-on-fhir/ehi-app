@@ -2,6 +2,7 @@ import Client from "fhirclient/lib/Client";
 import { fhirclient } from "fhirclient/lib/types";
 import { oauth2 as SMART } from "fhirclient";
 import * as React from "react";
+import { EHISERVERFHIRURL } from "../lib/constants";
 
 interface SMARTContextInterface {
   client: Client | null;
@@ -30,7 +31,7 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
       redirectUri: "/exportLaunch",
 
       // Passing iss makes this a standalone launch; default is the EHI server
-      iss: "https://ehi-server.herokuapp.com/fhir",
+      iss: EHISERVERFHIRURL,
 
       // Override with custom options if any
       ...options,
