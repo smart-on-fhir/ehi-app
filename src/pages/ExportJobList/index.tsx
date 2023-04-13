@@ -54,20 +54,22 @@ export default function ExportJobList() {
           display="An error occurred in fetching jobs"
         />
       );
-    } else {
+    } else if (jobs && jobs.length > 0) {
       return (
-        <ul className="mt-4 divide-y divide-stone-500 border border-stone-500">
+        <ul className="divide-y border ">
           {jobs.map((job, i) => (
             <ExportJobListItemLarge key={job.id} job={job} />
           ))}
         </ul>
       );
+    } else {
+      return <p className="italic">No jobs were found on the server</p>;
     }
   }
 
   return (
     <>
-      <h1>Jobs</h1>
+      <h1 className="mb-4 font-semibold">Jobs</h1>
       <PageBody />
     </>
   );
