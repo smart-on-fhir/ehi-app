@@ -56,7 +56,7 @@ export default function ExportJobList() {
       );
     } else {
       return (
-        <ul className="mt-4">
+        <ul className="mt-4 divide-y divide-stone-500 border border-stone-500">
           {jobs.map((job, i) => (
             <ExportJobListItemLarge key={job.id} job={job} />
           ))}

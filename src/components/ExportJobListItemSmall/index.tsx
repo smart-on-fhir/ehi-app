@@ -11,6 +11,7 @@ type ExportJobBlurbProps = {
   link: string | null;
   createdDate: Date | null;
 };
+
 function ExportJobBlurb({ status, link, createdDate }: ExportJobBlurbProps) {
   if (status === "awaiting-input") {
     return link ? (
@@ -34,16 +35,17 @@ export default function ExportJobListItemSmall({
   //       this would be odd. Should be fine for demo purposes.
   const url = EHISERVERFHIRURL;
   const institutionName = findMatchingInstitution(url)?.displayName;
-  const statusArr: ExportJobStatus[] = [
-    "awaiting-input",
-    "in-review",
-    "requested",
-    "retrieved",
-    "aborted",
-    "rejected",
-  ];
-  const status = statusArr[Math.round(Math.random() * 5)];
-  // const status = job.status;
+  // NOTE: LEFT IN FOR TESTING; SHOULD REMOVE AFTER TESTING THE LOOK OF ALL STATUS INDICATORS
+  // const statusArr: ExportJobStatus[] = [
+  //   "awaiting-input",
+  //   "in-review",
+  //   "requested",
+  //   "retrieved",
+  //   "aborted",
+  //   "rejected",
+  // ];
+  // const status = statusArr[Math.round(Math.random() * 5)];
+  const status = job.status;
   // NOTE: Should this field change depending on status? Mockups suggest multiple dates on the ExportJob
   const createdDate = job.createdAt ? new Date(job.createdAt) : null;
   const link =
