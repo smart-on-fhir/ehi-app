@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ExportJobListItemLarge from "../../components/ExportJobListItemLarge";
 import getExportJobs from "../../lib/getExportJobs";
-import { ExportJob } from "../../types";
+import { ExportJobSummary } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 
@@ -9,7 +9,7 @@ export default function ExportJobList() {
   // NOTE: For demo purposes, this is a fixed string. In practice, there will be
   //       1...* many EHI servers, one for each institution we request from.
   // QUES: Maybe this should reuse the client but assume one is active?
-  const [jobs, setJobs] = useState<ExportJob[]>([]);
+  const [jobs, setJobs] = useState<ExportJobSummary[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 

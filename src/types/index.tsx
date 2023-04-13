@@ -22,11 +22,57 @@ export interface Institution {
   disabled: boolean;
 }
 
-// QUESTION: Should these types be imported from the EHI-server repo?
 /**
  * The JSON representation of an export job
  */
 export interface ExportJob {
+  /**
+   * Random 8 char hex job ID
+   */
+  id: string;
+
+  /**
+   * The ID of the exported patient
+   */
+  patientId: string;
+
+  /**
+   * The job status
+   */
+  status: ExportJobStatus;
+
+  /**
+   * The JS timestamp showing when this job was created
+   */
+  createdAt: number;
+
+  /**
+   * The JS timestamp showing when this job was completed, or `0` if it
+   * hasn't been completed yet
+   */
+  completedAt: number;
+
+  /**
+   * Array of additional attachments which should be made available via
+   * DocumentReference
+   */
+  attachments: string[];
+
+  /**
+   * Dictionary specifying what patient information should be exported as part of this job
+   */
+  parameters?: ExportJobInformationParameters;
+
+  /**
+   * Dictionary specifying what privileged topics should be exported as part of this job
+   */
+  authorizations?: ExportJobAuthorizations;
+}
+
+/**
+ * The JSON representation of an export job summary
+ */
+export interface ExportJobSummary {
   /**
    * Random 8 char hex job ID
    */
@@ -96,3 +142,41 @@ export type ExportJobStatus =
   | "retrieved"
   | "aborted"
   | "rejected";
+
+interface ExportJobInformationParameter {
+  name: string;
+  enabled: boolean;
+  notes?: string;
+  from?: string;
+  to?: string;
+}
+
+interface ExportJobInformationParameters {
+  medicalRecord?: ExportJobInformationParameter;
+  visits?: ExportJobInformationParameter;
+  dischargeSummary?: ExportJobInformationParameter;
+  labs?: ExportJobInformationParameter;
+  operative?: ExportJobInformationParameter;
+  pathology?: ExportJobInformationParameter;
+  radiation?: ExportJobInformationParameter;
+  radiology?: ExportJobInformationParameter;
+  photographs?: ExportJobInformationParameter;
+  billing?: ExportJobInformationParameter;
+  other?: ExportJobInformationParameter;
+}
+
+interface ExportJobAuthorization {
+  name: string;
+  value: boolean | string;
+}
+
+interface ExportJobAuthorizations {
+  hiv?: ExportJobAuthorization;
+  alcoholAndDrug?: ExportJobAuthorization;
+  mentalHealth?: ExportJobAuthorization;
+  confidential?: ExportJobAuthorization;
+  domesticViolence?: ExportJobAuthorization;
+  sexualAssault?: ExportJobAuthorization;
+  genetic?: ExportJobAuthorization;
+  other?: ExportJobAuthorization;
+}

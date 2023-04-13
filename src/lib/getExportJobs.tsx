@@ -1,9 +1,9 @@
-import { ExportJob } from "../types";
+import { ExportJobSummary } from "../types";
 import { EHISERVERBASEURL } from "./constants";
 
 export default async function getExportJobs(
   signal?: AbortSignal
-): Promise<ExportJob[]> {
+): Promise<ExportJobSummary[]> {
   const baseUrl = EHISERVERBASEURL;
   const exportJobUrl = `${baseUrl}/jobs`;
   const response = await fetch(exportJobUrl, { signal });

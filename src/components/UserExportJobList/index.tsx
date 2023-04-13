@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import ExportJobListItemSmall from "../ExportJobListItemSmall";
 import LinkButton from "../../components/LinkButton";
-import { ExportJob } from "../../types";
+import { ExportJobSummary } from "../../types";
 import getExportJobs from "../../lib/getExportJobs";
 import Loading from "../Loading";
 import ErrorMessage from "../ErrorMessage";
 
 export default function UserExportJobList() {
-  const [jobs, setJobs] = useState<ExportJob[]>([]);
+  const [jobs, setJobs] = useState<ExportJobSummary[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 

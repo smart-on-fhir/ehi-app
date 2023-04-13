@@ -1,8 +1,12 @@
-import { ExportJob } from "../../types";
+import { ExportJobSummary } from "../../types";
 import LinkButton from "../LinkButton";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 
-export default function ExportJobListItemLarge({ job }: { job: ExportJob }) {
+export default function ExportJobListItemLarge({
+  job,
+}: {
+  job: ExportJobSummary;
+}) {
   return (
     <li className="flex items-center space-x-4  p-4 ">
       <div className="flex flex-col items-center text-center">

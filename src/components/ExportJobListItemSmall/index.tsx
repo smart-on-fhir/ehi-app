@@ -1,10 +1,10 @@
 import { EHISERVERFHIRURL, EHISERVERBASEURL } from "../../lib/constants";
 import { findMatchingInstitution } from "../../lib/institutionHelpers";
-import { ExportJob, ExportJobStatus } from "../../types";
+import { ExportJobSummary, ExportJobStatus } from "../../types";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 
 type ExportJobListItemSmallProps = {
-  job: ExportJob;
+  job: ExportJobSummary;
 };
 type ExportJobBlurbProps = {
   status: ExportJobStatus;
