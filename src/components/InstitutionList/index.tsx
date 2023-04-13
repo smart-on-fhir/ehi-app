@@ -15,7 +15,7 @@ export default function InstitutionList({
     return null;
   } else {
     return (
-      <div className="my-2 max-h-[500px] max-w-lg overflow-auto">
+      <div className="my-2 max-h-[500px] overflow-auto">
         <h1 className="mb-2 ">Select an Institution to Export Data From</h1>
         <ul className="border border-gray-600">
           {institutions.map((institution) => (

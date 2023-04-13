@@ -1,15 +1,9 @@
 import Client from "fhirclient/lib/Client";
 import { fhirclient } from "fhirclient/lib/types";
 import { oauth2 as SMART } from "fhirclient";
+import { SMARTContextInterface } from "../types";
 import * as React from "react";
-
-interface SMARTContextInterface {
-  client: Client | null;
-  error: Error | null;
-  loading: boolean;
-  startAuthorization: (options?: fhirclient.AuthorizeParams) => Promise<any>;
-  completeAuthorization: () => Promise<Client | void>;
-}
+import { EHI_SERVER_FHIR_URL } from "../lib/constants";
 
 let SMARTContext = React.createContext<SMARTContextInterface>(null!);
 
@@ -29,8 +23,8 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
       // where to go after auth to actually start the app
       redirectUri: "/exportLaunch",
 
-      // Passing iss makes this a standalone launch
-      iss: "https://ehi-server.herokuapp.com/fhir",
+      // Passing iss makes this a standalone launch; default is the EHI server
+      iss: EHI_SERVER_FHIR_URL,
 
       // Override with custom options if any
       ...options,

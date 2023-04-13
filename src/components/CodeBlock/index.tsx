@@ -3,9 +3,5 @@ type CodeBlockProps = {
 };
 
 export default function CodeBlock({ children }: CodeBlockProps) {
-  return (
-    <pre className="max-w-4xl overflow-auto border border-black pb-2 ">
-      {children}
-    </pre>
-  );
+  return <pre className="overflow-auto border p-4 ">{children}</pre>;
 }
