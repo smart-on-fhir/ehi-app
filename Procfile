@@ -1,2 +1,1 @@
-web: npm install -g serve \
-  serve -s build
+web: npm start-prod
