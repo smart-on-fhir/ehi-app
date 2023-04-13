@@ -1,4 +1,4 @@
-import { EHISERVERFHIRURL, EHISERVERBASEURL } from "../../lib/constants";
+import { EHI_SERVER_FHIR_URL, EHI_SERVER_BASE_URL } from "../../lib/constants";
 import { findMatchingInstitution } from "../../lib/institutionHelpers";
 import { ExportJobSummary, ExportJobStatus } from "../../types";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
@@ -33,7 +33,7 @@ export default function ExportJobListItemSmall({
 }: ExportJobListItemSmallProps) {
   // NOTE: In a world where the export-jobs from multiple institutions are being listed in the same place,
   //       this would be odd. Should be fine for demo purposes.
-  const url = EHISERVERFHIRURL;
+  const url = EHI_SERVER_FHIR_URL;
   const institutionName = findMatchingInstitution(url)?.displayName;
   // NOTE: LEFT IN FOR TESTING; SHOULD REMOVE AFTER TESTING THE LOOK OF ALL STATUS INDICATORS
   // const statusArr: ExportJobStatus[] = [
@@ -50,7 +50,7 @@ export default function ExportJobListItemSmall({
   const createdDate = job.createdAt ? new Date(job.createdAt) : null;
   const link =
     status === "awaiting-input"
-      ? `${EHISERVERBASEURL}/jobs/${job.id}/customize`
+      ? `${EHI_SERVER_BASE_URL}/jobs/${job.id}/customize`
       : null;
 
   return (

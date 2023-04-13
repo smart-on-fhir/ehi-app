@@ -1,12 +1,12 @@
 import { Institution } from "../types";
-import { EHISERVERFHIRURL, LOCALEHISERVERFHIRURL } from "./constants";
+import { EHI_SERVER_FHIR_URL, LOCAL_EHI_SERVER_FHIR_URL } from "./constants";
 
 const staticInsitutions: Institution[] = [
   {
     displayName: "Boston Children's Hospital",
     imgUrl:
       "http://4.bp.blogspot.com/-vVLgy5iebg4/TkCYKBpHF6I/AAAAAAAAB6Y/-1Q-V85ymww/s1600/childrens_hospital_boston.jpg",
-    fhirUrl: EHISERVERFHIRURL,
+    fhirUrl: EHI_SERVER_FHIR_URL,
     location: "300 Longwood Avenue Boston, MA 02115",
     disabled: false,
   },
@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "development") {
     displayName: "TESTING: Localhost server",
     imgUrl:
       "https://w7.pngwing.com/pngs/709/429/png-transparent-font-awesome-computer-icons-font-cogs-black-and-white-tab-symbol-thumbnail.png",
-    fhirUrl: LOCALEHISERVERFHIRURL,
+    fhirUrl: LOCAL_EHI_SERVER_FHIR_URL,
     location: "3005 Nowhere Drive, Gonesville MA, -90210",
     disabled: false,
   });
