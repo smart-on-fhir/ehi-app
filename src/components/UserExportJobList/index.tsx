@@ -1,14 +1,12 @@
-import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import ExportJobListItemSmall from "../ExportJobListItemSmall";
-import Button from "../../components/Button";
+import LinkButton from "../../components/LinkButton";
 import { ExportJob } from "../../types";
 import getExportJobs from "../../lib/getExportJobs";
 import Loading from "../Loading";
 import ErrorMessage from "../ErrorMessage";
 
 export default function UserExportJobList() {
-  const navigate = useNavigate();
   const [jobs, setJobs] = useState<ExportJob[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
@@ -68,12 +66,9 @@ export default function UserExportJobList() {
               <p>No jobs were found on the server</p>
             )}
           </ul>
-          <Button
-            className="m-4"
-            onClick={() => navigate("/institutionSelection")}
-          >
+          <LinkButton className="m-4" to="/institutionSelection">
             Add Record
-          </Button>
+          </LinkButton>
         </div>
       </>
     );

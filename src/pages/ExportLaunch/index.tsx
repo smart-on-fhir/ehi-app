@@ -3,6 +3,7 @@ import { useSMARTContext } from "../../context/smartContext";
 import { useNavigate } from "react-router";
 import ehiExport from "../../lib/ehiExport";
 import Button from "../../components/Button";
+import LinkButton from "../../components/LinkButton";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 
@@ -71,7 +72,7 @@ export default function App() {
           additional form to complete.
         </p>
         <div className="mt-2 flex justify-between">
-          <Button onClick={() => navigate("/")}>Finish Later</Button>
+          <LinkButton to="/">Finish Later</LinkButton>
           <Button onClick={() => (window.location.href = ehiLink)}>
             Complete Form
           </Button>

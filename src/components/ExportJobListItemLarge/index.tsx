@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router";
 import { ExportJob } from "../../types";
-import Button from "../Button";
+import LinkButton from "../LinkButton";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 
 export default function ExportJobListItemLarge({ job }: { job: ExportJob }) {
-  const navigate = useNavigate();
   return (
     <li className="flex items-center space-x-4  p-4 ">
       <div className="flex flex-col items-center text-center">
@@ -22,12 +20,9 @@ export default function ExportJobListItemLarge({ job }: { job: ExportJob }) {
             ].join("\n")}
           </pre>
         </div>
-        <Button
-          className="w-24"
-          onClick={() => navigate(`/admin/job/${job.id}`)}
-        >
+        <LinkButton className="w-24" to={`/admin/job/${job.id}`}>
           Details
-        </Button>
+        </LinkButton>
       </div>
     </li>
   );
