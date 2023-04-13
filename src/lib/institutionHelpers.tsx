@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === "development") {
   staticInsitutions.unshift({
     displayName: "TESTING: Localhost server",
     imgUrl:
-      "https://w7.pngwing.com/pngs/709/429/png-transparent-font-awesome-computer-icons-font-cogs-black-and-white-tab-symbol-thumbnail.png",
+      "https://upload.wikimedia.org/wikipedia/commons/9/96/Gear-icon-transparent-background.png",
     fhirUrl: LOCAL_EHI_SERVER_FHIR_URL,
     location: "3005 Nowhere Drive, Gonesville MA, -90210",
     disabled: false,

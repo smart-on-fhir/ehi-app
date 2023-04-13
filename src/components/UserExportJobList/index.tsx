@@ -57,7 +57,7 @@ export default function UserExportJobList() {
           <h1 className="border-b px-4 py-2 font-semibold">
             My Health Records
           </h1>
-          <ul className="space-y-2 px-4 py-2">
+          <ul className="max-h-[425px] space-y-2 overflow-y-scroll px-4 py-2">
             {jobs && jobs.length > 0 ? (
               jobs.map((job) => (
                 <ExportJobListItemSmall key={job.id} job={job} />
