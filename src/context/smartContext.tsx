@@ -1,16 +1,9 @@
 import Client from "fhirclient/lib/Client";
 import { fhirclient } from "fhirclient/lib/types";
 import { oauth2 as SMART } from "fhirclient";
+import { SMARTContextInterface } from "../types";
 import * as React from "react";
 import { EHISERVERFHIRURL } from "../lib/constants";
-
-interface SMARTContextInterface {
-  client: Client | null;
-  error: Error | null;
-  loading: boolean;
-  startAuthorization: (options?: fhirclient.AuthorizeParams) => Promise<any>;
-  completeAuthorization: () => Promise<Client | void>;
-}
 
 let SMARTContext = React.createContext<SMARTContextInterface>(null!);
 

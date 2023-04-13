@@ -1,16 +1,15 @@
-import { useSMARTContext } from "../../context/smartContext";
-import "./App.css";
-import CodeBlock from "../../components/CodeBlock";
+// import { useSMARTContext } from "../../context/smartContext";
+// import SmartDebugger from "../../components/SmartDebugger";
 import UserExportJobList from "../../components/UserExportJobList";
+import "./App.css";
 
 export default function App() {
-  const SMART = useSMARTContext();
+  // const SMART = useSMARTContext();
 
   return (
     <>
       <UserExportJobList />
-      <h1 className="mb-2">Debugging Purposes</h1>
-      <CodeBlock>{JSON.stringify(SMART, null, 4)}</CodeBlock>
+      {/* <SmartDebugger smart={SMART} /> */}
     </>
   );
 }
