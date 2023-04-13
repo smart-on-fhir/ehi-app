@@ -1,5 +1,5 @@
 import { Institution } from "../types";
-import { EHISERVERFHIRURL } from "./constants";
+import { EHISERVERFHIRURL, LOCALEHISERVERFHIRURL } from "./constants";
 
 const staticInsitutions: Institution[] = [
   {
@@ -24,6 +24,17 @@ const staticInsitutions: Institution[] = [
     disabled: true,
   },
 ];
+
+if (process.env.NODE_ENV === "development") {
+  staticInsitutions.unshift({
+    displayName: "TESTING: Localhost server",
+    imgUrl:
+      "https://w7.pngwing.com/pngs/709/429/png-transparent-font-awesome-computer-icons-font-cogs-black-and-white-tab-symbol-thumbnail.png",
+    fhirUrl: LOCALEHISERVERFHIRURL,
+    location: "3005 Nowhere Drive, Gonesville MA, -90210",
+    disabled: false,
+  });
+}
 
 export function findMatchingInstitution(fhirUrl: string) {
   return staticInsitutions.find((i) => i.fhirUrl === fhirUrl);

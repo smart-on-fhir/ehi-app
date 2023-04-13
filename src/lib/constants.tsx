@@ -1,2 +1,7 @@
+const LOCALEHISERVERHOST = "localhost";
+const LOCALEHISERVERPORT = 8080;
+export const LOCALEHISERVERBASEURL =
+  "http://" + LOCALEHISERVERHOST + ":" + LOCALEHISERVERPORT;
+export const LOCALEHISERVERFHIRURL = LOCALEHISERVERBASEURL + "/fhir";
 export const EHISERVERBASEURL = "https://ehi-server.herokuapp.com";
 export const EHISERVERFHIRURL = EHISERVERBASEURL + "/fhir";
