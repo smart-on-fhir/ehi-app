@@ -6,6 +6,7 @@ import { getExportJob } from "../../lib/exportJobHelpers";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import CodeBlock from "../../components/CodeBlock";
+import ExportJobDetailView from "../../components/ExportJobDetailView";
 
 export default function ExportJobViewer() {
   const { id } = useParams();
@@ -14,10 +15,11 @@ export default function ExportJobViewer() {
     else throw Error("Error in viewing a job: there was no id");
   }
 
-  const { loading, result, error } = useAsync<ExportJob>(
-    useCallback(exportJobWithId, [id]),
-    true
-  );
+  const {
+    loading,
+    result: job,
+    error,
+  } = useAsync<ExportJob>(useCallback(exportJobWithId, [id]), true);
 
   // Show loading component whole the job is being loaded
   if (loading) {
@@ -39,7 +41,7 @@ export default function ExportJobViewer() {
   }
 
   // If the job request was successful but did not return the expected data exit with an error message
-  if (!result) {
+  if (!job) {
     return (
       <ErrorMessage
         error={new Error("")}
@@ -50,7 +52,9 @@ export default function ExportJobViewer() {
 
   return (
     <>
-      <CodeBlock>{JSON.stringify(result, null, 2)}</CodeBlock>
+      <ExportJobDetailView job={job} />
+      <h1>Debugging</h1>
+      <CodeBlock>{JSON.stringify(job, null, 2)}</CodeBlock>
     </>
   );
 }
