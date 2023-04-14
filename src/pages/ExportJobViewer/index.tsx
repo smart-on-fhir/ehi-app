@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { ExportJob } from "../../types";
 import { useAsync } from "../../hooks/useAsync";
 import { getExportJob } from "../../lib/exportJobHelpers";
@@ -28,23 +28,23 @@ export default function ExportJobViewer() {
     );
   }
 
-  // If the subscription failed to load exit with an error message
+  // If the job failed to load exit with an error message
   if (error) {
     return (
       <ErrorMessage
-        display={`Error fetching subscription with id "${id}": ${error}`}
+        display={`Error fetching job with id "${id}": ${error}`}
         error={error}
       />
     );
   }
 
-  // If the subscription request was successful but did not return the expected data exit with an error message
+  // If the job request was successful but did not return the expected data exit with an error message
   if (!result) {
     return (
       <ErrorMessage
         error={new Error("")}
-        display={`Fetching subscription with id "${id}" produced empty response`}
-      ></ErrorMessage>
+        display={`Fetching job with id "${id}" produced empty response`}
+      />
     );
   }
 
