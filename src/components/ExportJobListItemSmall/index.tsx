@@ -49,7 +49,9 @@ export default function ExportJobListItemSmall({
   const createdDate = job.createdAt ? new Date(job.createdAt) : null;
   const link =
     status === "awaiting-input"
-      ? `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${job.id}/customize`
+      ? `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${
+          job.id
+        }/customize?_patient=${job.patientId}`
       : null;
 
   return (
