@@ -3,7 +3,6 @@ import { fhirclient } from "fhirclient/lib/types";
 import { oauth2 as SMART } from "fhirclient";
 import { SMARTContextInterface } from "../types";
 import * as React from "react";
-import { EHI_SERVER_FHIR_URL } from "../lib/constants";
 
 let SMARTContext = React.createContext<SMARTContextInterface>(null!);
 
@@ -24,7 +23,7 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
       redirectUri: "/exportLaunch",
 
       // Passing iss makes this a standalone launch; default is the EHI server
-      iss: EHI_SERVER_FHIR_URL,
+      iss: `${process!.env!.REACT_APP_EHI_SERVER}/fhir`,
 
       // Override with custom options if any
       ...options,
