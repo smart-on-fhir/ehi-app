@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ExportJobListItemLarge from "../../components/ExportJobListItemLarge";
-import getExportJobs from "../../lib/getExportJobs";
+import { getExportJobs } from "../../lib/exportJobHelpers";
 import { ExportJobSummary } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";

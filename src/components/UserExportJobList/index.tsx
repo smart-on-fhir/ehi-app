@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ExportJobListItemSmall from "../ExportJobListItemSmall";
 import LinkButton from "../../components/LinkButton";
 import { ExportJobSummary } from "../../types";
-import getExportJobs from "../../lib/getExportJobs";
+import { getExportJobs } from "../../lib/exportJobHelpers";
 import Loading from "../Loading";
 import ErrorMessage from "../ErrorMessage";
 
