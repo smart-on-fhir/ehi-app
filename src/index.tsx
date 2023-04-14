@@ -19,26 +19,24 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <SMARTProvider>
-        <InstitutionProvider>
-          <AppWrapper>
-            <Routes>
-              {/* <Route path="/admin/job/:id" element={<ExportJobViewer />} /> */}
-              <Route path="/admin/jobs" element={<ExportJobList />} />
-              <Route path="/exportLaunch" element={<ExportLaunch />} />
-              <Route path="/launch" element={<Launch />} />
-              <Route
-                path="/institutionSelection"
-                element={<InstitutionSelection />}
-              />
-              <Route path="/" element={<App />} />
-              <Route element={<b>Not Found</b>} />
-            </Routes>
-          </AppWrapper>
-        </InstitutionProvider>
-      </SMARTProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <SMARTProvider>
+      <InstitutionProvider>
+        <AppWrapper>
+          <Routes>
+            {/* <Route path="/admin/job/:id" element={<ExportJobViewer />} /> */}
+            <Route path="/admin/jobs" element={<ExportJobList />} />
+            <Route path="/exportLaunch" element={<ExportLaunch />} />
+            <Route path="/launch" element={<Launch />} />
+            <Route
+              path="/institutionSelection"
+              element={<InstitutionSelection />}
+            />
+            <Route path="/" element={<App />} />
+            <Route element={<b>Not Found</b>} />
+          </Routes>
+        </AppWrapper>
+      </InstitutionProvider>
+    </SMARTProvider>
+  </BrowserRouter>
 );
