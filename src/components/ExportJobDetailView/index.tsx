@@ -1,37 +1,12 @@
 import { ExportJob } from "../../types";
-import CodeBlock from "../CodeBlock";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 import LinkButton from "../LinkButton";
+import ExportJobParameters from "../ExportJobParameters";
+import ExportJobAuthorizations from "../ExportJobAuthorizations";
 
 type ExportJobDetailViewProps = {
   job: ExportJob;
 };
-
-function ParametersView({
-  parameters,
-}: {
-  parameters: ExportJob["parameters"];
-}) {
-  return (
-    <>
-      {"ParametersView"}
-
-      <CodeBlock>{JSON.stringify(parameters, null, 2)}</CodeBlock>
-    </>
-  );
-}
-function AuthorizationsView({
-  authorizations,
-}: {
-  authorizations: ExportJob["authorizations"];
-}) {
-  return (
-    <>
-      {"AuthorizationsView"}
-      <CodeBlock>{JSON.stringify(authorizations, null, 2)}</CodeBlock>
-    </>
-  );
-}
 
 export default function ExportJobDetailView({ job }: ExportJobDetailViewProps) {
   return (
@@ -52,14 +27,11 @@ export default function ExportJobDetailView({ job }: ExportJobDetailViewProps) {
               ].join("\n")}
             </pre>
           </div>
-          <LinkButton className="w-24" to={`/admin/jobs/${job.id}`}>
-            Details
-          </LinkButton>
         </div>
       </header>
       <main>
-        <ParametersView parameters={job?.parameters} />
-        <AuthorizationsView authorizations={job?.authorizations} />
+        <ExportJobParameters parameters={job?.parameters} />
+        <ExportJobAuthorizations authorizations={job?.authorizations} />
       </main>
     </article>
   );

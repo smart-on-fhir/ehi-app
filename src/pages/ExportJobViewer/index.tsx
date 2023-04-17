@@ -5,7 +5,6 @@ import { useAsync } from "../../hooks/useAsync";
 import { getExportJob } from "../../lib/exportJobHelpers";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
-import CodeBlock from "../../components/CodeBlock";
 import ExportJobDetailView from "../../components/ExportJobDetailView";
 
 export default function ExportJobViewer() {
@@ -50,11 +49,5 @@ export default function ExportJobViewer() {
     );
   }
 
-  return (
-    <>
-      <ExportJobDetailView job={job} />
-      <h1>Debugging</h1>
-      <CodeBlock>{JSON.stringify(job, null, 2)}</CodeBlock>
-    </>
-  );
+  return <ExportJobDetailView job={job} />;
 }

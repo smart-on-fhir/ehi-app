@@ -56,7 +56,7 @@ export default function ExportJobList() {
       );
     } else if (jobs && jobs.length > 0) {
       return (
-        <ul className="divide-y border ">
+        <ul className="divide-y rounded border ">
           {jobs.map((job, i) => (
             <ExportJobListItemLarge key={job.id} job={job} />
           ))}

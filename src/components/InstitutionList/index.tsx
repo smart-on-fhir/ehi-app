@@ -17,7 +17,7 @@ export default function InstitutionList({
     return (
       <div className="my-2 max-h-[500px] overflow-auto">
         <h1 className="mb-2 ">Select an Institution to Export Data From</h1>
-        <ul className="border border-gray-600">
+        <ul className="divide-y rounded border border-gray-600">
           {institutions.map((institution) => (
             <InstitutionOption
               key={institution.displayName}

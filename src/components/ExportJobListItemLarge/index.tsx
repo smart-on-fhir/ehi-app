@@ -9,7 +9,7 @@ export default function ExportJobListItemLarge({
 }) {
   return (
     <li className="flex items-center space-x-4  p-4 ">
-      <div className="flex flex-col items-center text-center">
+      <div className="flex w-16 flex-col items-center text-center">
         <ExportJobStatusIndicator status={job.status} />
         <p className="text-xs">{job.status.split("-").join(" ")}</p>
       </div>
