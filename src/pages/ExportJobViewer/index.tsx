@@ -24,7 +24,7 @@ export default function ExportJobViewer() {
   if (loading) {
     return (
       <>
-        <Loading display="Loading job details..." />;
+        <Loading display="Loading job details..." />
       </>
     );
   }
