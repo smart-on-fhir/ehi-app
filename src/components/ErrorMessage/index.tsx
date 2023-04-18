@@ -10,7 +10,7 @@ export default function ErrorMessage({
   return (
     <>
       <h1 className="mb-2">{display}</h1>
-      <CodeBlock>{String(error)}</CodeBlock>
+      <CodeBlock>{error?.message}</CodeBlock>
     </>
   );
 }

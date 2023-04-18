@@ -48,7 +48,7 @@ export default function ExportJobDetailView({ job }: ExportJobDetailViewProps) {
     { name: "something" },
   ]);
   return (
-    <article className="max-h-[80vh] overflow-y-scroll rounded border p-4">
+    <article className="max-h-[80vh] px-2">
       <header className="flex items-center">
         <div className="flex w-24 flex-col items-center text-center">
           <ExportJobStatusIndicator status={job.status} />
@@ -95,7 +95,7 @@ export default function ExportJobDetailView({ job }: ExportJobDetailViewProps) {
           Add Attachment +
         </Button>
       </section>
-      <main>
+      <main className="max-h-[70vh] overflow-y-scroll">
         <ExportJobParameters parameters={job?.parameters} />
         <ExportJobAuthorizations authorizations={job?.authorizations} />
       </main>

@@ -31,9 +31,10 @@ export default function ExportJobViewer() {
 
   // If the job failed to load exit with an error message
   if (error) {
+    console.log(error);
     return (
       <ErrorMessage
-        display={`Error fetching job with id "${id}": ${error}`}
+        display={`Error fetching job with id "${id}".`}
         error={error}
       />
     );
@@ -48,6 +49,6 @@ export default function ExportJobViewer() {
       />
     );
   }
-
+  console.log(job);
   return <ExportJobDetailView job={job} />;
 }

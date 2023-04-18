@@ -16,6 +16,15 @@ export async function getExportJob(
   console.log("calling single job export ");
   const exportJobUrl = `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${id}`;
   const response = await fetch(exportJobUrl, { signal });
-  console.log(response);
-  return response.json();
+  if (response.status === 404) {
+    const operationOutcome = await response.json();
+    console.log(operationOutcome.issue);
+    throw new Error(
+      `Returned operation outcome of "${operationOutcome.issue[0].severity} : ${operationOutcome.issue[0].diagnostics}"`
+    );
+  } else if (response.status === 200) {
+    return response.json();
+  } else {
+    throw new Error(`Unexpected status of ${response.status}`);
+  }
 }
