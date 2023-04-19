@@ -47,7 +47,6 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (!client) {
-      console.log("try");
       completeAuthorization();
     }
   }, [client]);

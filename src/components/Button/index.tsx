@@ -11,7 +11,6 @@ export default function Button({
   className,
   autoFocus,
 }: ButtonProps) {
-  console.log(autoFocus);
   return (
     <button
       autoFocus={autoFocus}
