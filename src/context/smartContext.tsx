@@ -45,6 +45,13 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
       .finally(() => setLoading(false));
   }
 
+  React.useEffect(() => {
+    if (!client) {
+      console.log("try");
+      completeAuthorization();
+    }
+  }, [client]);
+
   return (
     <SMARTContext.Provider
       value={{
