@@ -67,7 +67,7 @@ export default function App() {
         </p>
         <div className="mt-2 flex justify-between">
           <LinkButton to="/">Finish Later</LinkButton>
-          <Button onClick={() => (window.location.href = ehiLink)}>
+          <Button autoFocus onClick={() => (window.location.href = ehiLink)}>
             Complete Form
           </Button>
         </div>
