@@ -10,17 +10,9 @@ import Loading from "../../components/Loading";
 export default function App() {
   const SMART = useSMARTContext();
   const navigate = useNavigate();
-  const { client, loading, error, completeAuthorization } = SMART;
+  const { client, loading, error } = SMART;
   const [ehiError, setEhiError] = useState<Error | null>(null);
   const [ehiLink, setEhiLink] = useState<string | null>(null);
-
-  // Matches redirectUri, should complete authorization on load if we have no client
-  useEffect(() => {
-    if (!client) {
-      completeAuthorization();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Trigger EHI Export when there is an authorized client
   useEffect(() => {
@@ -75,7 +67,7 @@ export default function App() {
         </p>
         <div className="mt-2 flex justify-between">
           <LinkButton to="/">Finish Later</LinkButton>
-          <Button onClick={() => (window.location.href = ehiLink)}>
+          <Button autoFocus onClick={() => (window.location.href = ehiLink)}>
             Complete Form
           </Button>
         </div>
