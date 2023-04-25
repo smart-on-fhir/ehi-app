@@ -56,21 +56,23 @@ export default function ExportJobList() {
       );
     } else if (jobs && jobs.length > 0) {
       return (
-        <ul className="divide-y rounded border ">
+        <ul className="divide-y  ">
           {jobs.map((job, i) => (
             <ExportJobListItemLarge key={job.id} job={job} />
           ))}
         </ul>
       );
     } else {
-      return <p className="italic">No jobs were found on the server</p>;
+      return <p>No jobs were found on the server</p>;
     }
   }
 
   return (
-    <>
-      <h1 className="mb-4 font-semibold">Jobs</h1>
-      <PageBody />
-    </>
+    <div className="mb-4 rounded border">
+      <h1 className="border-b px-4 py-2 font-semibold">Jobs</h1>
+      <div className="px-4 py-2">
+        <PageBody />
+      </div>
+    </div>
   );
 }

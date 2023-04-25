@@ -1,61 +1,26 @@
 import { useState } from "react";
-import Button from "../Button";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
-import ExportJobParameters from "../ExportJobParameters";
-import ExportJobAuthorizations from "../ExportJobAuthorizations";
+import ExportJobParametersAuthorizations from "../ExportJobParametersAuthorizations";
 import ExportApproveButton from "../ExportApproveButton";
 import ExportRejectButton from "../ExportRejectButton";
-import { ExportJob } from "../../types";
+import AttachmentSection from "../AttachmentSection";
+import { ExportJob, LocalAttachment } from "../../types";
 
 type ExportJobDetailViewProps = {
   job: ExportJob;
   refreshJob: () => Promise<void>;
 };
 
-type Attachment = {
-  name: string;
-};
-
-/**
- * Clips attachment names to be 24 chars long, including
- * file extension and ellipsis
- * @param name The attachment name to be clipped
- *
- */
-function clipAttachmentName(name: Attachment["name"]) {
-  const MAX_LENGTH = 24;
-  if (name.length <= MAX_LENGTH) {
-    return name;
-  } else {
-    // QUESTION: will there always be an extension? Not sure about the FileReader API
-    const ext = "." + name.split(".").at(-1);
-    const ellipsis = "[...]";
-    const clippedName = name.slice(
-      0,
-      MAX_LENGTH - ext!.length - ellipsis.length
-    );
-    return clippedName + ellipsis + ext;
-  }
-}
-
-function AttachmentChip({ attachment }: { attachment: Attachment }) {
-  return (
-    <p className="w-24 rounded border p-2 text-xs">
-      {clipAttachmentName(attachment.name)}
-    </p>
-  );
-}
-
 export default function ExportJobDetailView({
   job,
   refreshJob,
 }: ExportJobDetailViewProps) {
-  const [attachments, setAttachment] = useState<Attachment[]>([
-    { name: "something" },
+  const [attachments, setAttachment] = useState<LocalAttachment[]>([
+    { name: "some attachment" },
   ]);
   return (
-    <article className="max-h-[80vh] px-2">
-      <header className="flex items-center">
+    <article className="max-h-[80vh] rounded border p-4 ">
+      <header className="mb-2 flex items-center">
         <div className="flex w-24 flex-col items-center text-center">
           <ExportJobStatusIndicator status={job.status} />
           <p className="text-xs">{job.status.split("-").join(" ")}</p>
@@ -77,31 +42,19 @@ export default function ExportJobDetailView({
           <ExportApproveButton job={job} refreshJob={refreshJob} />
         </div>
       </header>
-      <section className="flex items-center justify-between">
-        <div
+      <main>
+        <section className="">
+          <ExportJobParametersAuthorizations job={job} />
+        </section>
+        <section
           id="attachmentsContainer"
-          className="flex w-full space-x-2 overflow-auto pb-2"
+          className="flex flex-col items-center justify-between"
         >
-          {attachments.map((attach) => {
-            return <AttachmentChip key={attach.name} attachment={attach} />;
-          })}
-        </div>
-        <Button
-          className="mb-2"
-          variant="secondary"
-          onClick={(e) => {
-            setAttachment((prevAttachments) => [
-              ...prevAttachments,
-              { name: `attachment-${Math.random()}.txt` },
-            ]);
-          }}
-        >
-          Add Attachment +
-        </Button>
-      </section>
-      <main className="max-h-[70vh] overflow-y-scroll">
-        <ExportJobParameters parameters={job?.parameters} />
-        <ExportJobAuthorizations authorizations={job?.authorizations} />
+          <AttachmentSection
+            setAttachment={setAttachment}
+            attachments={attachments}
+          />
+        </section>
       </main>
     </article>
   );
