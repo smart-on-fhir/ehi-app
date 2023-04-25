@@ -1,13 +1,8 @@
-// import { useState } from "react";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 import ExportJobParametersAuthorizations from "../ExportJobParametersAuthorizations";
 import ExportApproveButton from "../ExportApproveButton";
 import ExportRejectButton from "../ExportRejectButton";
-// import AttachmentSection from "../AttachmentSection";
-import {
-  ExportJob,
-  // LocalAttachment
-} from "../../types";
+import { ExportJob } from "../../types";
 
 type ExportJobDetailViewProps = {
   job: ExportJob;
@@ -18,9 +13,6 @@ export default function ExportJobDetailView({
   job,
   refreshJob,
 }: ExportJobDetailViewProps) {
-  // const [attachments, setAttachment] = useState<LocalAttachment[]>([
-  //   { name: "some attachment" },
-  // ]);
   return (
     <article className="max-h-[80vh] rounded border p-4 ">
       <header className="mb-2 flex items-center">
@@ -46,18 +38,9 @@ export default function ExportJobDetailView({
         </div>
       </header>
       <main>
-        <section className="">
+        <section>
           <ExportJobParametersAuthorizations job={job} />
         </section>
-        {/* <section
-          id="attachmentsContainer"
-          className="flex flex-col items-center justify-between"
-        >
-          <AttachmentSection
-            setAttachment={setAttachment}
-            attachments={attachments}
-          />
-        </section> */}
       </main>
     </article>
   );
