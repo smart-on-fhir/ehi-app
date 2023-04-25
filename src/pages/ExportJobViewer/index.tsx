@@ -9,16 +9,17 @@ import ExportJobDetailView from "../../components/ExportJobDetailView";
 
 export default function ExportJobViewer() {
   const { id } = useParams();
-  function exportJobWithId(signal?: AbortSignal): Promise<ExportJob> {
+  function getExportJobWithId(signal?: AbortSignal): Promise<ExportJob> {
     if (id) return getExportJob(id, signal);
     else throw Error("Error in viewing a job: there was no id");
   }
 
   const {
+    execute,
     loading,
     result: job,
     error,
-  } = useAsync<ExportJob>(useCallback(exportJobWithId, [id]), true);
+  } = useAsync<ExportJob>(useCallback(getExportJobWithId, [id]), true);
 
   // Show loading component whole the job is being loaded
   if (loading) {
@@ -50,5 +51,5 @@ export default function ExportJobViewer() {
     );
   }
   console.log(job);
-  return <ExportJobDetailView job={job} />;
+  return <ExportJobDetailView job={job} refreshJob={execute} />;
 }

@@ -1,3 +1,4 @@
+// The original hook provided by Vlad
 import { useReducer, useMemo, useCallback, useEffect } from "react";
 interface State<T = any> {
   loading: boolean;

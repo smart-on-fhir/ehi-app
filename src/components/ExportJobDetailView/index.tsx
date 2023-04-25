@@ -1,12 +1,15 @@
-import { ExportJob } from "../../types";
+import { useState } from "react";
+import Button from "../Button";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 import ExportJobParameters from "../ExportJobParameters";
 import ExportJobAuthorizations from "../ExportJobAuthorizations";
-import Button from "../Button";
-import { useState } from "react";
+import ExportApproveButton from "../ExportApproveButton";
+import ExportRejectButton from "../ExportRejectButton";
+import { ExportJob } from "../../types";
 
 type ExportJobDetailViewProps = {
   job: ExportJob;
+  refreshJob: () => Promise<void>;
 };
 
 type Attachment = {
@@ -43,7 +46,10 @@ function AttachmentChip({ attachment }: { attachment: Attachment }) {
   );
 }
 
-export default function ExportJobDetailView({ job }: ExportJobDetailViewProps) {
+export default function ExportJobDetailView({
+  job,
+  refreshJob,
+}: ExportJobDetailViewProps) {
   const [attachments, setAttachment] = useState<Attachment[]>([
     { name: "something" },
   ]);
@@ -66,12 +72,9 @@ export default function ExportJobDetailView({ job }: ExportJobDetailViewProps) {
             </pre>
           </div>
         </div>
-        <div className="flex w-24">
-          <select className="h-fit p-2">
-            <option value="">Review</option>
-            <option value={"Approve"}>Approve</option>
-            <option value={"Reject"}>Reject</option>
-          </select>
+        <div className="flex space-x-2">
+          <ExportRejectButton job={job} refreshJob={refreshJob} />
+          <ExportApproveButton job={job} refreshJob={refreshJob} />
         </div>
       </header>
       <section className="flex items-center justify-between">
@@ -85,6 +88,7 @@ export default function ExportJobDetailView({ job }: ExportJobDetailViewProps) {
         </div>
         <Button
           className="mb-2"
+          variant="secondary"
           onClick={(e) => {
             setAttachment((prevAttachments) => [
               ...prevAttachments,

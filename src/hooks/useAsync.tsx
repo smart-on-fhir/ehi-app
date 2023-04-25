@@ -1,3 +1,4 @@
+// The hook we got working
 import { useReducer, useCallback, useEffect } from "react";
 interface State<T> {
   loading: boolean;
@@ -6,7 +7,7 @@ interface State<T> {
 }
 
 interface UseBackedReturnValue<T> {
-  execute: () => Promise<void>;
+  execute: (signal?: AbortSignal) => Promise<void>;
   loading: boolean;
   result: T | null;
   error: Error | null;
@@ -28,6 +29,7 @@ export function useAsync<T>(
 
   const execute = useCallback(
     (signal?: AbortSignal) => {
+      console.log(signal);
       dispatch({ loading: true, result: null, error: null });
       return fn(signal).then(
         (result: T) => {
