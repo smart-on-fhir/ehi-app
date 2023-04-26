@@ -3,7 +3,7 @@ type ButtonProps = {
   children: React.ReactNode;
   className?: string;
   autoFocus?: boolean;
-  variant: "primary" | "secondary";
+  variant?: "primary" | "emphasized";
 };
 
 export default function Button({
@@ -11,15 +11,15 @@ export default function Button({
   children,
   className,
   autoFocus,
-  variant,
+  variant = "primary",
 }: ButtonProps) {
   let buttonStyles =
     "cursor-pointer border px-2 py-1 transition-all hover:shadow-sm";
   switch (variant) {
-    case "primary":
+    case "emphasized":
       buttonStyles += " bg-slate-600 text-white hover:bg-slate-800";
       break;
-    case "secondary":
+    case "primary":
       buttonStyles += " hover:bg-white";
       break;
   }

@@ -12,7 +12,6 @@ export default function RejectButton({
   return (
     <Button
       onClick={() => updateExportStatus(job, "reject").then(() => refreshJob())}
-      variant="secondary"
     >
       Reject
     </Button>

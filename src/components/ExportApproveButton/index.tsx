@@ -14,7 +14,7 @@ export default function ApproveButton({
       onClick={() =>
         updateExportStatus(job, "approve").then(() => refreshJob())
       }
-      variant="primary"
+      variant="emphasized"
     >
       Approve
     </Button>
