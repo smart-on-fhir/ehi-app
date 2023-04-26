@@ -143,7 +143,7 @@ export type ExportJobStatus =
   | "aborted"
   | "rejected";
 
-interface ExportJobInformationParameter {
+export interface ExportJobInformationParameter {
   name: string;
   enabled: boolean;
   notes?: string;
@@ -151,7 +151,7 @@ interface ExportJobInformationParameter {
   to?: string;
 }
 
-interface ExportJobInformationParameters {
+export interface ExportJobInformationParameters {
   medicalRecord?: ExportJobInformationParameter;
   visits?: ExportJobInformationParameter;
   dischargeSummary?: ExportJobInformationParameter;
@@ -165,12 +165,12 @@ interface ExportJobInformationParameters {
   other?: ExportJobInformationParameter;
 }
 
-interface ExportJobAuthorization {
+export interface ExportJobAuthorization {
   name: string;
   value: boolean | string;
 }
 
-interface ExportJobAuthorizations {
+export interface ExportJobAuthorizations {
   hiv?: ExportJobAuthorization;
   alcoholAndDrug?: ExportJobAuthorization;
   mentalHealth?: ExportJobAuthorization;
@@ -179,4 +179,8 @@ interface ExportJobAuthorizations {
   sexualAssault?: ExportJobAuthorization;
   genetic?: ExportJobAuthorization;
   other?: ExportJobAuthorization;
+}
+
+export interface LocalAttachment {
+  name: string;
 }

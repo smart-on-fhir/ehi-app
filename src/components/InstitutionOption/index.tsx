@@ -12,7 +12,7 @@ export default function InstitutionOption({
 }: InstitutionOptionProps) {
   return (
     <li
-      className={`flex h-16 items-center border-b border-gray-600 px-2 last:border-none hover:bg-blend-darken  ${
+      className={`flex h-16 items-center px-2 hover:bg-blend-darken  ${
         institution.disabled
           ? "bg-gray-300 italic text-gray-600"
           : "cursor-pointer hover:bg-gray-200"

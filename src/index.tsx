@@ -8,7 +8,7 @@ import Launch from "./pages/Launch";
 import InstitutionSelection from "./pages/InstitutionSelection";
 import ExportLaunch from "./pages/ExportLaunch";
 import ExportJobList from "./pages/ExportJobList";
-// import ExportJobViewer from "./pages/ExportJobViewer";
+import ExportJobViewer from "./pages/ExportJobViewer";
 import { SMARTProvider } from "./context/smartContext";
 import { InstitutionProvider } from "./context/institutionContext";
 // Necessary for tailwind styles
@@ -24,7 +24,7 @@ root.render(
       <InstitutionProvider>
         <AppWrapper>
           <Routes>
-            {/* <Route path="/admin/job/:id" element={<ExportJobViewer />} /> */}
+            <Route path="/admin/jobs/:id" element={<ExportJobViewer />} />
             <Route path="/admin/jobs" element={<ExportJobList />} />
             <Route path="/exportLaunch" element={<ExportLaunch />} />
             <Route path="/launch" element={<Launch />} />

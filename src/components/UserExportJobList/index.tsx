@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ExportJobListItemSmall from "../ExportJobListItemSmall";
 import LinkButton from "../../components/LinkButton";
 import { ExportJobSummary } from "../../types";
-import getExportJobs from "../../lib/getExportJobs";
+import { getExportJobs } from "../../lib/exportJobHelpers";
 import Loading from "../Loading";
 import ErrorMessage from "../ErrorMessage";
 
@@ -53,7 +53,7 @@ export default function UserExportJobList() {
   } else {
     return (
       <>
-        <div className="mb-4 border">
+        <div className="mb-4 rounded border">
           <h1 className="border-b px-4 py-2 font-semibold">
             My Health Records
           </h1>
