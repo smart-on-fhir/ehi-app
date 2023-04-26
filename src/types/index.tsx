@@ -56,7 +56,7 @@ export interface ExportJob {
    * Array of additional attachments which should be made available via
    * DocumentReference
    */
-  attachments: string[];
+  attachments: any[];
 
   /**
    * Dictionary specifying what patient information should be exported as part of this job
@@ -179,8 +179,4 @@ export interface ExportJobAuthorizations {
   sexualAssault?: ExportJobAuthorization;
   genetic?: ExportJobAuthorization;
   other?: ExportJobAuthorization;
-}
-
-export interface LocalAttachment {
-  name: string;
 }

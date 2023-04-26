@@ -1,8 +1,7 @@
-import { clipAttachmentName } from "../../lib/attachmentUploadHelpers";
-import { LocalAttachment } from "../../types";
+import { formatBytes } from "../../lib/attachmentUploadHelpers";
 
 type AttachmentComponentProps = {
-  attachment: LocalAttachment;
+  attachment: fhir4.Attachment;
 };
 
 export default function AttachmentComponent({
@@ -10,7 +9,9 @@ export default function AttachmentComponent({
 }: AttachmentComponentProps) {
   return (
     <p className="w-full rounded border p-2 text-xs">
-      {clipAttachmentName(attachment.name)}
+      {attachment.size && formatBytes(attachment.size)}
+      <br />
+      {JSON.stringify(attachment)}
     </p>
   );
 }

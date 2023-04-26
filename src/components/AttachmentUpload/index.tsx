@@ -1,41 +1,27 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { LocalAttachment } from "../../types";
+import { useState } from "react";
+import {
+  uploadAttachments,
+  supportedFiles,
+} from "../../lib/attachmentUploadHelpers";
+import { ExportJob } from "../../types";
 
 type AttachmentUploadProps = {
-  setAttachment: Dispatch<SetStateAction<LocalAttachment[]>>;
+  jobId: ExportJob["id"];
+  refreshJob: () => Promise<void>;
 };
 
 export default function AttachmentUpload({
-  setAttachment,
+  jobId,
+  refreshJob,
 }: AttachmentUploadProps) {
   const [dragActive, setDragActive] = useState(false);
-  const supportedFiles = [".json", ".csv"];
 
-  function loadFiles(files: FileList) {
-    console.log(files);
-    setAttachment((prevAttachments: LocalAttachment[]) => [
-      ...prevAttachments,
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-      { name: `attachment-${Math.random()}.txt` },
-    ]);
+  function loadAttachments(attachmentList: FileList) {
+    uploadAttachments(jobId, attachmentList).then(() => refreshJob());
   }
 
   function handleDrag(e: React.DragEvent<HTMLDivElement>) {
+    // Needed to prevent opening of dropped file
     e.preventDefault();
     e.stopPropagation();
     if (e.type === "dragenter" || e.type === "dragover") {
@@ -46,18 +32,19 @@ export default function AttachmentUpload({
   }
 
   function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+    // Needed to prevent opening of dropped file
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      loadFiles(e.dataTransfer.files);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      loadAttachments(e.dataTransfer.files);
     }
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const filesToAdd = event.target.files;
     if (filesToAdd && filesToAdd.length > 0) {
-      loadFiles(filesToAdd);
+      loadAttachments(filesToAdd);
     }
   }
   return (
@@ -77,7 +64,7 @@ export default function AttachmentUpload({
       >
         <p>
           Drag and drop attachments, or click to{" "}
-          <span className="text-link font-bold">Browse</span>
+          <span className="text-link font-bold">Attach</span>
         </p>
         <p className="text-sm italic text-gray-600">
           Supports {supportedFiles.join(", ")}
@@ -88,7 +75,7 @@ export default function AttachmentUpload({
           id="attachment-input"
           type="file"
           accept={supportedFiles.join(",")}
-          //   multiple
+          multiple
         />
       </label>
     </div>

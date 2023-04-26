@@ -40,7 +40,7 @@ export default function ExportJobDetailView({
       </header>
       <main className="space-y-4">
         <ExportJobParametersAuthorizations job={job} />
-        <AttachmentSection />
+        <AttachmentSection job={job} refreshJob={refreshJob} />
       </main>
     </article>
   );
