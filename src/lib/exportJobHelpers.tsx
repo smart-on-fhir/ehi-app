@@ -25,9 +25,7 @@ export async function updateExportStatus(
     },
     body: JSON.stringify({ action: newStatus }),
   });
-  console.log(response);
   if (response.status === 400) {
-    console.log(response);
     throw new Error(await response.text());
   } else if (response.status === 200) {
     return response.json();
