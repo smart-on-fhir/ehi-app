@@ -11,11 +11,26 @@ export default function AttachmentUpload({
   const [dragActive, setDragActive] = useState(false);
   const supportedFiles = [".json", ".csv"];
 
-  // Load files into memory using promises
   function loadFiles(files: FileList) {
     console.log(files);
     setAttachment((prevAttachments: LocalAttachment[]) => [
       ...prevAttachments,
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
+      { name: `attachment-${Math.random()}.txt` },
       { name: `attachment-${Math.random()}.txt` },
     ]);
   }

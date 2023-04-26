@@ -12,12 +12,12 @@ export default function AttachmentSection() {
       id="attachmentsContainer"
       className="flex flex-col items-center justify-between"
     >
-      <div className="h-[50vh] max-h-[50vh] overflow-scroll">
+      <AttachmentUpload setAttachment={setAttachment} />
+      <div className="max-h-[60vh] w-full overflow-scroll">
         {attachments.map((attach) => {
           return <AttachmentComponent key={attach.name} attachment={attach} />;
         })}
       </div>
-      <AttachmentUpload setAttachment={setAttachment} />
     </section>
   );
 }
