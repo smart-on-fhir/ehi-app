@@ -63,7 +63,7 @@ export default function AttachmentUpload({
   return (
     <div
       id="file-upload-zone"
-      className={`my-2 h-16 w-full rounded-lg border-2 border-slate-600 ${
+      className={`mb-4 h-16 w-full rounded-lg border-2 border-slate-600 ${
         dragActive ? "border-solid bg-slate-400" : "border-dashed bg-slate-200"
       }`}
       onDragEnter={handleDrag}

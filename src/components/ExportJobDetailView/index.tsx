@@ -16,7 +16,7 @@ export default function ExportJobDetailView({
 }: ExportJobDetailViewProps) {
   return (
     <article className="max-h-[90vh] rounded border p-4 ">
-      <header className="mb-2 flex items-center">
+      <header className="mb-4 flex items-center">
         <div className="flex w-24 flex-col items-center text-center">
           <ExportJobStatusIndicator status={job.status} />
           <p className="text-xs">{job.status.split("-").join(" ")}</p>
@@ -38,7 +38,7 @@ export default function ExportJobDetailView({
           <ExportApproveButton job={job} refreshJob={refreshJob} />
         </div>
       </header>
-      <main>
+      <main className="space-y-4">
         <ExportJobParametersAuthorizations job={job} />
         <AttachmentSection />
       </main>
