@@ -6,9 +6,7 @@ export async function getExportJobs(
   const exportJobUrl = `${process!.env!.REACT_APP_EHI_SERVER}/jobs`;
   const response = await fetch(exportJobUrl, {
     signal,
-    // signal: signal ? signal : null,
   });
-  console.log(response);
   return response.json();
 }
 
@@ -27,12 +25,10 @@ export async function updateExportStatus(
     },
     body: JSON.stringify({ action: newStatus }),
   });
-  // NOTE: I don't think this is how the errors are formatted.
-  if (response.status === 404) {
-    const operationOutcome = await response.json();
-    throw new Error(
-      `Returned operation outcome of "${operationOutcome.issue[0].severity} : ${operationOutcome.issue[0].diagnostics}"`
-    );
+  console.log(response);
+  if (response.status === 400) {
+    console.log(response);
+    throw new Error(await response.text());
   } else if (response.status === 200) {
     return response.json();
   } else {

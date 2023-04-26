@@ -29,7 +29,6 @@ export function useAsync<T>(
 
   const execute = useCallback(
     (signal?: AbortSignal) => {
-      console.log(signal);
       dispatch({ loading: true, result: null, error: null });
       return fn(signal).then(
         (result: T) => {

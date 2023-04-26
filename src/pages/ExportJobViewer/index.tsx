@@ -50,6 +50,5 @@ export default function ExportJobViewer() {
       />
     );
   }
-  console.log(job);
   return <ExportJobDetailView job={job} refreshJob={execute} />;
 }
