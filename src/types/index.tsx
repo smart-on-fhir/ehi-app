@@ -56,7 +56,7 @@ export interface ExportJob {
    * Array of additional attachments which should be made available via
    * DocumentReference
    */
-  attachments: any[];
+  attachments: fhir4.Attachment[];
 
   /**
    * Dictionary specifying what patient information should be exported as part of this job
