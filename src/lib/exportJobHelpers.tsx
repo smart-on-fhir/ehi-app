@@ -41,7 +41,6 @@ export async function getExportJob(
   const exportJobUrl = `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${id}`;
   const response = await fetch(exportJobUrl, {
     signal,
-    // signal: signal ? signal : null,
   });
   if (response.status === 404) {
     const operationOutcome = await response.json();
