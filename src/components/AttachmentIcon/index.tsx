@@ -32,5 +32,5 @@ function getIcon(type: AttachmentIconProps["type"]) {
 }
 
 export default function AttachmentIcon({ type }: AttachmentIconProps) {
-  return <div className="w-12">{getIcon(type)}</div>;
+  return <div className="w-12 text-slate-600">{getIcon(type)}</div>;
 }

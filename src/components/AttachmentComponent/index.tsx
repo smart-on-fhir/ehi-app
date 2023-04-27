@@ -19,7 +19,7 @@ function TrashButton({ deleteThis }: { deleteThis: () => void }) {
       className="absolute right-0 top-0 border-b border-l border-dashed p-1"
       onClick={deleteThis}
     >
-      <Trash2 size={16} color="red" />
+      <Trash2 size={16} className="text-red-600" />
     </button>
   );
 }
