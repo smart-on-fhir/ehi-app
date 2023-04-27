@@ -35,6 +35,22 @@ export function formatBytes(bytes: number, decimals = 2) {
 }
 
 /**
+ * Parses the file name from an attachment's metadata
+ * @param attachment
+ * @returns The attachment's file name on the server
+ */
+export function getAttachmentName(attachment: fhir4.Attachment) {
+  const urlSplit = attachment.url?.split("/");
+  if (urlSplit === undefined) {
+    throw Error(
+      "Attachment did not have a URL defined; cannot determine which attachment to delete without one"
+    );
+  }
+  // The file name is at the end of the url, split on '/'
+  return urlSplit[urlSplit.length - 1];
+}
+
+/**
  * Upload attachments for a given job
  * @param job
  * @param attachments
@@ -67,5 +83,27 @@ export async function uploadAttachments(
   return request(`/jobs/${jobId}`, {
     method: "post",
     body: formData,
+  });
+}
+
+/**
+ * Delete an attachment for a given job
+ * @param job
+ * @param attachments
+ * @returns
+ */
+export async function deleteAttachment(
+  jobId: ExportJob["id"],
+  attachmentName: string
+): Promise<void> {
+  return await request(`/jobs/${jobId}`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      action: "removeAttachments",
+      params: [attachmentName],
+    }),
   });
 }
