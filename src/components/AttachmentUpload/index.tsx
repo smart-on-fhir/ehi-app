@@ -17,7 +17,7 @@ export default function AttachmentUpload({
   const [dragActive, setDragActive] = useState(false);
 
   function loadAttachments(attachmentList: FileList) {
-    uploadAttachments(jobId, attachmentList).then(refreshJob);
+    uploadAttachments(jobId, attachmentList).then(() => refreshJob());
   }
 
   function handleDrag(e: React.DragEvent<HTMLDivElement>) {
