@@ -4,39 +4,16 @@ import {
   deleteAttachment,
   getAttachmentName,
 } from "../../lib/attachmentUploadHelpers";
-import { Trash2, X } from "react-feather";
-import { createPortal } from "react-dom";
-
+import { useNotificationContext } from "../../context/notificationContext";
+import { Trash2 } from "react-feather";
 import { ExportJob } from "../../types";
-import { useEffect, useState } from "react";
+import NotificationModal from "../NotificationModal";
 
 type AttachmentComponentProps = {
   jobId: ExportJob["id"];
   refreshJob: () => Promise<void>;
   attachment: fhir4.Attachment;
 };
-
-function ModalContent({
-  onClose,
-  modalContent,
-}: {
-  onClose: React.MouseEventHandler;
-  modalContent: Error["message"];
-}): JSX.Element {
-  return (
-    <div className=" absolute bottom-0 right-0 m-4 max-w-sm rounded border bg-yellow-100 p-4 pr-8 text-sm">
-      <p>Unable to delete attachment. Received the following error message: </p>
-      <pre className="whitespace-pre-wrap">{modalContent}</pre>
-      <button
-        className="absolute right-0 top-0 border-b border-l  border-dashed p-1"
-        onClick={onClose}
-      >
-        <X size={12} aria-label="Close" />
-        <span className="sr-only">Close notification</span>
-      </button>
-    </div>
-  );
-}
 
 function TrashButton({ deleteThis }: { deleteThis: () => void }) {
   return (
@@ -57,24 +34,13 @@ export default function AttachmentComponent({
   refreshJob,
   attachment,
 }: AttachmentComponentProps) {
-  const [modalContent, setModalContent] = useState(null);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (modalContent) {
-      timeout = setTimeout(() => setModalContent(null), 4000);
-    }
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [modalContent, setModalContent]);
-
+  const { notification, setNotification } = useNotificationContext();
   const attachmentFileName = getAttachmentName(attachment);
   const deleteThis = () => {
     deleteAttachment(jobId, attachmentFileName)
       .then(() => refreshJob())
       .catch((err) => {
-        setModalContent(err.message);
+        setNotification({ id: attachmentFileName, message: err.message });
       });
   };
   return (
@@ -91,14 +57,13 @@ export default function AttachmentComponent({
         </div>
         <TrashButton deleteThis={deleteThis} />
       </li>
-      {modalContent &&
-        createPortal(
-          <ModalContent
-            onClose={() => setModalContent(null)}
-            modalContent={modalContent}
-          />,
-          document.body
-        )}
+      <NotificationModal
+        id={attachmentFileName}
+        title={`Unable to delete attachment ${attachmentFileName}. Received the following error message: `}
+        onClose={() => setNotification(null)}
+        variant="warning"
+        notification={notification}
+      />
     </>
   );
 }
