@@ -31,7 +31,6 @@ export default function AttachmentComponent({
 }: AttachmentComponentProps) {
   const attachmentFileName = getAttachmentName(attachment);
   const deleteThis = () => {
-    console.log(attachmentFileName);
     deleteAttachment(jobId, attachmentFileName).then(() => refreshJob());
   };
   return (

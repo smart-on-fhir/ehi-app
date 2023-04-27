@@ -8,6 +8,28 @@ import {
 } from "../../lib/attachmentUploadHelpers";
 import { ExportJob } from "../../types";
 
+const SUPPORTED_FILES_TEXT =
+  "Supports CSV, JSON, excel, and most image/document file formats";
+const SUPPORTED_FILES = [
+  // Data Files
+  ".json",
+  ".jsonld",
+  ".xls",
+  ".xlsx",
+  ".csv",
+  // Image Files
+  "image/*",
+  ".pdf",
+  // Documents
+  ".txt",
+  ".md",
+  ".doc",
+  ".xml",
+  ".docx",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+
 type AttachmentUploadProps = {
   jobId: ExportJob["id"];
   refreshJob: () => Promise<void>;
@@ -81,7 +103,7 @@ export default function AttachmentUpload({
           className="hidden"
           id="attachment-input"
           type="file"
-          accept={supportedFiles.join(",")}
+          accept={SUPPORTED_FILES.join(",")}
           multiple
         />
       </label>

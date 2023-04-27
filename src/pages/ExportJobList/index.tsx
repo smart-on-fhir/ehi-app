@@ -17,7 +17,6 @@ export default function ExportJobList() {
     setLoading(true);
     getExportJobs(signal)
       .then((response) => {
-        console.log(response);
         setError(null);
         setJobs(response);
       })

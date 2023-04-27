@@ -13,8 +13,6 @@ function validFileFilter(file: File) {
   return file.size <= MAX_FILE_SIZE;
 }
 
-export const supportedFiles = [".json", ".csv", "image/*"];
-
 /**
  * A function for formatting bytes in a human readable fashion
  * @param bytes
