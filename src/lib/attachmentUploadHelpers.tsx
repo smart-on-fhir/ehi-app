@@ -52,7 +52,7 @@ export function getAttachmentName(attachment: fhir4.Attachment) {
  * Upload attachments for a given job
  * @param job
  * @param attachments
- * @returns Promise corresponding to the upload request
+ * @returns Promise corresponding to the upload request,  resulting in a new attachments
  */
 export async function uploadAttachments(
   jobId: ExportJob["id"],
@@ -86,9 +86,9 @@ export async function uploadAttachments(
 
 /**
  * Delete an attachment for a given job
- * @param job
- * @param attachments
- * @returns
+ * @param jobId
+ * @param attachmentName
+ * @returns nothing, but should remove the attachment from the job
  */
 export async function deleteAttachment(
   jobId: ExportJob["id"],
