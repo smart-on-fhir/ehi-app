@@ -14,6 +14,7 @@ export default function LinkButton({
   return (
     <Link
       to={to}
+      tabIndex={0}
       className={`inline-block border px-2 py-1 text-center transition-all hover:bg-white hover:shadow-sm ${
         className ? className : ""
       }`}

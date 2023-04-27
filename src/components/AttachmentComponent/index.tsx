@@ -16,10 +16,13 @@ type AttachmentComponentProps = {
 function TrashButton({ deleteThis }: { deleteThis: () => void }) {
   return (
     <button
+      type="button"
+      title="Delete Attachment"
       className="absolute right-0 top-0 border-b border-l border-dashed p-1"
       onClick={deleteThis}
     >
-      <Trash2 size={16} className="text-red-600" />
+      <Trash2 aria-hidden="true" size={16} className="text-red-600" />
+      <span className="sr-only">Delete Attachment</span>
     </button>
   );
 }
@@ -35,7 +38,9 @@ export default function AttachmentComponent({
   };
   return (
     <li className="relative flex w-full items-center rounded border p-4 text-sm">
-      <AttachmentIcon type={attachment.contentType} />
+      <div className="pr-4">
+        <AttachmentIcon type={attachment.contentType} />
+      </div>
       <div className="flex w-full items-center justify-between">
         <p>{attachment.title && attachment.title}</p>
         <p className="mr-4">

@@ -11,26 +11,27 @@ function getIcon(type: AttachmentIconProps["type"]) {
     case "application/ld+json":
     case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
     case "application/vnd.ms-excel":
-      return <Table />;
+      return Table;
     case "image/svg+xml":
     case "image/jpeg":
     case "image/png":
     case "image/*":
-      return <Image />;
+      return Image;
     case "image/gif":
     case "video/mp4":
     case "video/mpeg":
-      return <Film />;
+      return Film;
     case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
     case "application/msword":
     case "application/pdf":
     case "text/plain":
-      return <FileText />;
+      return FileText;
     default:
-      return <File />;
+      return File;
   }
 }
 
 export default function AttachmentIcon({ type }: AttachmentIconProps) {
-  return <div className="w-12 text-slate-600">{getIcon(type)}</div>;
+  const Icon = getIcon(type);
+  return <Icon className="text-slate-600" />;
 }
