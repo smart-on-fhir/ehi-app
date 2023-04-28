@@ -4,12 +4,10 @@ import { X } from "react-feather";
 
 export default function NotificationModal({
   id,
-  title,
   variant,
 }: {
   id: string;
-  title: string;
-  variant: "warning" | "error";
+  variant: "information" | "warning" | "error";
 }): JSX.Element | null {
   const { notification, setNotification } = useNotificationContext();
   const onClose = () => setNotification(null);
@@ -17,6 +15,9 @@ export default function NotificationModal({
   if (notification && notification.id === id) {
     let variantStyles = "";
     switch (variant) {
+      case "information":
+        variantStyles = "bg-green-100";
+        break;
       case "warning":
         variantStyles = "bg-yellow-100";
         break;
@@ -28,8 +29,10 @@ export default function NotificationModal({
       <div
         className={`absolute bottom-0 right-0 m-4 max-w-screen-sm break-words rounded border p-4 pr-8 text-sm ${variantStyles}`}
       >
-        <p>{title}</p>
-        <pre className="whitespace-pre-wrap">{notification.message}</pre>
+        <p>{notification.title}</p>
+        {notification.errorMessage && (
+          <pre className="whitespace-pre-wrap">{notification.errorMessage}</pre>
+        )}
         <button
           className="absolute right-0 top-0 border-b border-l  border-dashed p-1"
           onClick={onClose}

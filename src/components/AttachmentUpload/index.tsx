@@ -2,14 +2,13 @@ import { useState } from "react";
 import {
   uploadAttachments,
   formatBytes,
-  supportedFiles,
   MAX_FILE_NUM,
   MAX_FILE_SIZE,
 } from "../../lib/attachmentUploadHelpers";
+import { useNotificationContext } from "../../context/notificationContext";
 import { ExportJob } from "../../types";
+import NotificationModal from "../NotificationModal";
 
-const SUPPORTED_FILES_TEXT =
-  "Supports CSV, JSON, excel, and most image/document file formats";
 const SUPPORTED_FILES = [
   // Data Files
   ".json",
@@ -29,24 +28,33 @@ const SUPPORTED_FILES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
+const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats\nUpload up to ${MAX_FILE_NUM} different, ${formatBytes(
+  MAX_FILE_SIZE
+)} files at a time`;
 
 type AttachmentUploadProps = {
   jobId: ExportJob["id"];
   refreshJob: () => Promise<void>;
 };
 
-const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats\nUpload up to ${MAX_FILE_NUM} different, ${formatBytes(
-  MAX_FILE_SIZE
-)} files at a time`;
-
 export default function AttachmentUpload({
   jobId,
   refreshJob,
 }: AttachmentUploadProps) {
+  const { setNotification } = useNotificationContext();
   const [dragActive, setDragActive] = useState(false);
+  const notificationId = "attachment-upload";
 
-  function loadAttachments(attachmentList: FileList) {
-    uploadAttachments(jobId, attachmentList).then(() => refreshJob());
+  function handleAttachments(attachmentList: FileList) {
+    uploadAttachments(jobId, attachmentList)
+      .then(() => refreshJob())
+      .catch((err) => {
+        setNotification({
+          id: notificationId,
+          title: `There was an error uploading attachments:`,
+          errorMessage: err.message,
+        });
+      });
   }
 
   function handleDrag(e: React.DragEvent<HTMLDivElement>) {
@@ -66,14 +74,14 @@ export default function AttachmentUpload({
     e.stopPropagation();
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      loadAttachments(e.dataTransfer.files);
+      handleAttachments(e.dataTransfer.files);
     }
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const filesToAdd = event.target.files;
     if (filesToAdd && filesToAdd.length > 0) {
-      loadAttachments(filesToAdd);
+      handleAttachments(filesToAdd);
     }
   }
   return (
@@ -107,6 +115,7 @@ export default function AttachmentUpload({
           multiple
         />
       </label>
+      <NotificationModal id={notificationId} variant="warning" />
     </div>
   );
 }

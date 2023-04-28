@@ -42,7 +42,11 @@ export default function AttachmentComponent({
     deleteAttachment(jobId, attachmentFileName)
       .then(() => refreshJob())
       .catch((err) => {
-        setNotification({ id: attachmentFileName, message: err.message });
+        setNotification({
+          id: attachmentFileName,
+          title: `Unable to delete '${attachmentTitle}' with error: `,
+          errorMessage: err.message,
+        });
       });
   };
   return (
@@ -59,11 +63,7 @@ export default function AttachmentComponent({
         </div>
         <TrashButton deleteThis={deleteThis} />
       </li>
-      <NotificationModal
-        id={attachmentFileName}
-        title={`Unable to delete '${attachmentTitle}' with error: `}
-        variant="warning"
-      />
+      <NotificationModal id={attachmentFileName} variant="warning" />
     </>
   );
 }

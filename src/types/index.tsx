@@ -1,10 +1,6 @@
 import Client from "fhirclient/lib/Client";
 import { fhirclient } from "fhirclient/lib/types";
 
-export interface NotificationObject {
-  message: string;
-  id: string;
-}
 export interface SMARTContextInterface {
   client: Client | null;
   error: Error | null;
