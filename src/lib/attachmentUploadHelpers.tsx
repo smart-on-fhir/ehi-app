@@ -64,12 +64,6 @@ export async function uploadAttachments(
     filesArray = filesArray.slice(0, MAX_FILE_NUM);
   }
   const filesToAdd = filesArray.filter(validFileFilter);
-  if (filesToAdd.length !== filesArray.length) {
-    console.warn(
-      "Some files did not pass validity checks & will be ignored; ensure all files are within size limits & valid content types."
-    );
-  }
-  //TODO: Do something with files that fail upload – see issue #15 https://github.com/smart-on-fhir/ehi-app/issues/15
   const formData = new FormData();
   filesToAdd.forEach((file: File) => {
     formData.append("attachments", file, file.name);
@@ -78,18 +72,6 @@ export async function uploadAttachments(
   return request(`/jobs/${jobId}`, {
     method: "post",
     body: formData,
-  }).then(() => {
-    // Above will error out if no attachments were uploaded;
-    // Here, we'll thrown an error if _some_ files were not uploadable
-    if (filesToAdd.length < filesArray.length) {
-      const filesMissed = filesArray.filter((f) => !validFileFilter(f));
-      const fileNames = filesMissed.map((f) => f.name).join(", ");
-      throw Error(
-        "Some files uploaded could not upload: " +
-          fileNames +
-          ". Make sure they are of the right file type and size"
-      );
-    }
   });
 }
 
