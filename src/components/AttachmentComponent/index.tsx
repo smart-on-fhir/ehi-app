@@ -34,8 +34,10 @@ export default function AttachmentComponent({
   refreshJob,
   attachment,
 }: AttachmentComponentProps) {
-  const { notification, setNotification } = useNotificationContext();
+  const { setNotification } = useNotificationContext();
   const attachmentFileName = getAttachmentName(attachment);
+  const attachmentTitle = attachment.title;
+
   const deleteThis = () => {
     deleteAttachment(jobId, attachmentFileName)
       .then(() => refreshJob())
@@ -50,7 +52,7 @@ export default function AttachmentComponent({
           <AttachmentIcon type={attachment.contentType} />
         </div>
         <div className="flex w-full items-center justify-between">
-          <p>{attachment.title && attachment.title}</p>
+          <p>{attachmentTitle && attachmentTitle}</p>
           <p className="mr-4">
             {attachment.size && formatBytes(attachment.size)}
           </p>
@@ -59,10 +61,8 @@ export default function AttachmentComponent({
       </li>
       <NotificationModal
         id={attachmentFileName}
-        title={`Unable to delete attachment ${attachmentFileName}. Received the following error message: `}
-        onClose={() => setNotification(null)}
+        title={`Unable to delete '${attachmentTitle}' with error: `}
         variant="warning"
-        notification={notification}
       />
     </>
   );

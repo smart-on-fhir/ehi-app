@@ -1,20 +1,19 @@
 import { createPortal } from "react-dom";
-import { NotificationObject } from "../../types";
+import { useNotificationContext } from "../../context/notificationContext";
 import { X } from "react-feather";
 
 export default function NotificationModal({
-  onClose,
   id,
   title,
-  notification,
   variant,
 }: {
-  onClose: React.MouseEventHandler;
   id: string;
   title: string;
-  notification: NotificationObject | null;
   variant: "warning" | "error";
 }): JSX.Element | null {
+  const { notification, setNotification } = useNotificationContext();
+  const onClose = () => setNotification(null);
+
   if (notification && notification.id === id) {
     let variantStyles = "";
     switch (variant) {
