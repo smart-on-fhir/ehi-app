@@ -14,22 +14,19 @@ function validFileFilter(file: File) {
 }
 
 /**
- * A function for formatting bytes in a human readable fashion
+ * A function for formatting bytes in a human readable fashion for <GB sized files
  * @param bytes
- * @param decimals What base to use in numeric formatting
  * @returns A readable fileSize
  */
-// With gratitude: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-export function formatBytes(bytes: number, decimals = 2) {
-  if (!+bytes) return "0 Bytes";
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+// With gratitude: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+export function formatBytes(bytes: number) {
+  if (bytes < 1024) {
+    return `${bytes} bytes`;
+  } else if (bytes >= 1024 && bytes < 1048576) {
+    return `${(bytes / 1024).toFixed(1)} KB`;
+  } else if (bytes >= 1048576) {
+    return `${(bytes / 1048576).toFixed(1)} MB`;
+  }
 }
 
 /**
@@ -81,6 +78,18 @@ export async function uploadAttachments(
   return request(`/jobs/${jobId}`, {
     method: "post",
     body: formData,
+  }).then(() => {
+    // Above will error out if no attachments were uploaded;
+    // Here, we'll thrown an error if _some_ files were not uploadable
+    if (filesToAdd.length < filesArray.length) {
+      const filesMissed = filesArray.filter((f) => !validFileFilter(f));
+      const fileNames = filesMissed.map((f) => f.name).join(", ");
+      throw Error(
+        "Some files uploaded could not upload: " +
+          fileNames +
+          ". Make sure they are of the right file type and size"
+      );
+    }
   });
 }
 

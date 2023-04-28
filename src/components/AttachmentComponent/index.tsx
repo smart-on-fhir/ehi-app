@@ -1,11 +1,11 @@
 import AttachmentIcon from "../AttachmentIcon";
+import AttachmentDeleteButton from "../AttachmentDeleteButton";
 import {
   formatBytes,
   deleteAttachment,
   getAttachmentName,
 } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
-import { Trash2 } from "react-feather";
 import { ExportJob } from "../../types";
 import NotificationModal from "../NotificationModal";
 
@@ -14,20 +14,6 @@ type AttachmentComponentProps = {
   refreshJob: () => Promise<void>;
   attachment: fhir4.Attachment;
 };
-
-function TrashButton({ deleteThis }: { deleteThis: () => void }) {
-  return (
-    <button
-      type="button"
-      title="Delete Attachment"
-      className="absolute right-0 top-0 border-b border-l border-dashed p-1"
-      onClick={deleteThis}
-    >
-      <Trash2 aria-hidden="true" size={16} className="text-red-600" />
-      <span className="sr-only">Delete Attachment</span>
-    </button>
-  );
-}
 
 export default function AttachmentComponent({
   jobId,
@@ -61,7 +47,10 @@ export default function AttachmentComponent({
             {attachment.size && formatBytes(attachment.size)}
           </p>
         </div>
-        <TrashButton deleteThis={deleteThis} />
+        {/* Absolute positioned into upper-right corner */}
+        <div className="absolute right-0 top-0 flex h-fit border-b border-l border-dashed p-1">
+          <AttachmentDeleteButton onClick={deleteThis} />
+        </div>
       </li>
       <NotificationModal id={attachmentFileName} variant="warning" />
     </>
