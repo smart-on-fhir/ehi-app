@@ -1,12 +1,11 @@
 import { request } from "./fetchHelpers";
 import { ExportJob } from "../types";
 
-// TODO: CONFIRM SIZE HERE?
-const MAX_FILE_SIZE = 1e7;
-const MAX_FILE_NUM = 5;
+export const MAX_FILE_SIZE = 1e7;
+export const MAX_FILE_NUM = 5;
 
 /**
- * A filter function for deteermining which files can be uploaded to the server.
+ * A filter function for determining which files can be uploaded to the server.
  * @param file
  * @returns true if the file will be accepted by the server; false otherwise
  */

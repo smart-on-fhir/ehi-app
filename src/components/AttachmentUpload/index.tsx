@@ -1,7 +1,10 @@
 import { useState } from "react";
 import {
   uploadAttachments,
+  formatBytes,
   supportedFiles,
+  MAX_FILE_NUM,
+  MAX_FILE_SIZE,
 } from "../../lib/attachmentUploadHelpers";
 import { ExportJob } from "../../types";
 
@@ -9,6 +12,10 @@ type AttachmentUploadProps = {
   jobId: ExportJob["id"];
   refreshJob: () => Promise<void>;
 };
+
+const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats\nUpload up to ${MAX_FILE_NUM} different, ${formatBytes(
+  MAX_FILE_SIZE
+)} files at a time`;
 
 export default function AttachmentUpload({
   jobId,
@@ -50,7 +57,7 @@ export default function AttachmentUpload({
   return (
     <div
       id="file-upload-zone"
-      className={`mb-4 h-16 w-full rounded-lg border-2 border-slate-600 ${
+      className={`mb-4 h-20 w-full rounded-lg border-2 border-slate-600 ${
         dragActive ? "border-solid bg-slate-400" : "border-dashed bg-slate-200"
       }`}
       onDragEnter={handleDrag}
@@ -66,8 +73,8 @@ export default function AttachmentUpload({
           Drag and drop attachments, or click to{" "}
           <span className="text-link font-bold">Attach</span>
         </p>
-        <p className="text-sm italic text-gray-600">
-          Supports {supportedFiles.join(", ")}
+        <p className="whitespace-pre text-center text-sm italic text-gray-600">
+          {SUPPORTED_FILES_TEXT}
         </p>
         <input
           onChange={handleChange}
