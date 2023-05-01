@@ -3,6 +3,7 @@ import { ExportJob } from "../types";
 
 // TODO: CONFIRM SIZE HERE?
 const MAX_FILE_SIZE = 1e7;
+const MAX_FILE_NUM = 5;
 
 /**
  * A filter function for deteermining which files can be uploaded to the server.
@@ -38,22 +39,33 @@ export function formatBytes(bytes: number, decimals = 2) {
  * Upload attachments for a given job
  * @param job
  * @param attachments
- * @returns
+ * @returns Promise corresponding to the upload request
  */
 export async function uploadAttachments(
   jobId: ExportJob["id"],
   attachments: FileList
 ): Promise<void> {
   // attachments is a FileList, must convert into an iterable for filtering
-  const filesArray = Array.from(attachments);
+  let filesArray = Array.from(attachments);
+  if (filesArray.length > MAX_FILE_NUM) {
+    console.warn(
+      `Number of files provided exceeds MAX_FILE_NUM of ${MAX_FILE_NUM}, only using the first ${MAX_FILE_NUM}.`
+    );
+    filesArray = filesArray.slice(0, MAX_FILE_NUM);
+  }
   const filesToAdd = filesArray.filter(validFileFilter);
-  //TODO: Do something with files that cannot be filtered
+  if (filesToAdd.length !== filesArray.length) {
+    console.warn(
+      "Some files did not pass validity checks & will be ignored; ensure all files are within size limits & valid content types."
+    );
+  }
+  //TODO: Do something with files that fail upload – see issue #15 https://github.com/smart-on-fhir/ehi-app/issues/15
   const formData = new FormData();
   filesToAdd.forEach((file: File) => {
     formData.append("attachments", file, file.name);
   });
   formData.append("action", "addAttachments");
-  return await request(`/jobs/${jobId}`, {
+  return request(`/jobs/${jobId}`, {
     method: "post",
     body: formData,
   });
