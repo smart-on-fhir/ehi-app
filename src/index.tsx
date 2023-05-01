@@ -11,6 +11,7 @@ import ExportJobList from "./pages/ExportJobList";
 import ExportJobViewer from "./pages/ExportJobViewer";
 import { SMARTProvider } from "./context/smartContext";
 import { InstitutionProvider } from "./context/institutionContext";
+import { NotificationProvider } from "./context/notificationContext";
 // Necessary for tailwind styles
 import "./index.css";
 
@@ -22,20 +23,22 @@ root.render(
   <BrowserRouter>
     <SMARTProvider>
       <InstitutionProvider>
-        <AppWrapper>
-          <Routes>
-            <Route path="/admin/jobs/:id" element={<ExportJobViewer />} />
-            <Route path="/admin/jobs" element={<ExportJobList />} />
-            <Route path="/exportLaunch" element={<ExportLaunch />} />
-            <Route path="/launch" element={<Launch />} />
-            <Route
-              path="/institutionSelection"
-              element={<InstitutionSelection />}
-            />
-            <Route path="/" element={<App />} />
-            <Route element={<b>Not Found</b>} />
-          </Routes>
-        </AppWrapper>
+        <NotificationProvider>
+          <AppWrapper>
+            <Routes>
+              <Route path="/admin/jobs/:id" element={<ExportJobViewer />} />
+              <Route path="/admin/jobs" element={<ExportJobList />} />
+              <Route path="/exportLaunch" element={<ExportLaunch />} />
+              <Route path="/launch" element={<Launch />} />
+              <Route
+                path="/institutionSelection"
+                element={<InstitutionSelection />}
+              />
+              <Route path="/" element={<App />} />
+              <Route element={<b>Not Found</b>} />
+            </Routes>
+          </AppWrapper>
+        </NotificationProvider>
       </InstitutionProvider>
     </SMARTProvider>
   </BrowserRouter>

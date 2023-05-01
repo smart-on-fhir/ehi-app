@@ -13,32 +13,43 @@ function validFileFilter(file: File) {
   return file.size <= MAX_FILE_SIZE;
 }
 
-export const supportedFiles = [".json", ".csv", "image/*"];
-
 /**
- * A function for formatting bytes in a human readable fashion
+ * A function for formatting bytes in a human readable fashion for <GB sized files
  * @param bytes
- * @param decimals What base to use in numeric formatting
  * @returns A readable fileSize
  */
-// With gratitude: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-export function formatBytes(bytes: number, decimals = 2) {
-  if (!+bytes) return "0 Bytes";
+// With gratitude: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+export function formatBytes(bytes: number) {
+  if (bytes < 1024) {
+    return `${bytes} bytes`;
+  } else if (bytes >= 1024 && bytes < 1048576) {
+    return `${(bytes / 1024).toFixed(1)} KB`;
+  } else if (bytes >= 1048576) {
+    return `${(bytes / 1048576).toFixed(1)} MB`;
+  }
+}
 
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
+/**
+ * Parses the file name from an attachment's metadata
+ * @param attachment
+ * @returns The attachment's file name on the server
+ */
+export function getAttachmentName(attachment: fhir4.Attachment) {
+  const urlSplit = attachment.url?.split("/");
+  if (urlSplit === undefined) {
+    throw Error(
+      "Attachment did not have a URL defined; cannot determine which attachment to delete without one"
+    );
+  }
+  // The file name is at the end of the url, split on '/'
+  return urlSplit[urlSplit.length - 1];
 }
 
 /**
  * Upload attachments for a given job
  * @param job
  * @param attachments
- * @returns Promise corresponding to the upload request
+ * @returns Promise corresponding to the upload request,  resulting in a new attachments
  */
 export async function uploadAttachments(
   jobId: ExportJob["id"],
@@ -53,12 +64,6 @@ export async function uploadAttachments(
     filesArray = filesArray.slice(0, MAX_FILE_NUM);
   }
   const filesToAdd = filesArray.filter(validFileFilter);
-  if (filesToAdd.length !== filesArray.length) {
-    console.warn(
-      "Some files did not pass validity checks & will be ignored; ensure all files are within size limits & valid content types."
-    );
-  }
-  //TODO: Do something with files that fail upload – see issue #15 https://github.com/smart-on-fhir/ehi-app/issues/15
   const formData = new FormData();
   filesToAdd.forEach((file: File) => {
     formData.append("attachments", file, file.name);
@@ -67,5 +72,27 @@ export async function uploadAttachments(
   return request(`/jobs/${jobId}`, {
     method: "post",
     body: formData,
+  });
+}
+
+/**
+ * Delete an attachment for a given job
+ * @param jobId
+ * @param attachmentName
+ * @returns nothing, but should remove the attachment from the job
+ */
+export async function deleteAttachment(
+  jobId: ExportJob["id"],
+  attachmentName: string
+): Promise<void> {
+  return await request(`/jobs/${jobId}`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      action: "removeAttachments",
+      params: [attachmentName],
+    }),
   });
 }

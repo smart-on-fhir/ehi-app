@@ -11,18 +11,25 @@ export default function AttachmentSection({
   job,
   refreshJob,
 }: AttachmentSectionProps) {
-  console.log(job.attachments);
+  const jobId = job.id;
   return (
     <section
       id="attachmentsContainer"
       className="flex flex-col items-center justify-between"
     >
-      <AttachmentUpload jobId={job.id} refreshJob={refreshJob} />
-      <div className="max-h-[60vh] w-full overflow-scroll">
-        {job.attachments.map((attach) => {
-          return <AttachmentComponent key={attach.url} attachment={attach} />;
+      <AttachmentUpload jobId={jobId} refreshJob={refreshJob} />
+      <ul className="max-h-[60vh] w-full space-y-2 overflow-scroll">
+        {job.attachments.map((attachment) => {
+          return (
+            <AttachmentComponent
+              key={attachment.url}
+              jobId={jobId}
+              attachment={attachment}
+              refreshJob={refreshJob}
+            />
+          );
         })}
-      </div>
+      </ul>
     </section>
   );
 }

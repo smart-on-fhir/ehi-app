@@ -103,7 +103,7 @@ export interface ExportJobSummary {
    * Array of additional attachments which should be made available via
    * DocumentReference
    */
-  attachments: string[];
+  attachments: fhir4.Attachment[];
 }
 
 /**

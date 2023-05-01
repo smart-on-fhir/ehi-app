@@ -17,7 +17,13 @@ export default function InstitutionOption({
           ? "bg-gray-300 italic text-gray-600"
           : "cursor-pointer hover:bg-gray-200"
       }`}
+      tabIndex={institution.disabled ? -1 : 0}
       onClick={() => !institution.disabled && setInstitution(institution)}
+      onKeyDown={(e) => {
+        !institution.disabled &&
+          e.key === "Enter" &&
+          setInstitution(institution);
+      }}
     >
       <img
         src={institution.imgUrl}

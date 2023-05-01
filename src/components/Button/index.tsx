@@ -26,6 +26,7 @@ export default function Button({
 
   return (
     <button
+      type="button"
       className={`${className ? className : ""} ${buttonStyles}`}
       onClick={onClick}
       autoFocus={autoFocus}
