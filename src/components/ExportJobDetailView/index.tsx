@@ -2,6 +2,7 @@ import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 import ExportJobParametersAuthorizations from "../ExportJobParametersAuthorizations";
 import ExportApproveButton from "../ExportApproveButton";
 import ExportRejectButton from "../ExportRejectButton";
+import AttachmentSection from "../AttachmentSection";
 import { ExportJob } from "../../types";
 
 type ExportJobDetailViewProps = {
@@ -14,8 +15,8 @@ export default function ExportJobDetailView({
   refreshJob,
 }: ExportJobDetailViewProps) {
   return (
-    <article className="max-h-[80vh] rounded border p-4 ">
-      <header className="mb-2 flex items-center">
+    <section className="max-h-[90vh] rounded border p-4 ">
+      <header className="mb-4 flex items-center">
         <div className="flex w-24 flex-col items-center text-center">
           <ExportJobStatusIndicator status={job.status} />
           <p className="text-xs">{job.status.split("-").join(" ")}</p>
@@ -37,11 +38,10 @@ export default function ExportJobDetailView({
           <ExportApproveButton job={job} refreshJob={refreshJob} />
         </div>
       </header>
-      <main>
-        <section>
-          <ExportJobParametersAuthorizations job={job} />
-        </section>
-      </main>
-    </article>
+      <div className="space-y-4">
+        <ExportJobParametersAuthorizations job={job} />
+        <AttachmentSection job={job} refreshJob={refreshJob} />
+      </div>
+    </section>
   );
 }
