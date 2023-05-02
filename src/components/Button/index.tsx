@@ -20,7 +20,7 @@ export default function Button({
       buttonStyles += " bg-primary-400 text-white hover:bg-primary-800";
       break;
     case "primary":
-      buttonStyles += " hover:bg-white";
+      buttonStyles += " hover:bg-primary-200 bg-primary-50";
       break;
   }
 

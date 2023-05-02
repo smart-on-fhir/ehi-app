@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gray: colors.slate,
+        // gray: colors.stone,
         // // WESTAR X SAN JUAN
         // neutral: {
         //   50: "#fcfcfb",

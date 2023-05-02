@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Institution } from "../../types";
 import InstitutionOption from "../InstitutionOption";
+import HeadingOne from "../HeadingOne";
 
 type InstitutionListProps = {
   institutions: Institution[];
@@ -16,7 +17,7 @@ export default function InstitutionList({
   } else {
     return (
       <div className="my-2 max-h-[500px] overflow-auto">
-        <h1 className="mb-2 ">Select an Institution to Export Data From</h1>
+        <HeadingOne>Select Institution</HeadingOne>
         <ul className="divide-y rounded border border-gray-600">
           {institutions.map((institution) => (
             <InstitutionOption
