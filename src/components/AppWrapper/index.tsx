@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import smartLogo from "../../assets/logo.svg";
 
 type AppWrapperProps = {
@@ -11,7 +11,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
       <div className="m text-opacity-900 mb-4 w-full bg-primary-200">
         <div className="container mx-auto max-w-screen-md px-4">
           <header className="flex w-full items-center justify-between py-6">
-            <div className="flex items-center">
+            <Link to="/" className="flex items-center">
               <img
                 src={smartLogo}
                 alt="SMART on FHIR logo"
@@ -20,7 +20,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
               <h1 className="inline text-center text-2xl">
                 EHI Export Demonstration
               </h1>
-            </div>
+            </Link>
             <nav className="space-x-2">
               <NavLink to="/">Home</NavLink>
               <NavLink to="/admin/jobs">Admin View</NavLink>
