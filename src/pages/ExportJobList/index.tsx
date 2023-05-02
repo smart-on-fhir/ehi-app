@@ -4,6 +4,7 @@ import { getExportJobs } from "../../lib/exportJobHelpers";
 import { ExportJobSummary } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
+import HeadingOne from "../../components/HeadingOne";
 
 export default function ExportJobList() {
   // NOTE: For demo purposes, this is a fixed string. In practice, there will be
@@ -55,7 +56,7 @@ export default function ExportJobList() {
       );
     } else if (jobs && jobs.length > 0) {
       return (
-        <ul className="divide-y  ">
+        <ul className="space-y-6">
           {jobs.map((job, i) => (
             <ExportJobListItemLarge key={job.id} job={job} />
           ))}
@@ -67,11 +68,9 @@ export default function ExportJobList() {
   }
 
   return (
-    <div className="mb-4 rounded border">
-      <h1 className="border-b px-4 py-2 font-semibold">Jobs</h1>
-      <div className="px-4 py-2">
-        <PageBody />
-      </div>
-    </div>
+    <>
+      <HeadingOne>Admin View - All Exports</HeadingOne>
+      <PageBody />
+    </>
   );
 }

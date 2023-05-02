@@ -17,10 +17,10 @@ export default function Button({
     "cursor-pointer border px-2 py-1 transition-all hover:shadow-sm";
   switch (variant) {
     case "emphasized":
-      buttonStyles += " bg-slate-600 text-white hover:bg-slate-800";
+      buttonStyles += " bg-primary-400 text-white hover:bg-primary-800";
       break;
     case "primary":
-      buttonStyles += " hover:bg-white";
+      buttonStyles += " hover:bg-primary-200 bg-primary-50";
       break;
   }
 

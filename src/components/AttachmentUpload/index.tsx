@@ -87,8 +87,10 @@ export default function AttachmentUpload({
   return (
     <div
       id="file-upload-zone"
-      className={`mb-4 h-20 w-full rounded-lg border-2 border-slate-600 ${
-        dragActive ? "border-solid bg-slate-400" : "border-dashed bg-slate-200"
+      className={`mb-4 h-20 w-full rounded-lg border-2 border-primary-600 hover:border-solid hover:bg-primary-200 ${
+        dragActive
+          ? "border-solid bg-primary-200"
+          : "border-dashed bg-primary-50"
       }`}
       onDragEnter={handleDrag}
       onDragLeave={handleDrag}

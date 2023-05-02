@@ -1,6 +1,6 @@
 # ehi-app
 
-EHI Export App Reference Implementation, used alongside the [EHI Export Server Reference Implementation](https://github.com/smart-on-fhir/ehi-app). Once running locally, visit [localhost:3000/](localhost:3000/) to get started.
+EHI Export App Reference Implementation for [Argonaut's EHI Export Implementation Guide](https://build.fhir.org/ig/argonautproject/ehi-api/), used in conjunction with the [EHI Export Server Reference Implementation](https://github.com/smart-on-fhir/ehi-server). Once running locally, visit [localhost:3000/](localhost:3000/) to get started.
 
 # Getting Started with Create React App
 

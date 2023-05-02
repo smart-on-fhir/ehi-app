@@ -55,7 +55,7 @@ export default function ExportJobListItemSmall({
       : null;
 
   return (
-    <li>
+    <li className="rounded border bg-white p-4">
       <p className="font-bold">{institutionName}</p>
       <div className="flex items-center">
         <ExportJobStatusIndicator status={status} size={16} />

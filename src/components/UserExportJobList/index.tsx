@@ -5,6 +5,8 @@ import { ExportJobSummary } from "../../types";
 import { getExportJobs } from "../../lib/exportJobHelpers";
 import Loading from "../Loading";
 import ErrorMessage from "../ErrorMessage";
+import HeadingOne from "../HeadingOne";
+import { Plus } from "react-feather";
 
 export default function UserExportJobList() {
   const [jobs, setJobs] = useState<ExportJobSummary[]>([]);
@@ -52,23 +54,23 @@ export default function UserExportJobList() {
   } else {
     return (
       <>
-        <div className="mb-4 rounded border">
-          <h1 className="border-b px-4 py-2 font-semibold">
-            My Health Records
-          </h1>
-          <ul className="max-h-[425px] space-y-2 overflow-y-scroll px-4 py-2">
-            {jobs && jobs.length > 0 ? (
-              jobs.map((job) => (
-                <ExportJobListItemSmall key={job.id} job={job} />
-              ))
-            ) : (
-              <p>No jobs were found on the server</p>
-            )}
-          </ul>
-          <LinkButton className="m-4" to="/institutionSelection">
-            Add Record
+        <div className="flex items-baseline">
+          <HeadingOne>Active EHI Exports</HeadingOne>
+          <LinkButton
+            className="ml-8 flex items-baseline "
+            to="/institutionSelection"
+          >
+            <Plus size={12} className="mr-2 inline" />
+            New Export
           </LinkButton>
         </div>
+        <ul className="max-h-[90vh] space-y-6 overflow-y-scroll">
+          {jobs && jobs.length > 0 ? (
+            jobs.map((job) => <ExportJobListItemSmall key={job.id} job={job} />)
+          ) : (
+            <p>No jobs were found on the server</p>
+          )}
+        </ul>
       </>
     );
   }
