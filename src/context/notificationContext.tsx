@@ -41,7 +41,6 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
 
   // Create and store a timeout fn for our notification
   const createNotificationTimeout = useCallback(() => {
-    console.log("creating a new timeout");
     // Anytime we create a new timeout, we should clear the old one
     if (notificationTimeout) {
       clearTimeout(notificationTimeout);
@@ -52,7 +51,6 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
 
   // Clears any notification timeouts
   const clearNotificationTimeout = useCallback(() => {
-    console.log("clearing a new timeout");
     if (notificationTimeout) {
       clearTimeout(notificationTimeout);
       setNotificationTimeout(null);
