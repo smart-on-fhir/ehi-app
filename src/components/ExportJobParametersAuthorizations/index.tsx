@@ -39,7 +39,7 @@ function formatAuthorizations(
 function formatParameters(
   parameters: ExportJobInformationParameters | undefined
 ) {
-  const emptyMessage = "No attachable data requested";
+  const emptyMessage = "No attachments requested";
 
   if (parameters === undefined) {
     return emptyMessage;
