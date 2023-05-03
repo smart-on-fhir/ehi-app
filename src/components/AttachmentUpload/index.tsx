@@ -30,7 +30,7 @@ const SUPPORTED_FILES = [
 ];
 const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats. Upload up to ${MAX_FILE_NUM} different, ${formatBytes(
   MAX_FILE_SIZE
-)} files at a time`;
+)} files at a time.`;
 
 type AttachmentUploadProps = {
   jobId: ExportJob["id"];
