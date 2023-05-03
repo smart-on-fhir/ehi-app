@@ -1,9 +1,15 @@
 import { ExportJobSummary, ExportJob } from "../types";
 
+export const EXPORT_SERVER = `${process!.env!.REACT_APP_EHI_SERVER}/jobs`;
+
+export function getExportJobLink(id: string) {
+  return `${EXPORT_SERVER}/${id}/download`;
+}
+
 export async function getExportJobs(
   signal?: AbortSignal
 ): Promise<ExportJobSummary[]> {
-  const exportJobUrl = `${process!.env!.REACT_APP_EHI_SERVER}/jobs`;
+  const exportJobUrl = `${EXPORT_SERVER}`;
   const response = await fetch(exportJobUrl, {
     signal,
   });
@@ -11,12 +17,10 @@ export async function getExportJobs(
 }
 
 export async function updateExportStatus(
-  job: ExportJob,
+  id: string,
   newStatus: "approve" | "reject"
 ) {
-  const exportJobStatusUpdate = `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${
-    job.id
-  }`;
+  const exportJobStatusUpdate = `${EXPORT_SERVER}/${id}`;
   const response = await fetch(exportJobStatusUpdate, {
     method: "post",
     headers: {
@@ -38,7 +42,7 @@ export async function getExportJob(
   id: string,
   signal?: AbortSignal
 ): Promise<ExportJob> {
-  const exportJobUrl = `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${id}`;
+  const exportJobUrl = `${EXPORT_SERVER}/${id}`;
   const response = await fetch(exportJobUrl, {
     signal,
   });
