@@ -32,7 +32,8 @@ function formatAuthorizations(
   }
   return (
     "Authorizations provided for the following privileged data: " +
-    activeParameters
+    activeParameters +
+    "."
   );
 }
 
@@ -57,7 +58,7 @@ function formatParameters(
   if (activeParameters.length === 0) {
     return emptyMessage;
   }
-  return "Attachments requested for: " + activeParameters;
+  return "Attachments requested for: " + activeParameters + ".";
 }
 
 export default function ExportJobParametersAuthorizations({
