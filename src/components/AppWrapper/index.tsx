@@ -8,7 +8,7 @@ type AppWrapperProps = {
 export default function AppWrapper({ children }: AppWrapperProps) {
   return (
     <div className="h-screen w-screen overflow-auto bg-neutral-100">
-      <div className="m text-opacity-900 mb-4 w-full bg-primary-200">
+      <div className="m text-opacity-900 mb-4 w-full bg-primary-200 text-gray-600 ">
         <div className="container mx-auto max-w-screen-md px-4">
           <header className="flex w-full items-center justify-between py-6">
             <Link to="/" className="flex items-center">

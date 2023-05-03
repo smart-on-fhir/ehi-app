@@ -21,7 +21,7 @@ export default function ExportJobDetailView({
       <Link to="/admin/jobs" className="mb-2 block">
         ◀ Back to Export List
       </Link>
-      <section className="max-h-[90vh] rounded border bg-white p-4">
+      <section className="h-[calc(100vh-112px)] rounded border bg-white p-4">
         <header className="mb-4 flex items-center">
           <div className="flex w-24 flex-col items-center text-center">
             <ExportJobStatusIndicator status={job.status} />
