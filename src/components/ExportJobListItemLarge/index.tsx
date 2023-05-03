@@ -17,7 +17,7 @@ export default function ExportJobListItemLarge({
       <div className="flex w-full items-center justify-between">
         <div id="job-metadata">
           <h1 className="mr-2 inline-block text-lg font-bold">Job #{job.id}</h1>
-          <ExportJobLink jobId={job.id} />
+          {job.status === "retrieved" && <ExportJobLink jobId={job.id} />}
           <pre className="whitespace-pre-wrap text-xs italic opacity-50">
             {[
               `Patient ${job.patientId}`,
