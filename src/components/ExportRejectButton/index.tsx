@@ -12,7 +12,7 @@ export default function RejectButton({
   return (
     <Button
       onClick={() =>
-        updateExportStatus(job, "reject")
+        updateExportStatus(job.id, "reject")
           .then(() => refreshJob())
           // NOTE: Open to better solutions here
           .catch((err) => alert(err.message))

@@ -32,7 +32,8 @@ module.exports = {
           800: "#5f5751",
           900: "#2f2c29",
         },
-        // YELLOW METAL - KHROMA
+        // YELLOW METAL -
+
         primary: {
           50: "#f1f0ec",
           100: "#e3e0d8",

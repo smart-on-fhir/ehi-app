@@ -12,7 +12,7 @@ export default function ApproveButton({
   return (
     <Button
       onClick={() =>
-        updateExportStatus(job, "approve")
+        updateExportStatus(job.id, "approve")
           .then(() => refreshJob())
           // NOTE: Open to better solutions here
           .catch((err) => alert(err.message))
