@@ -68,10 +68,9 @@ export default function ExportJobParametersAuthorizations({
   const authorizations = job.authorizations;
   const parameters = job.parameters;
   return (
-    <section>
-      {formatParameters(parameters)}
-      <br />
-      {formatAuthorizations(authorizations)}
+    <section className="text-sm">
+      <p>{formatParameters(parameters)}</p>
+      <p>{formatAuthorizations(authorizations)}</p>
     </section>
   );
 }
