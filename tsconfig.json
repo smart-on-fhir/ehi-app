@@ -14,8 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["./types.d.ts", "fhir"]
+    "jsx": "react-jsx"
   },
   "include": ["src", "types.d.ts"]
 }
