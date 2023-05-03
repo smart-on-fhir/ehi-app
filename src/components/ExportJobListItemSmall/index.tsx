@@ -51,7 +51,9 @@ export default function ExportJobListItemSmall({
     status === "awaiting-input"
       ? `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${
           job.id
-        }/customize?_patient=${job.patientId}&redirect=http://localhost:3000/`
+        }/customize?_patient=${job.patientId}&redirect=${
+          window.location.origin
+        }`
       : null;
 
   return (

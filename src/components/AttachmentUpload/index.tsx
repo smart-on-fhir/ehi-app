@@ -28,7 +28,7 @@ const SUPPORTED_FILES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
-const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats\nUpload up to ${MAX_FILE_NUM} different, ${formatBytes(
+const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats. Upload up to ${MAX_FILE_NUM} different, ${formatBytes(
   MAX_FILE_SIZE
 )} files at a time`;
 
@@ -87,7 +87,7 @@ export default function AttachmentUpload({
   return (
     <div
       id="file-upload-zone"
-      className={`mb-4 h-20 w-full rounded-lg border-2 border-primary-600 hover:border-solid hover:bg-primary-200 ${
+      className={`min-h-20 mb-4 w-full rounded-lg border-2 border-primary-600 hover:border-solid hover:bg-primary-200 ${
         dragActive
           ? "border-solid bg-primary-200"
           : "border-dashed bg-primary-50"
@@ -99,13 +99,13 @@ export default function AttachmentUpload({
     >
       <label
         htmlFor="attachment-input"
-        className="flex h-full cursor-pointer flex-col items-center justify-center"
+        className="flex h-full cursor-pointer flex-col items-center justify-center p-2 text-center"
       >
         <p>
           Drag and drop attachments, or click to{" "}
           <span className="text-link font-bold">Attach</span>
         </p>
-        <p className="whitespace-pre text-center text-sm italic text-gray-600">
+        <p className="max-w-md whitespace-pre-wrap text-sm italic text-gray-600">
           {SUPPORTED_FILES_TEXT}
         </p>
         <input

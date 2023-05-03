@@ -37,7 +37,7 @@ export default function AttachmentComponent({
   };
   return (
     <>
-      <li className="relative flex w-full items-center rounded border p-4 text-sm">
+      <li className="relative flex w-full items-center rounded border border-gray-300 p-4 text-sm">
         <div className="pr-4">
           <AttachmentIcon type={attachment.contentType} />
         </div>
@@ -48,7 +48,7 @@ export default function AttachmentComponent({
           </p>
         </div>
         {/* Absolute positioned into upper-right corner */}
-        <div className="absolute right-0 top-0 flex h-fit border-b border-l border-dashed p-1">
+        <div className="absolute right-0 top-0 flex h-fit border-b border-l border-dashed border-gray-300 p-1">
           <AttachmentDeleteButton onClick={deleteThis} />
         </div>
       </li>
