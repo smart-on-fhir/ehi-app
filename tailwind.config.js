@@ -59,7 +59,6 @@ module.exports = {
           800: "#2e2918",
           900: "#17140c",
         },
-        gray: colors.stone,
         // // WESTAR X SAN JUAN
         // neutral: {
         //   50: "#fcfcfb",
