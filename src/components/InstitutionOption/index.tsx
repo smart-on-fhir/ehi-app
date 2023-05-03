@@ -14,8 +14,8 @@ export default function InstitutionOption({
     <li
       className={`flex h-16 items-center px-2 ${
         institution.disabled
-          ? "bg-gray-200 italic text-gray-600"
-          : "cursor-pointer bg-white hover:bg-gray-200"
+          ? "bg-gray-300 italic text-gray-600"
+          : "cursor-pointer bg-white hover:bg-gray-100"
       }`}
       tabIndex={institution.disabled ? -1 : 0}
       onClick={() => !institution.disabled && setInstitution(institution)}

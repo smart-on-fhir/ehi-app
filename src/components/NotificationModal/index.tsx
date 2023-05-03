@@ -32,7 +32,7 @@ export default function NotificationModal({
     }
     return createPortal(
       <div
-        className={`absolute bottom-0 right-0 m-4 max-w-screen-sm break-words rounded border p-4 pr-8 text-sm ${variantStyles}`}
+        className={`absolute bottom-0 right-0 m-2 max-w-screen-sm animate-fadeIn break-words rounded border p-4 pr-8 text-sm transition-all duration-1000 ${variantStyles}`}
         onMouseEnter={clearNotificationTimeout}
         onMouseLeave={createNotificationTimeout}
       >

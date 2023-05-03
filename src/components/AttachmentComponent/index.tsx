@@ -37,7 +37,7 @@ export default function AttachmentComponent({
   };
   return (
     <>
-      <li className="relative flex w-full items-center rounded border border-gray-300 p-4 text-sm">
+      <li className="relative flex w-full items-center rounded-lg border border-gray-300 p-4 text-sm">
         <div className="pr-4">
           <AttachmentIcon type={attachment.contentType} />
         </div>

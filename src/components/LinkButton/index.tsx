@@ -14,7 +14,7 @@ export default function LinkButton({
   return (
     <Link
       to={to}
-      className={`inline-block border bg-primary-50 px-2 py-1 text-center transition-all hover:bg-primary-200 hover:shadow-sm ${
+      className={`inline-block border bg-primary-50 px-2 py-1 text-center transition-all hover:bg-primary-200 hover:shadow-lg ${
         className ? className : ""
       }`}
     >

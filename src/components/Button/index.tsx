@@ -14,7 +14,7 @@ export default function Button({
   variant = "primary",
 }: ButtonProps) {
   let buttonStyles =
-    "cursor-pointer border px-2 py-1 transition-all hover:shadow-sm";
+    "cursor-pointer border px-2 py-1 transition-all hover:shadow-lg";
   switch (variant) {
     case "emphasized":
       buttonStyles += " bg-primary-400 text-white hover:bg-primary-800";
