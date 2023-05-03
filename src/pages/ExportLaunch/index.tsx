@@ -59,9 +59,11 @@ export default function App() {
   } else if (ehiLink) {
     // Export succeeded, but there is additional user interaction needed
     return (
-      <div className="mx-auto mt-4 max-w-screen-sm rounded border bg-white p-4">
-        <h1 className="text-lg font-bold">Additional information required</h1>
-        <p>
+      <div className="mx-auto mt-4 w-full rounded border bg-white p-4">
+        <h1 className="mb-2 text-2xl font-bold">
+          Additional Information Required
+        </h1>
+        <p className="mb-8">
           In order for the EHI Export request to be processed, there is an
           additional form to complete.
         </p>
