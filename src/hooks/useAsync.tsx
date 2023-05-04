@@ -6,7 +6,7 @@ interface State<T> {
   result: T | null;
 }
 
-interface UseBackedReturnValue<T> {
+interface UseAsyncReturnValue<T> {
   execute: (signal?: AbortSignal) => Promise<void>;
   loading: boolean;
   result: T | null;
@@ -20,7 +20,7 @@ function reducer<T>(state: State<T>, payload: Partial<State<T>>): State<T> {
 export function useAsync<T>(
   fn: (signal?: AbortSignal) => Promise<T>,
   immediate = false
-): UseBackedReturnValue<T> {
+): UseAsyncReturnValue<T> {
   const [state, dispatch] = useReducer(reducer<T>, {
     loading: immediate,
     error: null,
