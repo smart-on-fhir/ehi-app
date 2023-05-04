@@ -21,8 +21,8 @@ export default function ExportJobDetailView({
       <Link to="/admin/jobs" className="mb-2 block">
         ◀ Back to Export List
       </Link>
-      <section className="max-h-[90vh] rounded border bg-white p-4">
-        <header className="mb-4 flex items-center">
+      <section className="space-y-4 rounded border bg-white p-4">
+        <header className="flex items-center">
           <div className="flex w-24 flex-col items-center text-center">
             <ExportJobStatusIndicator status={job.status} />
             <p className="text-xs">{job.status.split("-").join(" ")}</p>
@@ -47,10 +47,8 @@ export default function ExportJobDetailView({
             <ExportApproveButton job={job} refreshJob={refreshJob} />
           </div>
         </header>
-        <div className="space-y-4">
-          <ExportJobParametersAuthorizations job={job} />
-          <AttachmentSection job={job} refreshJob={refreshJob} />
-        </div>
+        <ExportJobParametersAuthorizations job={job} />
+        <AttachmentSection job={job} refreshJob={refreshJob} />
       </section>
     </>
   );

@@ -56,7 +56,7 @@ export default function ExportJobList() {
       );
     } else if (jobs && jobs.length > 0) {
       return (
-        <ul className="space-y-6">
+        <ul className="h-[calc(100vh-210px)] space-y-6 overflow-y-scroll sm:h-[calc(100vh-170px)]">
           {jobs.map((job, i) => (
             <ExportJobListItemLarge key={job.id} job={job} />
           ))}

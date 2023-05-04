@@ -14,8 +14,8 @@ export default function InstitutionOption({
     <li
       className={`flex h-16 items-center px-2 ${
         institution.disabled
-          ? "bg-gray-200 italic text-gray-600"
-          : "cursor-pointer bg-white hover:bg-gray-200"
+          ? "bg-gray-100 italic text-gray-600"
+          : "cursor-pointer bg-white hover:bg-primary-100"
       }`}
       tabIndex={institution.disabled ? -1 : 0}
       onClick={() => !institution.disabled && setInstitution(institution)}
@@ -31,7 +31,10 @@ export default function InstitutionOption({
         alt={`Logo associated with ${institution.displayName}`}
       />
       <div className="ml-2 inline">
-        <h1 className="block font-bold ">{institution.displayName}</h1>
+        <h1 className="block font-bold ">
+          {institution.displayName}
+          {institution.disabled && ", not available"}
+        </h1>
         {institution.location && (
           <span className="block text-sm text-gray-600">
             {institution.location}

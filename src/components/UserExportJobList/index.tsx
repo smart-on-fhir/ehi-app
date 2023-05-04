@@ -54,17 +54,17 @@ export default function UserExportJobList() {
   } else {
     return (
       <>
-        <div className="flex items-baseline">
+        <div className="flex items-baseline justify-between">
           <HeadingOne>Active EHI Exports</HeadingOne>
           <LinkButton
-            className="ml-8 flex items-baseline "
+            className="flex items-baseline "
             to="/institutionSelection"
           >
             <Plus size={12} className="mr-2 inline" />
             New Export
           </LinkButton>
         </div>
-        <ul className="max-h-[90vh] space-y-6 overflow-y-scroll">
+        <ul className="h-[calc(100vh-210px)] space-y-6 overflow-y-scroll sm:h-[calc(100vh-170px)]">
           {jobs && jobs.length > 0 ? (
             jobs.map((job) => <ExportJobListItemSmall key={job.id} job={job} />)
           ) : (

@@ -32,14 +32,15 @@ function formatAuthorizations(
   }
   return (
     "Authorizations provided for the following privileged data: " +
-    activeParameters
+    activeParameters +
+    "."
   );
 }
 
 function formatParameters(
   parameters: ExportJobInformationParameters | undefined
 ) {
-  const emptyMessage = "No attachable data requested";
+  const emptyMessage = "No attachments requested";
 
   if (parameters === undefined) {
     return emptyMessage;
@@ -57,7 +58,7 @@ function formatParameters(
   if (activeParameters.length === 0) {
     return emptyMessage;
   }
-  return "Attachments requested for: " + activeParameters;
+  return "Attachments requested for: " + activeParameters + ".";
 }
 
 export default function ExportJobParametersAuthorizations({
@@ -68,10 +69,9 @@ export default function ExportJobParametersAuthorizations({
   const authorizations = job.authorizations;
   const parameters = job.parameters;
   return (
-    <section>
-      {formatParameters(parameters)}
-      <br />
-      {formatAuthorizations(authorizations)}
+    <section className="text-sm">
+      <p>{formatParameters(parameters)}</p>
+      <p>{formatAuthorizations(authorizations)}</p>
     </section>
   );
 }

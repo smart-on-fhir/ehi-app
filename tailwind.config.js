@@ -5,6 +5,19 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        fadeIn: {
+          "0%": {
+            opacity: 0,
+          },
+          "100%": {
+            opacity: 1,
+          },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 500ms ease-in-out",
+      },
       colors: {
         // Cardinal
         red: {
@@ -46,7 +59,6 @@ module.exports = {
           800: "#2e2918",
           900: "#17140c",
         },
-        // gray: colors.stone,
         // // WESTAR X SAN JUAN
         // neutral: {
         //   50: "#fcfcfb",

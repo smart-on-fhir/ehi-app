@@ -9,7 +9,12 @@ export default function NotificationModal({
   id: string;
   variant: "information" | "warning" | "error";
 }): JSX.Element | null {
-  const { notification, setNotification } = useNotificationContext();
+  const {
+    notification,
+    setNotification,
+    clearNotificationTimeout,
+    createNotificationTimeout,
+  } = useNotificationContext();
   const onClose = () => setNotification(null);
 
   if (notification && notification.id === id) {
@@ -27,7 +32,9 @@ export default function NotificationModal({
     }
     return createPortal(
       <div
-        className={`absolute bottom-0 right-0 m-4 max-w-screen-sm break-words rounded border p-4 pr-8 text-sm ${variantStyles}`}
+        className={`absolute bottom-0 right-0 m-6 max-w-screen-sm animate-fadeIn break-words rounded border p-6 pr-8 text-sm transition-all duration-1000 ${variantStyles}`}
+        onMouseEnter={clearNotificationTimeout}
+        onMouseLeave={createNotificationTimeout}
       >
         <p>{notification.title}</p>
         {notification.errorMessage && (
