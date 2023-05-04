@@ -11,13 +11,10 @@ export default function ErrorMessage({
 }) {
   return (
     <>
-      <HeadingOne>
-        <div className="flex items-baseline">
-          <AlertTriangle className="mr-2 inline " />
-          Error Occurred
-        </div>
-      </HeadingOne>
-      <p className="mb-2">{display}.</p>
+      <p className="mb-2  flex items-center text-xl font-bold">
+        <AlertTriangle className="mr-2 inline " />
+        {display}.
+      </p>
       <CodeBlock>{error?.message}</CodeBlock>
     </>
   );
