@@ -1,6 +1,5 @@
 import { AlertTriangle } from "react-feather";
 import CodeBlock from "../../components/CodeBlock";
-import HeadingOne from "../HeadingOne";
 
 export default function ErrorMessage({
   error,
