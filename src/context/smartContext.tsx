@@ -1,17 +1,22 @@
+import * as React from "react";
+import { useAsync } from "../hooks/useAsync";
 import Client from "fhirclient/lib/Client";
 import { fhirclient } from "fhirclient/lib/types";
 import { oauth2 as SMART } from "fhirclient";
 import { SMARTContextInterface } from "../types";
-import * as React from "react";
 
 let SMARTContext = React.createContext<SMARTContextInterface>(null!);
 
 export function SMARTProvider({ children }: { children: React.ReactNode }) {
-  const [error, setError] = React.useState<Error | null>(null);
-  const [client, setClient] = React.useState<Client | null>(null);
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const {
+    execute: completeAuthorization,
+    loading,
+    result: client,
+    error,
+  } = useAsync<Client>(React.useCallback(() => SMART.ready(), []));
 
   function startAuthorization(options?: fhirclient.AuthorizeParams) {
+    console.log("starting auth");
     return SMART.authorize({
       // the only ID that server supports
       clientId: "test_client_id",
@@ -30,26 +35,11 @@ export function SMARTProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
-  function completeAuthorization() {
-    setLoading(true);
-    return SMART.ready()
-      .then(
-        (client) => {
-          setClient(client);
-          return client;
-        },
-        (error) => {
-          setError(error);
-        }
-      )
-      .finally(() => setLoading(false));
-  }
-
   React.useEffect(() => {
     if (!client) {
       completeAuthorization();
     }
-  }, [client]);
+  }, [client, completeAuthorization]);
 
   return (
     <SMARTContext.Provider
