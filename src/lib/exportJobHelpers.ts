@@ -4,7 +4,8 @@ import { request } from "./fetchHelpers";
 export const EXPORT_ROUTE = `/jobs`;
 
 export function getExportJobLink(id: string) {
-  return `${EXPORT_ROUTE}/${id}/download`;
+  // Needs the actual server URL since this is used in an <a> tag, not in the request library
+  return `${process!.env!.REACT_APP_EHI_SERVER}${EXPORT_ROUTE}/${id}/download`;
 }
 
 export async function getExportJobs(
