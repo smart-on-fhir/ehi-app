@@ -12,7 +12,7 @@ export async function getExportJobs(
   signal?: AbortSignal
 ): Promise<ExportJobSummary[]> {
   const exportJobUrl = `${EXPORT_ROUTE}`;
-  return request(exportJobUrl, { signal });
+  return request<ExportJobSummary[]>(exportJobUrl, { signal });
 }
 
 export async function getExportJob(
@@ -20,15 +20,15 @@ export async function getExportJob(
   signal?: AbortSignal
 ): Promise<ExportJob> {
   const exportJobUrl = `${EXPORT_ROUTE}/${id}`;
-  return request(exportJobUrl, { signal });
+  return request<ExportJob>(exportJobUrl, { signal });
 }
 
 export async function updateExportStatus(
   id: string,
   newStatus: "approve" | "reject"
-) {
+): Promise<ExportJob> {
   const exportJobStatusUpdate = `${EXPORT_ROUTE}/${id}`;
-  return request(exportJobStatusUpdate, {
+  return request<ExportJob>(exportJobStatusUpdate, {
     method: "post",
     headers: {
       Accept: "application/json",
