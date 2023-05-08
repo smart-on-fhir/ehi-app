@@ -16,14 +16,21 @@ export async function request<T>(
 
   // Handle errors accordingly
   if (!res.ok) {
+    console.log("res not okay");
     // FHIR Servers responding with a 404 will return operationOutcome info
     if (res.status === 404 && type.match(/\bjson\b/i)) {
       const operationOutcome = JSON.parse(body);
-      console.log(operationOutcome);
-      throw new Error(
-        `Returned operation outcome of "${operationOutcome?.issue[0]?.severity} : ${operationOutcome?.issue[0]?.diagnostics}"`
-      );
+      // If we have operationOutcome information, use it
+      if (
+        operationOutcome?.issue[0]?.severity &&
+        operationOutcome?.issue[0]?.diagnostics
+      ) {
+        throw new Error(
+          `${res.status}: Returned operation outcome of "${operationOutcome?.issue[0]?.severity} : ${operationOutcome?.issue[0]?.diagnostics}"`
+        );
+      }
     }
+    // else, provide default message
     throw new Error(res.status + ": " + (body || res.statusText));
   }
 

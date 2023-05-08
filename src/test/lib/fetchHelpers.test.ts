@@ -1,5 +1,6 @@
 import nock from "nock";
 import { request } from "../../lib/fetchHelpers";
+import exampleOperationOutcome from "../fixtures/exampleOperationOutcome.json";
 
 const TEST_URL = "https://example.com";
 
@@ -52,15 +53,45 @@ describe("request", () => {
   });
 
   test("Failing requests should throw an error", async () => {
-    const response = "ERROR: Request failed";
+    const errorCode = 400;
+    const errorMessage = "Request failed";
     nock(TEST_URL)
       .defaultReplyHeaders({
         "access-control-allow-origin": "*",
         "access-control-allow-credentials": "true",
       })
       .get("/")
-      .replyWithError(response);
-    expect(await request(TEST_URL)).toBe(response);
+      .reply(errorCode, errorMessage);
+    await expect(() => request(TEST_URL)).rejects.toThrowError(
+      `${errorCode}: ${errorMessage}`
+    );
   });
-  test("Responses returning an operation outcome should produce a human readable error message", async () => {});
+  test("Failing 404 requests should throw the same kind of error", async () => {
+    const errorCode = 404;
+    const errorMessage = "Request failed";
+    nock(TEST_URL)
+      .defaultReplyHeaders({
+        "access-control-allow-origin": "*",
+        "access-control-allow-credentials": "true",
+      })
+      .get("/")
+      .reply(errorCode, errorMessage);
+    await expect(() => request(TEST_URL)).rejects.toThrowError(
+      `${errorCode}: ${errorMessage}`
+    );
+  });
+  test("Responses returning an operation outcome should produce a human readable error message", async () => {
+    const errorCode = 404;
+    const errorResponse = exampleOperationOutcome;
+    nock(TEST_URL)
+      .defaultReplyHeaders({
+        "access-control-allow-origin": "*",
+        "access-control-allow-credentials": "true",
+      })
+      .get("/")
+      .reply(errorCode, errorResponse);
+    await expect(() => request(TEST_URL)).rejects.toThrowError(
+      '404: Returned operation outcome of "error : Export job not found! Perhaps it has already completed."'
+    );
+  });
 });
