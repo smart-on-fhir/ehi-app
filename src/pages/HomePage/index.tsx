@@ -41,7 +41,7 @@ export default function Home() {
           those mandates and penalties have been put into writing. Simply put:
           not only are there rules requiring EHI sharing but there are
           consequences for blocking access to EHI, an enforcement mechanism
-          that's essential in shifting the health IT ecosystem's status quo.
+          that's essential in changing the health IT ecosystem's status quo.
         </p>
         <p>
           At the end of 2023 these information blocking rules will go into
@@ -57,9 +57,9 @@ export default function Home() {
             an implementation guide (IG)
           </a>{" "}
           for the export of electronic health information (EHI) from a hospital
-          system using the FHIR standard. This web application breathes life
-          into the Argonaut's EHI Export IG, allowing the community to better
-          iterate on the standard's current specification.
+          system using the FHIR standard. This EHI Export Demonstration breathes
+          life into the Argonaut's EHI Export IG, allowing the community to
+          provide feedback and iterate on the standard's current specification.
         </p>
         <p>
           Visualizing a scenario in which patients request EHI exports from
