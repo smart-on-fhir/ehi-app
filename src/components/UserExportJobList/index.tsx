@@ -31,7 +31,10 @@ export default function UserExportJobList() {
           {jobs && jobs.length > 0 ? (
             jobs.map((job) => <ExportJobListItemSmall key={job.id} job={job} />)
           ) : (
-            <p>No jobs were found on the server</p>
+            <p>
+              No jobs were found on the server. Click the "New Export" button to
+              begin the electronic health information export process.
+            </p>
           )}
         </ul>
       );

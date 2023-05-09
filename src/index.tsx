@@ -5,6 +5,7 @@ import { Routes } from "react-router";
 import AppWrapper from "./components/AppWrapper";
 import App from "./pages/App";
 import Launch from "./pages/Launch";
+import HomePage from "./pages/HomePage";
 import InstitutionSelection from "./pages/InstitutionSelection";
 import ExportLaunch from "./pages/ExportLaunch";
 import ExportJobList from "./pages/ExportJobList";
@@ -34,7 +35,8 @@ root.render(
                 path="/institutionSelection"
                 element={<InstitutionSelection />}
               />
-              <Route path="/" element={<App />} />
+              <Route path="/jobs" element={<App />} />
+              <Route path="/" element={<HomePage />} />
               <Route element={<b>Not Found</b>} />
             </Routes>
           </AppWrapper>

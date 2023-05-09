@@ -6,6 +6,7 @@ import { ExportJobSummary } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import HeadingOne from "../../components/HeadingOne";
+import { Link } from "react-router-dom";
 
 export default function ExportJobList() {
   const {
@@ -33,7 +34,16 @@ export default function ExportJobList() {
         </ul>
       );
     } else {
-      return <p>No jobs were found on the server</p>;
+      return (
+        <p>
+          No jobs were found on the server. Create an export by navigating to
+          the general{" "}
+          <Link className="underline" to="/jobs">
+            Jobs
+          </Link>{" "}
+          page.
+        </p>
+      );
     }
   }
 
