@@ -53,7 +53,6 @@ export default function ExportJobListItemSmall({
           job.id
         }/customize?_patient=${job.patientId}&redirect=${window.location.href}`
       : null;
-  console.log(window.location.href);
 
   return (
     <li className="rounded border bg-white p-4">

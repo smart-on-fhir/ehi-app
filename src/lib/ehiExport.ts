@@ -16,7 +16,6 @@ export default async function ehiExport(
     // If there is a patient-interaction link, get it so we can redirect the user there
     const [href, rel] = link.split(/\s*;\s*/);
     if (href && rel === 'rel="patient-interaction"') {
-      console.log(href);
       return href;
     }
   }

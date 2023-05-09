@@ -27,10 +27,8 @@ export default function App() {
               "redirect",
               window.location.origin + "/jobs"
             );
-            console.log(linkWithRedirect);
             setEhiLink(String(linkWithRedirect));
           } else {
-            console.log("redirect");
             navigate("/jobs");
           }
         })
