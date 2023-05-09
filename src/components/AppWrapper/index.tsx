@@ -20,14 +20,9 @@ export default function AppWrapper({ children }: AppWrapperProps) {
       <div className="relative w-full bg-primary-700 py-4 pb-8 text-white">
         <div
           id="wave-container"
-          className="absolute -top-20 -mx-[calc(-50vw--50%)] h-20 w-full"
+          className="absolute -top-12 -mx-[calc(-50vw--50%)] h-12 w-full"
         >
-          <Wave
-            width={"100%"}
-            height={"100%"}
-            title="Decorative wave"
-            preserveAspectRatio="none"
-          />
+          <Wave title="Decorative wave" preserveAspectRatio="none" />
         </div>
         <div className="container mx-auto max-w-screen-lg px-4">
           <AppFooter />

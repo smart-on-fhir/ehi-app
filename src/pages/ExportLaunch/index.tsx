@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSMARTContext } from "../../context/smartContext";
-import { redirect, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import ehiExport from "../../lib/ehiExport";
 import Button from "../../components/Button";
 import LinkButton from "../../components/LinkButton";
@@ -13,8 +13,6 @@ export default function App() {
   const { client, loading, error } = SMART;
   const [ehiError, setEhiError] = useState<Error | null>(null);
   const [ehiLink, setEhiLink] = useState<string | null>(null);
-  const redirect = new URLSearchParams();
-  redirect.set("redirect", window.location.origin + "/jobs");
 
   // Trigger EHI Export when there is an authorized client
   useEffect(() => {
@@ -24,7 +22,13 @@ export default function App() {
       ehiExport(client, signal)
         .then((link) => {
           if (link) {
-            setEhiLink(link);
+            const linkWithRedirect = new URL(link);
+            linkWithRedirect.searchParams.set(
+              "redirect",
+              window.location.origin + "/jobs"
+            );
+            console.log(linkWithRedirect);
+            setEhiLink(String(linkWithRedirect));
           } else {
             console.log("redirect");
             navigate("/jobs");
@@ -60,9 +64,6 @@ export default function App() {
       />
     );
   } else if (ehiLink) {
-    console.log(ehiLink);
-    console.log(ehiLink);
-    console.log(redirect);
     // Export succeeded, but there is additional user interaction needed
     return (
       <div className="mx-auto mt-4 w-full rounded border bg-white p-4">
@@ -75,10 +76,7 @@ export default function App() {
         </p>
         <div className="mt-2 flex justify-between">
           <LinkButton to="/">Finish Later</LinkButton>
-          <Button
-            autoFocus
-            onClick={() => (window.location.href = ehiLink + "?" + redirect)}
-          >
+          <Button autoFocus onClick={() => (window.location.href = ehiLink)}>
             Complete Form
           </Button>
         </div>
