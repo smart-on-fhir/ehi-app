@@ -8,18 +8,18 @@ export default function FourOhFour() {
   const navigate = useNavigate();
   const pageName = location.pathname;
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <HeadingOne>
         <AlertOctagon className="mr-2 inline" />
         No Page "{pageName}"
       </HeadingOne>
-      <p>Nothing found... Return to the homepage?</p>
+      <p className="mb-4">Sorry, the page you requested was not found.</p>
       <Button
         variant="emphasized"
         className="mx-auto flex h-12 w-44  items-center justify-center text-xl"
         onClick={() => navigate("/")}
       >
-        Home Page
+        Return Home
       </Button>
     </div>
   );
