@@ -21,10 +21,23 @@ export default function AppHeader() {
         </h1>
       </Link>
       <nav className="mt-2 flex basis-full space-x-4 sm:mt-0 sm:basis-auto">
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/jobs">Exports</NavLink>
+        <NavLink
+          className={({ isActive }) => (isActive ? "font-bold" : "")}
+          to="/"
+        >
+          Home
+        </NavLink>
+        <NavLink
+          className={({ isActive }) => (isActive ? "font-bold" : "")}
+          to="/jobs"
+        >
+          Exports
+        </NavLink>
         {isAdmin && (
-          <NavLink to="/admin/jobs" className={"flex"}>
+          <NavLink
+            to="/admin/jobs"
+            className={({ isActive }) => (isActive ? "flex font-bold" : "flex")}
+          >
             Admin
             <Shield
               aria-hidden
