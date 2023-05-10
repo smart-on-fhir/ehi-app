@@ -33,5 +33,5 @@ function getIcon(type: AttachmentIconProps["type"]) {
 
 export default function AttachmentIcon({ type }: AttachmentIconProps) {
   const Icon = getIcon(type);
-  return <Icon className="text-primary-600" />;
+  return <Icon className="text-primary-active" />;
 }

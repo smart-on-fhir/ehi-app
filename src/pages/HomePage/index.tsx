@@ -9,7 +9,7 @@ export default function Home() {
       <div className="flex items-baseline justify-between">
         <HeadingOne>EHI Export Demonstration</HeadingOne>
         <LinkButton
-          className="flex h-12 w-40 items-center justify-center bg-primary-500 text-xl text-white hover:text-black"
+          className="flex h-12 w-40 items-center justify-center bg-primary-active text-xl text-white hover:text-black"
           to="/jobs"
         >
           Visit Demo
@@ -19,7 +19,7 @@ export default function Home() {
         <p>
           First signed into law in December 2016, the{" "}
           <a
-            className="cursor-pointer text-primary-800 underline"
+            className="cursor-pointer text-primary-active underline"
             href="https://www.hhs.gov/ash/advisory-committees/tickbornedisease/about/21-century-cures-act/index.html"
           >
             21st Century Cures Act
@@ -32,7 +32,7 @@ export default function Home() {
           information blocking when it comes to electronic health information
           (EHI) sharing. With the passage of{" "}
           <a
-            className="cursor-pointer text-primary-800 underline"
+            className="cursor-pointer text-primary-active underline"
             href="https://www.healthit.gov/topic/oncs-cures-act-final-rule"
           >
             ONC's Cures Act Final Rule
@@ -51,7 +51,7 @@ export default function Home() {
           Interoperability Resources (HL7's FHIR) community, the Argonaut
           Project has devised{" "}
           <a
-            className="cursor-pointer text-primary-800 underline"
+            className="cursor-pointer text-primary-active underline"
             href="https://build.fhir.org/ig/argonautproject/ehi-api/index.html"
           >
             an implementation guide (IG)

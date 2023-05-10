@@ -17,7 +17,7 @@ export default function Button({
     "cursor-pointer border px-2 py-1 transition-all hover:shadow-lg";
   switch (variant) {
     case "emphasized":
-      buttonStyles += " bg-primary-400 text-white hover:bg-primary-600";
+      buttonStyles += " bg-primary-active text-white hover:bg-primary-active";
       break;
     case "primary":
       buttonStyles += " hover:bg-primary-100 bg-primary-50";
