@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Route, BrowserRouter } from "react-router-dom";
-import { Routes } from "react-router";
+import { Navigate, Routes } from "react-router";
 import AppWrapper from "./components/AppWrapper";
 import App from "./pages/App";
 import Launch from "./pages/Launch";
@@ -15,6 +15,7 @@ import { InstitutionProvider } from "./context/institutionContext";
 import { NotificationProvider } from "./context/notificationContext";
 // Necessary for tailwind styles
 import "./index.css";
+import FourOhFour from "./pages/404";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -27,17 +28,24 @@ root.render(
         <NotificationProvider>
           <AppWrapper>
             <Routes>
-              <Route path="/admin/jobs/:id" element={<ExportJobViewer />} />
-              <Route path="/admin/jobs" element={<ExportJobList />} />
-              <Route path="/exportLaunch" element={<ExportLaunch />} />
-              <Route path="/launch" element={<Launch />} />
-              <Route
-                path="/institutionSelection"
-                element={<InstitutionSelection />}
-              />
-              <Route path="/jobs" element={<App />} />
-              <Route path="/" element={<HomePage />} />
-              <Route element={<b>Not Found</b>} />
+              <Route path="/">
+                <Route index element={<HomePage />} />
+                <Route path="jobs" element={<App />} />
+                <Route path="admin">
+                  <Route index element={<Navigate to="/admin/jobs" />} />
+                  <Route path="jobs">
+                    <Route path=":id" element={<ExportJobViewer />} />
+                    <Route index path="" element={<ExportJobList />} />
+                  </Route>
+                </Route>
+                <Route path="exportLaunch" element={<ExportLaunch />} />
+                <Route path="launch" element={<Launch />} />
+                <Route
+                  path="institutionSelection"
+                  element={<InstitutionSelection />}
+                />
+              </Route>
+              <Route path="*" element={<FourOhFour />} />
             </Routes>
           </AppWrapper>
         </NotificationProvider>

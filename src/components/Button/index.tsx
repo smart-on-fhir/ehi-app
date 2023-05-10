@@ -14,13 +14,14 @@ export default function Button({
   variant = "primary",
 }: ButtonProps) {
   let buttonStyles =
-    "cursor-pointer border px-2 py-1 transition-all hover:shadow-lg";
+    "cursor-pointer border text-center px-2 py-1 transition-all hover:shadow-lg";
   switch (variant) {
     case "emphasized":
-      buttonStyles += " bg-primary-active text-white hover:bg-primary-active";
+      buttonStyles +=
+        " bg-primary-active text-white hover:text-black hover:bg-primary-200";
       break;
     case "primary":
-      buttonStyles += " hover:bg-primary-100 bg-primary-50";
+      buttonStyles += " bg-primary-50 hover:bg-primary-100";
       break;
   }
 
