@@ -26,7 +26,7 @@ export default function ExportJobListItemLarge({
             ].join("\n")}
           </pre>
         </div>
-        <LinkButton className="w-24 text-center" to={`/admin/jobs/${job.id}`}>
+        <LinkButton className="w-24" to={`/admin/jobs/${job.id}`}>
           Details
         </LinkButton>
       </div>
