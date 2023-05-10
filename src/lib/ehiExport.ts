@@ -5,7 +5,6 @@ export default async function ehiExport(
   signal: AbortSignal
 ) {
   const { response } = await client?.request({
-    // url: `/Patient/${client.getPatientId()}/$ehi-export?redirect=http://localhost:3000/jobs`,
     url: `/Patient/${client.getPatientId()}/$ehi-export`,
     method: "POST",
     includeResponse: true,
