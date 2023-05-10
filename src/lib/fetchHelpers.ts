@@ -16,7 +16,6 @@ export async function request<T>(
 
   // Handle errors accordingly
   if (!res.ok) {
-    console.log("res not okay");
     // FHIR Servers responding with a 404 will return operationOutcome info
     if (res.status === 404 && type.match(/\bjson\b/i)) {
       const operationOutcome = JSON.parse(body);

@@ -52,7 +52,7 @@ export default function ExportJobListItemSmall({
       ? `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${
           job.id
         }/customize?_patient=${job.patientId}&redirect=${
-          window.location.origin
+          window.location.origin + window.location.pathname
         }`
       : null;
 

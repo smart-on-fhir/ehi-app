@@ -46,7 +46,6 @@ module.exports = {
           900: "#2f2c29",
         },
         // YELLOW METAL -
-
         primary: {
           50: "#f1f0ec",
           100: "#e3e0d8",
@@ -54,6 +53,8 @@ module.exports = {
           300: "#aaa38a",
           400: "#8e8563",
           500: "#72663c",
+          // Same as above
+          active: "#72663c",
           600: "#5b5230",
           700: "#443d24",
           800: "#2e2918",

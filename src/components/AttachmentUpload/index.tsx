@@ -87,7 +87,7 @@ export default function AttachmentUpload({
   return (
     <div
       id="file-upload-zone"
-      className={`min-h-20 mb-4 w-full border-2 border-primary-600 transition-all hover:border-solid hover:bg-primary-100 hover:shadow-lg ${
+      className={`min-h-20 mb-4 w-full border-2 border-primary-active transition-all hover:border-solid hover:bg-primary-100 hover:shadow-lg ${
         dragActive
           ? "border-solid bg-primary-200 shadow-lg"
           : "border-dashed bg-primary-50"

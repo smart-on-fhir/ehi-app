@@ -22,9 +22,14 @@ export default function App() {
       ehiExport(client, signal)
         .then((link) => {
           if (link) {
-            setEhiLink(link);
+            const linkWithRedirect = new URL(link);
+            linkWithRedirect.searchParams.set(
+              "redirect",
+              window.location.origin + "/jobs"
+            );
+            setEhiLink(String(linkWithRedirect));
           } else {
-            navigate("/");
+            navigate("/jobs");
           }
         })
         .catch((error: Error) => {
