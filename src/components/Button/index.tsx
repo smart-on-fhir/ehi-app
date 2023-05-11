@@ -3,6 +3,7 @@ type ButtonProps = {
   children: React.ReactNode;
   className?: string;
   autoFocus?: boolean;
+  disabled?: boolean;
   variant?: "primary" | "emphasized";
 };
 
@@ -10,6 +11,7 @@ export default function Button({
   onClick,
   children,
   className,
+  disabled,
   autoFocus,
   variant = "primary",
 }: ButtonProps) {
@@ -28,7 +30,12 @@ export default function Button({
   return (
     <button
       type="button"
-      className={`${className ? className : ""} ${buttonStyles}`}
+      disabled={disabled}
+      className={`${
+        className
+          ? className
+          : "disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-gray-100 disabled:italic disabled:text-gray-600"
+      } ${buttonStyles}`}
       onClick={onClick}
       autoFocus={autoFocus}
     >

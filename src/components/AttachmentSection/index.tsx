@@ -4,11 +4,13 @@ import { ExportJob } from "../../types";
 
 type AttachmentSectionProps = {
   job: ExportJob;
+  disabled?: boolean;
   refreshJob: () => Promise<void>;
 };
 
 export default function AttachmentSection({
   job,
+  disabled,
   refreshJob,
 }: AttachmentSectionProps) {
   const jobId = job.id;

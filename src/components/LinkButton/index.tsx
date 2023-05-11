@@ -3,15 +3,17 @@ import { Link, To } from "react-router-dom";
 type LinkButtonProps = {
   to: To;
   children: React.ReactNode;
-  variant?: "primary" | "emphasized";
   className?: string;
+  disabled?: boolean;
+  variant?: "primary" | "emphasized";
 };
 
 export default function LinkButton({
   to,
-  className,
-  variant = "primary",
   children,
+  className,
+  disabled,
+  variant = "primary",
 }: LinkButtonProps) {
   let buttonStyles =
     "cursor-pointer border text-center px-2 py-1 transition-all hover:shadow-lg";
@@ -24,7 +26,9 @@ export default function LinkButton({
       buttonStyles += " bg-primary-50 hover:bg-primary-100";
       break;
   }
-
+  if (disabled)
+    buttonStyles +=
+      "bg-gray-100 italic text-gray-600 cursor-default pointer-events-none";
   return (
     <Link to={to} className={`${buttonStyles} ${className ? className : ""}`}>
       {children}

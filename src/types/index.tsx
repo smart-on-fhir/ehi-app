@@ -124,16 +124,6 @@ export interface ExportJobSummary {
  *
  * - `rejected` - The admin rejected this export.
  *
- *
- * **Note** that jobs have certain lifetime. Once they expire they will be
- * deleted within the next `config.jobCleanupMinutes` minutes:
- *
- * - `awaiting-input` - Does not expire
- * - `in-review`      - Expire after `config.jobMaxLifetimeMinutes`
- * - `requested`      - Expire after `config.jobMaxLifetimeMinutes`
- * - `retrieved`      - Expire after `config.jobMaxLifetimeMinutes`
- * - `aborted`        - Expire immediately
- * - `rejected`       - Expire immediately
  */
 export type ExportJobStatus =
   | "awaiting-input"

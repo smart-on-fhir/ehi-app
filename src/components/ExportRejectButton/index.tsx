@@ -2,19 +2,23 @@ import Button from "../Button";
 import { ExportJob } from "../../types";
 import { updateExportStatus } from "../../lib/exportJobHelpers";
 
+type RejectButtonProps = {
+  job: ExportJob;
+  disabled?: boolean;
+  refreshJob: () => Promise<void>;
+};
+
 export default function RejectButton({
   job,
+  disabled,
   refreshJob,
-}: {
-  job: ExportJob;
-  refreshJob: () => Promise<void>;
-}) {
+}: RejectButtonProps) {
   return (
     <Button
+      disabled
       onClick={() =>
         updateExportStatus(job.id, "reject")
           .then(() => refreshJob())
-          // NOTE: Open to better solutions here
           .catch((err) => alert(err.message))
       }
     >
