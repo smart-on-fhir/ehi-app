@@ -7,8 +7,6 @@ type ExportJobBlurbProps = {
 };
 
 export default function ExportJobBlurb({ job, status }: ExportJobBlurbProps) {
-  //   const created = job.createdAt ? new Date(job.createdAt) : null;
-  //   const status = job.status;
   const link = `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${
     job.id
   }/customize?_patient=${job.patientId}&redirect=${
