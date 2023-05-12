@@ -41,7 +41,7 @@ export default function AppHeader() {
             Admin
             <Shield
               aria-hidden
-              className="ml-1 inline fill-primary-active text-primary-active"
+              className="ml-1 inline fill-active text-active"
               name="admin"
             />
           </NavLink>

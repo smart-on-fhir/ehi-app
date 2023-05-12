@@ -19,8 +19,7 @@ export default function LinkButton({
     "cursor-pointer border text-center px-2 py-1 transition-all hover:shadow-lg";
   switch (variant) {
     case "emphasized":
-      buttonStyles +=
-        " bg-primary-active text-white hover:text-black hover:bg-primary-200";
+      buttonStyles += " bg-active text-white hover:bg-active-dark";
       break;
     case "primary":
       buttonStyles += " bg-primary-50 hover:bg-primary-100";

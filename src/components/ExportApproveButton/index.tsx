@@ -9,36 +9,21 @@ type ApproveButtonProps = {
 
 export default function ApproveButton({ job, refreshJob }: ApproveButtonProps) {
   const status = job.status;
-  function buttonSwitch() {
+  function approveJob() {
+    updateExportStatus(job.id, "approve")
+      .then(() => refreshJob())
+      .catch((err) => alert(err.message));
+  }
+  function statusBasedButton() {
     switch (status) {
-      case "awaiting-input":
-        return (
-          <Button
-            onClick={() =>
-              updateExportStatus(job.id, "approve")
-                .then(() => refreshJob())
-                .catch((err) => alert(err.message))
-            }
-            variant="emphasized"
-          >
-            Approve
-          </Button>
-        );
-
       case "in-review":
         return (
-          <Button
-            onClick={() =>
-              updateExportStatus(job.id, "approve")
-                .then(() => refreshJob())
-                .catch((err) => alert(err.message))
-            }
-            variant="emphasized"
-          >
+          <Button onClick={approveJob} variant="emphasized">
             Approve
           </Button>
         );
 
+      case "awaiting-input":
       case "requested":
       case "retrieved":
       case "aborted":
@@ -47,5 +32,5 @@ export default function ApproveButton({ job, refreshJob }: ApproveButtonProps) {
     }
   }
 
-  return buttonSwitch();
+  return statusBasedButton();
 }
