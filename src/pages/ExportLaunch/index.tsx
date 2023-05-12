@@ -73,7 +73,7 @@ export default function App() {
           additional form to complete.
         </p>
         <div className="mt-2 flex justify-between">
-          <LinkButton to="/">Finish Later</LinkButton>
+          <LinkButton to="/jobs">Finish Later</LinkButton>
           <Button autoFocus onClick={() => (window.location.href = ehiLink)}>
             Complete Form
           </Button>

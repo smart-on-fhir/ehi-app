@@ -9,7 +9,8 @@ export default function Home() {
       <div className="flex items-baseline justify-between">
         <HeadingOne>EHI Export Demonstration</HeadingOne>
         <LinkButton
-          className="flex h-12 w-40 items-center justify-center bg-primary-active text-xl text-white hover:text-black"
+          className="flex h-12 w-40 items-center justify-center text-xl"
+          variant="emphasized"
           to="/jobs"
         >
           Visit Demo

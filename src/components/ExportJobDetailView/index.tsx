@@ -19,7 +19,7 @@ export default function ExportJobDetailView({
   return (
     <>
       <Link to="/admin/jobs" className="mb-2 block">
-        ◀ Back to Export List
+        ◀ Back to Admin Export List
       </Link>
       <section className="space-y-4 rounded border bg-white p-4">
         <header className="flex items-center">
