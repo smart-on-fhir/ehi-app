@@ -11,12 +11,14 @@ import NotificationModal from "../NotificationModal";
 
 type AttachmentComponentProps = {
   jobId: ExportJob["id"];
+  jobEditable: boolean;
   refreshJob: () => Promise<void>;
   attachment: fhir4.Attachment;
 };
 
 export default function AttachmentComponent({
   jobId,
+  jobEditable,
   refreshJob,
   attachment,
 }: AttachmentComponentProps) {
@@ -48,9 +50,11 @@ export default function AttachmentComponent({
           </p>
         </div>
         {/* Absolute positioned into upper-right corner */}
-        <div className="absolute right-0 top-0 flex h-fit border-b border-l border-dashed border-gray-300 p-1">
-          <AttachmentDeleteButton onClick={deleteThis} />
-        </div>
+        {jobEditable && (
+          <div className="absolute right-0 top-0 flex h-fit border-b border-l border-dashed border-gray-300 p-1">
+            <AttachmentDeleteButton onClick={deleteThis} />
+          </div>
+        )}
       </li>
       <NotificationModal id={attachmentFileName} variant="warning" />
     </>
