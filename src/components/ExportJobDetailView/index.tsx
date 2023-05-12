@@ -16,7 +16,6 @@ export default function ExportJobDetailView({
   job,
   refreshJob,
 }: ExportJobDetailViewProps) {
-  const isEditable = job.status === "in-review";
   return (
     <>
       <Link to="/admin/jobs" className="mb-2 block">
@@ -44,24 +43,12 @@ export default function ExportJobDetailView({
             </div>
           </div>
           <div className="flex space-x-2">
-            <ExportRejectButton
-              job={job}
-              disabled={!isEditable}
-              refreshJob={refreshJob}
-            />
-            <ExportApproveButton
-              job={job}
-              disabled={!isEditable}
-              refreshJob={refreshJob}
-            />
+            <ExportRejectButton job={job} refreshJob={refreshJob} />
+            <ExportApproveButton job={job} refreshJob={refreshJob} />
           </div>
         </header>
         <ExportJobParametersAuthorizations job={job} />
-        <AttachmentSection
-          job={job}
-          refreshJob={refreshJob}
-          disabled={!isEditable}
-        />
+        <AttachmentSection job={job} refreshJob={refreshJob} />
       </section>
     </>
   );
