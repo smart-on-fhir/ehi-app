@@ -4,7 +4,6 @@ type LinkButtonProps = {
   to: To;
   children: React.ReactNode;
   className?: string;
-  disabled?: boolean;
   variant?: "primary" | "emphasized";
 };
 
@@ -12,7 +11,6 @@ export default function LinkButton({
   to,
   children,
   className,
-  disabled,
   variant = "primary",
 }: LinkButtonProps) {
   let buttonStyles =
@@ -25,9 +23,6 @@ export default function LinkButton({
       buttonStyles += " bg-primary-50 hover:bg-primary-100";
       break;
   }
-  if (disabled)
-    buttonStyles +=
-      "bg-gray-100 italic text-gray-600 cursor-default pointer-events-none";
   return (
     <Link to={to} className={`${buttonStyles} ${className ? className : ""}`}>
       {children}
