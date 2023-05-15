@@ -14,16 +14,7 @@ export default function ExportJobListItemSmall({
   //       this would be odd. Should be fine for demo purposes.
   const url = `${process!.env!.REACT_APP_EHI_SERVER}/fhir`;
   const institutionName = findMatchingInstitution(url)?.displayName;
-  // const status = job.status;
-  const statusArr: ExportJobStatus[] = [
-    "awaiting-input",
-    "in-review",
-    "requested",
-    "retrieved",
-    "aborted",
-    "rejected",
-  ];
-  const status = statusArr[Math.round(Math.random() * 5)];
+  const status = job.status;
   return (
     <li className="rounded border bg-white p-4">
       <p className="font-bold">{institutionName}</p>
