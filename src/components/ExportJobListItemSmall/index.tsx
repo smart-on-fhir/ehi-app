@@ -1,5 +1,5 @@
 import { findMatchingInstitution } from "../../lib/institutionHelpers";
-import { ExportJobSummary, ExportJobStatus } from "../../types";
+import { ExportJobSummary } from "../../types";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 import ExportJobStatusBlurb from "../ExportJobStatusBlurb";
 
