@@ -2,24 +2,35 @@ import Button from "../Button";
 import { ExportJob } from "../../types";
 import { updateExportStatus } from "../../lib/exportJobHelpers";
 
-export default function ApproveButton({
-  job,
-  refreshJob,
-}: {
+type ApproveButtonProps = {
   job: ExportJob;
   refreshJob: () => Promise<void>;
-}) {
-  return (
-    <Button
-      onClick={() =>
-        updateExportStatus(job.id, "approve")
-          .then(() => refreshJob())
-          // NOTE: Open to better solutions here
-          .catch((err) => alert(err.message))
-      }
-      variant="emphasized"
-    >
-      Approve
-    </Button>
-  );
+};
+
+export default function ApproveButton({ job, refreshJob }: ApproveButtonProps) {
+  const status = job.status;
+  function approveJob() {
+    updateExportStatus(job.id, "approve")
+      .then(() => refreshJob())
+      .catch((err) => alert(err.message));
+  }
+  function statusBasedButton() {
+    switch (status) {
+      case "in-review":
+        return (
+          <Button onClick={approveJob} variant="emphasized">
+            Approve
+          </Button>
+        );
+
+      case "awaiting-input":
+      case "requested":
+      case "retrieved":
+      case "aborted":
+      case "rejected":
+        return null;
+    }
+  }
+
+  return statusBasedButton();
 }

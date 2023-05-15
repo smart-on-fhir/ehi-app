@@ -12,16 +12,27 @@ export default function AttachmentSection({
   refreshJob,
 }: AttachmentSectionProps) {
   const jobId = job.id;
+  const jobAttachable = job.status !== "awaiting-input";
+
+  // If admin cannot yet interact with job via attachments, render nothing
+  if (!jobAttachable) {
+    return null;
+  }
+
+  const jobEditable = job.status === "in-review";
   return (
     <section
       id="attachmentsContainer"
       className="flex flex-col items-center justify-between"
     >
-      <AttachmentUpload jobId={jobId} refreshJob={refreshJob} />
+      {jobEditable && (
+        <AttachmentUpload jobId={jobId} refreshJob={refreshJob} />
+      )}
       <ul className="max-h-[calc(100vh-510px)] w-full space-y-2 overflow-scroll sm:max-h-[calc(100vh-470px)]">
         {job.attachments.map((attachment) => {
           return (
             <AttachmentComponent
+              jobEditable={jobEditable}
               key={attachment.url}
               jobId={jobId}
               attachment={attachment}

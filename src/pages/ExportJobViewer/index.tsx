@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useCallback } from "react";
 import { ExportJob } from "../../types";
@@ -21,10 +22,19 @@ export default function ExportJobViewer() {
     error,
   } = useAsync<ExportJob>(useCallback(getExportJobWithId, [id]), true);
 
+  function BackLink() {
+    return (
+      <Link to="/admin/jobs" className="mb-2 block">
+        ◀ Back to Admin Export List
+      </Link>
+    );
+  }
+
   // Show loading component whole the job is being loaded
   if (loading) {
     return (
       <>
+        <BackLink />
         <Loading display="Loading job details..." />
       </>
     );
@@ -34,21 +44,32 @@ export default function ExportJobViewer() {
   if (error) {
     console.log(error);
     return (
-      <ErrorMessage
-        display={`Error fetching job with id "${id}".`}
-        error={error}
-      />
+      <>
+        <BackLink />
+        <ErrorMessage
+          display={`Error fetching job with id "${id}".`}
+          error={error}
+        />
+      </>
     );
   }
 
   // If the job request was successful but did not return the expected data exit with an error message
   if (!job) {
     return (
-      <ErrorMessage
-        error={new Error("")}
-        display={`Fetching job with id "${id}" produced empty response`}
-      />
+      <>
+        <BackLink />
+        <ErrorMessage
+          error={new Error("")}
+          display={`Fetching job with id "${id}" produced empty response`}
+        />
+      </>
     );
   }
-  return <ExportJobDetailView job={job} refreshJob={execute} />;
+  return (
+    <>
+      <BackLink />
+      <ExportJobDetailView job={job} refreshJob={execute} />
+    </>
+  );
 }

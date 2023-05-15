@@ -1,3 +1,5 @@
+import { operationOutcomeSummary } from "./fhirHelpers";
+
 export async function request<T>(
   path: string,
   options: RequestInit = {}
@@ -25,7 +27,7 @@ export async function request<T>(
         operationOutcome?.issue[0]?.diagnostics
       ) {
         throw new Error(
-          `${res.status}: Returned operation outcome of "${operationOutcome?.issue[0]?.severity} : ${operationOutcome?.issue[0]?.diagnostics}"`
+          `${res.status}: ${operationOutcomeSummary(operationOutcome)}"`
         );
       }
     }

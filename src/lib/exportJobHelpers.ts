@@ -11,29 +11,36 @@ export function getExportJobLink(id: string) {
 export async function getExportJobs(
   signal?: AbortSignal
 ): Promise<ExportJobSummary[]> {
-  const exportJobUrl = `${EXPORT_ROUTE}`;
-  return request<ExportJobSummary[]>(exportJobUrl, { signal });
+  return request<ExportJobSummary[]>(EXPORT_ROUTE, { signal });
 }
 
 export async function getExportJob(
   id: string,
   signal?: AbortSignal
 ): Promise<ExportJob> {
-  const exportJobUrl = `${EXPORT_ROUTE}/${id}`;
-  return request<ExportJob>(exportJobUrl, { signal });
+  return request<ExportJob>(`${EXPORT_ROUTE}/${id}`, { signal });
 }
 
 export async function updateExportStatus(
   id: string,
   newStatus: "approve" | "reject"
 ): Promise<ExportJob> {
-  const exportJobStatusUpdate = `${EXPORT_ROUTE}/${id}`;
-  return request<ExportJob>(exportJobStatusUpdate, {
+  return request<ExportJob>(`${EXPORT_ROUTE}/${id}`, {
     method: "post",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ action: newStatus }),
+  });
+}
+
+export async function deleteExportJob(
+  id: string,
+  signal?: AbortSignal
+): Promise<fhir4.OperationOutcome> {
+  return request<fhir4.OperationOutcome>(`${EXPORT_ROUTE}/${id}/status`, {
+    method: "delete",
+    signal,
   });
 }
