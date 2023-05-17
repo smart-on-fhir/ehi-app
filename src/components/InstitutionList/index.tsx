@@ -16,7 +16,7 @@ export default function InstitutionList({
     return null;
   } else {
     return (
-      <div className="my-2 max-h-[500px] overflow-auto">
+      <div className="max-h-[500px] overflow-auto">
         <HeadingOne>Select Institution for Export</HeadingOne>
         <ul className="divide-y rounded border border-gray-600">
           {institutions.map((institution) => (

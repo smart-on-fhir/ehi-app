@@ -30,14 +30,14 @@ export default function ExportJobDetailView({
             {job.status === "retrieved" && <ExportJobLink jobId={job.id} />}
             <pre className="whitespace-pre-wrap text-xs italic opacity-50">
               {[
-                `Patient ${job.patientId}`,
+                `Patient ${job.patient.name}`,
                 `Created ${new Date(job.createdAt).toLocaleString()}`,
                 `${job.attachments.length} Attachments`,
               ].join("\n")}
             </pre>
           </div>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex flex-1 flex-wrap justify-end space-x-0 space-y-2 sm:flex-nowrap sm:justify-normal sm:space-x-2 sm:space-y-0">
           <ExportRejectButton job={job} refreshJob={refreshJob} />
           <ExportApproveButton job={job} refreshJob={refreshJob} />
         </div>

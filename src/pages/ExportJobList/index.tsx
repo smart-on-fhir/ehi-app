@@ -35,14 +35,22 @@ export default function ExportJobList() {
       );
     } else {
       return (
-        <p>
-          No exports were found on the server. Create an export by navigating to
-          the general{" "}
-          <Link className="underline" to="/jobs">
-            Jobs
-          </Link>{" "}
-          page.
-        </p>
+        <div className="space-y-4">
+          <p>No exports were found on the server.</p>
+          <p>
+            Users can generate export requests on the{" "}
+            <Link
+              className="text-active underline"
+              target="_blank"
+              rel="noreferrer"
+              to="/jobs"
+            >
+              Jobs
+            </Link>{" "}
+            page, and admins can use this page to review, approve, and reject
+            them.
+          </p>
+        </div>
       );
     }
   }

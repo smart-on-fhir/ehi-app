@@ -9,7 +9,7 @@ type ExportJobBlurbProps = {
 export default function ExportJobBlurb({ job, status }: ExportJobBlurbProps) {
   const link = `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${
     job.id
-  }/customize?_patient=${job.patientId}&redirect=${
+  }/customize?_patient=${job.patient.id}&redirect=${
     window.location.origin + window.location.pathname
   }`;
 
