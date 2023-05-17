@@ -17,7 +17,9 @@ export default function Home() {
           First signed into law in December 2016, the{" "}
           <a
             className="text-active underline"
+            target="_blank"
             href="https://www.hhs.gov/ash/advisory-committees/tickbornedisease/about/21-century-cures-act/index.html"
+            rel="noreferrer"
           >
             21st Century Cures Act
           </a>{" "}
