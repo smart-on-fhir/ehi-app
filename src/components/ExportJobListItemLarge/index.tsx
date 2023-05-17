@@ -20,7 +20,7 @@ export default function ExportJobListItemLarge({
           {job.status === "retrieved" && <ExportJobLink jobId={job.id} />}
           <pre className="whitespace-pre-wrap text-xs italic opacity-50">
             {[
-              `Patient ${job.patientId}`,
+              `Patient ${job.patient.name}`,
               `Created ${new Date(job.createdAt).toLocaleString()}`,
               `${job.attachments.length} Attachments`,
             ].join("\n")}

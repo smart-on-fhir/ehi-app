@@ -32,10 +32,12 @@ export interface ExportJob {
   id: string;
 
   /**
-   * The ID of the exported patient
+   * The ID and humanized name of the patient
    */
-  patientId: string;
-
+  patient: {
+    id: string;
+    name: string;
+  };
   /**
    * The job status
    */
@@ -79,9 +81,12 @@ export interface ExportJobSummary {
   id: string;
 
   /**
-   * The ID of the exported patient
+   * The ID and humanized name of the patient
    */
-  patientId: string;
+  patient: {
+    id: string;
+    name: string;
+  };
 
   /**
    * The job status
