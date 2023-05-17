@@ -26,7 +26,7 @@ export default function InstitutionOption({
       }}
     >
       <img
-        src={institution.imgUrl}
+        src={institution.imgSrc}
         className="inline h-8 w-8 object-contain"
         alt={`Logo associated with ${institution.displayName}`}
       />
