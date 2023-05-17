@@ -40,7 +40,7 @@ export default function ExportJobList() {
           <p>
             Users can generate export requests on the{" "}
             <Link
-              className="underline"
+              className="text-active underline"
               target="_blank"
               rel="noreferrer"
               to="/jobs"

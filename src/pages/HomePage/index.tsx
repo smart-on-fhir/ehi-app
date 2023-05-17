@@ -16,7 +16,7 @@ export default function Home() {
         <p>
           First signed into law in December 2016, the{" "}
           <a
-            className="cursor-pointer text-active underline"
+            className="text-active underline"
             href="https://www.hhs.gov/ash/advisory-committees/tickbornedisease/about/21-century-cures-act/index.html"
           >
             21st Century Cures Act
@@ -29,7 +29,7 @@ export default function Home() {
           information blocking when it comes to electronic health information
           (EHI) sharing. With the passage of{" "}
           <a
-            className="cursor-pointer text-active underline"
+            className="text-active underline"
             target="_blank"
             href="https://www.healthit.gov/topic/oncs-cures-act-final-rule"
             rel="noreferrer"
@@ -50,7 +50,7 @@ export default function Home() {
           Interoperability Resources (HL7's FHIR) community, the Argonaut
           Project has devised{" "}
           <a
-            className="cursor-pointer text-active underline"
+            className="text-active underline"
             target="_blank"
             href="https://build.fhir.org/ig/argonautproject/ehi-api/index.html"
             rel="noreferrer"
@@ -67,7 +67,7 @@ export default function Home() {
           registered healthcare organizations, this web application is a
           modified version of the original{" "}
           <a
-            className="cursor-pointer text-active underline"
+            className="text-active underline"
             target="_blank"
             href="https://docs.google.com/presentation/d/1-c6GcXrexCJhYzcmnQwbVuooZInG8ONfNyFbDzfFzyg/edit#slide=id.g123196c3949_1_140"
             rel="noreferrer"
