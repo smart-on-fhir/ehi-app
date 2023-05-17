@@ -27,14 +27,17 @@ export default function UserExportJobList() {
       );
     } else if (jobs) {
       return (
-        <ul className="max-h-[calc(100vh-210px)] space-y-6 overflow-y-scroll sm:max-h-[calc(100vh-170px)]">
+        <ul className="max-h-[calc(100vh-210px)] space-y-4 overflow-y-scroll sm:max-h-[calc(100vh-170px)]">
           {jobs && jobs.length > 0 ? (
             jobs.map((job) => <ExportJobListItemSmall key={job.id} job={job} />)
           ) : (
-            <p>
-              No exports were found on the server. Click the "New Export" button
-              to begin the electronic health information export process.
-            </p>
+            <>
+              <p>No exports were found on the server.</p>
+              <p>
+                Click the "New Export" button to start exporting your electronic
+                health information from any supported institution.
+              </p>
+            </>
           )}
         </ul>
       );

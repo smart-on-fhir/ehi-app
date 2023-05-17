@@ -13,12 +13,7 @@ export default function AppHeader() {
           alt="SMART on FHIR logo"
           className="mr-2 inline-block h-6"
         />
-        <h1 className="inline-block text-center text-2xl sm:hidden">
-          EHI Export Demo
-        </h1>
-        <h1 className="hidden text-center text-2xl sm:inline-block">
-          EHI Export Demonstration
-        </h1>
+        <h1 className="text-center text-2xl ">EHI Export</h1>
       </Link>
       <nav className="mt-2 flex basis-full space-x-4 sm:mt-0 sm:basis-auto">
         <NavLink
