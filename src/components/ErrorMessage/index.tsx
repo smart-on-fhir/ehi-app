@@ -12,7 +12,7 @@ export default function ErrorMessage({
     <>
       <p className="mb-2  flex items-center text-xl font-bold">
         <AlertTriangle className="mr-2 inline " />
-        {display}.
+        {display}
       </p>
       <CodeBlock>{error?.message}</CodeBlock>
     </>

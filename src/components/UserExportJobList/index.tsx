@@ -22,7 +22,7 @@ export default function UserExportJobList() {
       return (
         <ErrorMessage
           error={error}
-          display="There was an error loading health record requests"
+          display="There was an error loading health record requests."
         />
       );
     } else if (jobs) {

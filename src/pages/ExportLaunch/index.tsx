@@ -50,14 +50,14 @@ export default function App() {
   } else if (error) {
     return (
       <ErrorMessage
-        display="There was an error in authenticating to the client"
+        display="There was an error in authenticating to the client."
         error={error}
       />
     );
   } else if (ehiError) {
     return (
       <ErrorMessage
-        display="There was an error with EHI Export"
+        display="There was an error with EHI Export."
         error={ehiError}
       />
     );

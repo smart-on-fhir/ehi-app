@@ -21,7 +21,7 @@ export default function InstitutionSelection() {
     return (
       <ErrorMessage
         error={error}
-        display="There was an error loading institutions"
+        display="There was an error loading institutions."
       />
     );
   } else if (institutions) {

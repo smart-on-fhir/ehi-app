@@ -22,7 +22,7 @@ export default function ExportJobList() {
       return (
         <ErrorMessage
           error={error}
-          display="An error occurred in fetching jobs"
+          display="An error occurred in fetching jobs."
         />
       );
     } else if (jobs && jobs.length > 0) {
