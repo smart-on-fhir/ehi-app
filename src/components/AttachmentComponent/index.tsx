@@ -44,8 +44,8 @@ export default function AttachmentComponent({
           <AttachmentIcon type={attachment.contentType} />
         </div>
         <div className="flex w-full items-center justify-between">
-          <p className="mr-4">{attachmentTitle && attachmentTitle}</p>
-          <p className="mr-4">
+          <p className="mr-4 break-all">{attachmentTitle && attachmentTitle}</p>
+          <p className="mr-4 whitespace-nowrap">
             {attachment.size && formatBytes(attachment.size)}
           </p>
         </div>
