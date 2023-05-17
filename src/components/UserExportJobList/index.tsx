@@ -47,7 +47,7 @@ export default function UserExportJobList() {
     <>
       <div className="flex items-baseline justify-between">
         <HeadingOne>My EHI Exports</HeadingOne>
-        <LinkButton className="flex items-baseline " to="/institutionSelection">
+        <LinkButton variant="emphasized" size="lg" to="/institutionSelection">
           <Plus size={12} className="mr-2 inline" />
           New Export
         </LinkButton>

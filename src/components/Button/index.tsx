@@ -4,6 +4,7 @@ type ButtonProps = {
   className?: string;
   autoFocus?: boolean;
   disabled?: boolean;
+  size?: "md" | "lg";
   variant?: "primary" | "emphasized" | "danger";
 };
 
@@ -13,6 +14,7 @@ export default function Button({
   className,
   autoFocus,
   disabled,
+  size = "md",
   variant = "primary",
 }: ButtonProps) {
   let buttonStyles =
@@ -43,6 +45,10 @@ export default function Button({
     case "danger":
       buttonStyles += " bg-alert hover:bg-alert-dark text-white";
       break;
+  }
+  switch (size) {
+    case "lg":
+      buttonStyles += " h-12 w-44 text-xl";
   }
   return (
     <button
