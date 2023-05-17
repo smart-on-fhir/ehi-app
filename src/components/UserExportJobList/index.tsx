@@ -32,8 +32,8 @@ export default function UserExportJobList() {
             jobs.map((job) => <ExportJobListItemSmall key={job.id} job={job} />)
           ) : (
             <p>
-              No jobs were found on the server. Click the "New Export" button to
-              begin the electronic health information export process.
+              No exports were found on the server. Click the "New Export" button
+              to begin the electronic health information export process.
             </p>
           )}
         </ul>

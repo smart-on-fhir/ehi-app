@@ -36,7 +36,7 @@ export default function ExportJobList() {
     } else {
       return (
         <p>
-          No jobs were found on the server. Create an export by navigating to
+          No exports were found on the server. Create an export by navigating to
           the general{" "}
           <Link className="underline" to="/jobs">
             Jobs
