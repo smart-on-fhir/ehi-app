@@ -22,19 +22,22 @@ export default function UserExportJobList() {
       return (
         <ErrorMessage
           error={error}
-          display="There was an error loading health record requests"
+          display="There was an error loading health record requests."
         />
       );
     } else if (jobs) {
       return (
-        <ul className="max-h-[calc(100vh-210px)] space-y-6 overflow-y-scroll sm:max-h-[calc(100vh-170px)]">
+        <ul className="max-h-[calc(100vh-210px)] space-y-4 overflow-y-scroll sm:max-h-[calc(100vh-170px)]">
           {jobs && jobs.length > 0 ? (
             jobs.map((job) => <ExportJobListItemSmall key={job.id} job={job} />)
           ) : (
-            <p>
-              No jobs were found on the server. Click the "New Export" button to
-              begin the electronic health information export process.
-            </p>
+            <>
+              <p>No exports were found on the server.</p>
+              <p>
+                Click the "New Export" button to start exporting your electronic
+                health information from any supported institution.
+              </p>
+            </>
           )}
         </ul>
       );
@@ -46,8 +49,8 @@ export default function UserExportJobList() {
   return (
     <>
       <div className="flex items-baseline justify-between">
-        <HeadingOne>Active EHI Exports</HeadingOne>
-        <LinkButton className="flex items-baseline " to="/institutionSelection">
+        <HeadingOne>My EHI Exports</HeadingOne>
+        <LinkButton variant="emphasized" size="lg" to="/institutionSelection">
           <Plus size={12} className="mr-2 inline" />
           New Export
         </LinkButton>

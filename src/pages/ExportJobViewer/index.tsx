@@ -61,7 +61,7 @@ export default function ExportJobViewer() {
         <BackLink />
         <ErrorMessage
           error={new Error("")}
-          display={`Fetching job with id "${id}" produced empty response`}
+          display={`Fetching job with id "${id}" produced empty response.`}
         />
       </>
     );

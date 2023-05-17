@@ -12,7 +12,7 @@ export default function FourOhFour() {
       <p className="mb-8">Sorry, the page you requested was not found.</p>
       <Button
         variant="emphasized"
-        className="mx-auto flex h-12 w-44  items-center justify-center text-xl"
+        className="mx-auto "
         onClick={() => navigate("/")}
       >
         Return Home
