@@ -28,9 +28,9 @@ const SUPPORTED_FILES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
-const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats. Upload up to ${MAX_FILE_NUM} different, ${formatBytes(
+const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats. Upload up to ${formatBytes(
   MAX_FILE_SIZE
-)} files at a time.`;
+)} total across ${MAX_FILE_NUM} different files at a time.`;
 
 type AttachmentUploadProps = {
   jobId: ExportJob["id"];
