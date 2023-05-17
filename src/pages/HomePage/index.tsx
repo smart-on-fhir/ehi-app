@@ -30,7 +30,9 @@ export default function Home() {
           (EHI) sharing. With the passage of{" "}
           <a
             className="cursor-pointer text-active underline"
+            target="_blank"
             href="https://www.healthit.gov/topic/oncs-cures-act-final-rule"
+            rel="noreferrer"
           >
             ONC's Cures Act Final Rule
           </a>
@@ -49,7 +51,9 @@ export default function Home() {
           Project has devised{" "}
           <a
             className="cursor-pointer text-active underline"
+            target="_blank"
             href="https://build.fhir.org/ig/argonautproject/ehi-api/index.html"
+            rel="noreferrer"
           >
             an implementation guide (IG)
           </a>{" "}
@@ -61,14 +65,22 @@ export default function Home() {
         <p>
           Visualizing a scenario in which patients request EHI exports from
           registered healthcare organizations, this web application is a
-          modified version of the original App Flow mocked up by the Argonaut's
-          team. In order to explore the administration side of EHI export, our
-          application also introduces pages and operations for reviewing,
-          augmenting, rejecting, and approving EHI requests. In tandem with a
-          project implementing an EHI backend server, this application provides
-          a starting point for hospital systems to build their own EHI export
-          interfaces and for the standards community to iterate on the current
-          FHIR EHI export specification.
+          modified version of the original{" "}
+          <a
+            className="cursor-pointer text-active underline"
+            target="_blank"
+            href="https://docs.google.com/presentation/d/1-c6GcXrexCJhYzcmnQwbVuooZInG8ONfNyFbDzfFzyg/edit#slide=id.g123196c3949_1_140"
+            rel="noreferrer"
+          >
+            App Flow
+          </a>{" "}
+          mocked up by the Argonaut team. In order to explore the administration
+          side of EHI export, our application also introduces pages and
+          operations for reviewing, augmenting, rejecting, and approving EHI
+          requests. In tandem with a project implementing an EHI backend server,
+          this application provides a starting point for hospital systems to
+          build their own EHI export interfaces and for the standards community
+          to iterate on the current FHIR EHI export specification.
         </p>
         <p>
           As you experiment with the application, please report any issues or
