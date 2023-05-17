@@ -25,7 +25,7 @@ export default function AppHeader() {
           className={({ isActive }) => (isActive ? "font-bold" : "")}
           to="/"
         >
-          Home
+          About
         </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "font-bold" : "")}
