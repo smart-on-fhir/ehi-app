@@ -27,7 +27,12 @@ export default function App() {
               "redirect",
               window.location.origin + "/jobs"
             );
-            setEhiLink(String(linkWithRedirect));
+
+            if (linkWithRedirect.searchParams.get("behavior") === "automatic") { // or "manual"
+              window.location.assign(linkWithRedirect)
+            } else {
+              setEhiLink(String(linkWithRedirect));
+            }
           } else {
             navigate("/jobs");
           }
