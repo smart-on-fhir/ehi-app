@@ -10,35 +10,32 @@ export default function InstitutionOption({
   institution,
   setInstitution,
 }: InstitutionOptionProps) {
+  const { disabled, imgSrc, displayName, location } = institution;
   return (
     <li
       className={`flex h-16 items-center px-2 ${
-        institution.disabled
+        disabled
           ? "bg-gray-100 italic text-gray-600"
           : "cursor-pointer bg-white hover:bg-primary-100"
       }`}
-      tabIndex={institution.disabled ? -1 : 0}
-      onClick={() => !institution.disabled && setInstitution(institution)}
+      tabIndex={disabled ? -1 : 0}
+      onClick={() => !disabled && setInstitution(institution)}
       onKeyDown={(e) => {
-        !institution.disabled &&
-          e.key === "Enter" &&
-          setInstitution(institution);
+        !disabled && e.key === "Enter" && setInstitution(institution);
       }}
     >
       <img
-        src={institution.imgSrc}
-        className="inline h-8 w-8 object-contain"
-        alt={`Logo associated with ${institution.displayName}`}
+        src={imgSrc}
+        className={`inline h-8 w-8 object-contain ${disabled && "opacity-50"}`}
+        alt={`Logo associated with ${displayName}`}
       />
       <div className="ml-2 inline">
         <h1 className="block font-bold ">
-          {institution.displayName}
-          {institution.disabled && ", not available"}
+          {displayName}
+          {disabled && ", not available"}
         </h1>
-        {institution.location && (
-          <span className="block text-sm text-gray-600">
-            {institution.location}
-          </span>
+        {location && (
+          <span className="block text-sm text-gray-600">{location}</span>
         )}
       </div>
     </li>
