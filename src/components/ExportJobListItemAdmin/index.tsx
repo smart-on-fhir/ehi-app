@@ -14,7 +14,7 @@ export default function ExportJobListItemAdmin({
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
       <div className="flex w-20 flex-shrink-0 flex-col items-center text-center">
         <ExportJobStatusIndicator status={status} />
-        <div className="text-xs opacity-80">
+        <div className="text-sm opacity-80">
           <ExportJobStatusBlurb status={status} />
         </div>
       </div>

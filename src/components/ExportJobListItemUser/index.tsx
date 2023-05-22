@@ -20,13 +20,13 @@ export default function ExportJobListItemUser({
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
       <div className="flex w-20 flex-auto flex-shrink-0 flex-col items-center justify-center text-center">
         <ExportJobStatusIndicator status={status} />
-        <div className="text-xs opacity-80">
+        <div className="text-sm opacity-80">
           <ExportJobStatusBlurb status={status} />
         </div>
       </div>
-      <div className="w-full">
-        <p className="font-bold">{institutionName}</p>
-        <p className="italics text-sm italic ">
+      <div className="w-full ">
+        <p className="text-lg font-bold">{institutionName}</p>
+        <p className="text-sm ">
           {completedAt === 0
             ? `Created ${new Date(createdAt).toLocaleString()}`
             : `Completed ${new Date(completedAt).toLocaleString()}`}

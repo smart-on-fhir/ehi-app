@@ -15,6 +15,30 @@ const red = {
   800: "#53100e",
   900: "#290807",
 };
+const yellow = {
+  50: "#faf6e9",
+  100: "#f4ecd2",
+  200: "#e9d9a5",
+  300: "#dfc678",
+  400: "#d4b34b",
+  500: "#c9a01e",
+  600: "#a18018",
+  700: "#796012",
+  800: "#50400c",
+  900: "#282006",
+};
+const green = {
+  50: "#edf1ec",
+  100: "#dae3d8",
+  200: "#b6c7b1",
+  300: "#91aa8a",
+  400: "#6d8e63",
+  500: "#48723c",
+  600: "#3a5b30",
+  700: "#2b4424",
+  800: "#1d2e18",
+  900: "#0e170c",
+};
 // ALMOND X YELLOW METAL
 const neutral = {
   50: "#fdfbfa",
@@ -62,6 +86,8 @@ module.exports = {
       colors: {
         // Palettes
         red: red,
+        green: green,
+        yellow: yellow,
         neutral: neutral,
         primary: primary,
         // Specific colors
