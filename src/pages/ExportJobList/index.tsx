@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useAsync } from "../../hooks/useAsync";
-import ExportJobListItemLarge from "../../components/ExportJobListItemLarge";
+import ExportJobListItemAdmin from "../../components/ExportJobListItemAdmin";
 import { getExportJobs } from "../../lib/exportJobHelpers";
 import { ExportJobSummary } from "../../types";
 import Loading from "../../components/Loading";
@@ -29,7 +29,7 @@ export default function ExportJobList() {
       return (
         <ul className="max-h-[calc(100vh-210px)] space-y-4 overflow-y-scroll sm:max-h-[calc(100vh-170px)]">
           {jobs.map((job, i) => (
-            <ExportJobListItemLarge key={job.id} job={job} />
+            <ExportJobListItemAdmin key={job.id} job={job} />
           ))}
         </ul>
       );
