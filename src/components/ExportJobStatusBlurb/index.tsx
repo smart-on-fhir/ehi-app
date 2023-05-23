@@ -1,57 +1,27 @@
-import { ExportJobSummary, ExportJobStatus } from "../../types";
-import ExportJobLink from "../ExportJobLink";
+import { ExportJobStatus } from "../../types";
 
 type ExportJobBlurbProps = {
-  job: ExportJobSummary;
   status: ExportJobStatus;
 };
 
-export default function ExportJobBlurb({ job, status }: ExportJobBlurbProps) {
-  const link = `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${
-    job.id
-  }/customize?_patient=${job.patient.id}&redirect=${
-    window.location.origin + window.location.pathname
-  }`;
+export default function ExportJobBlurb({ status }: ExportJobBlurbProps) {
+  switch (status) {
+    case "awaiting-input":
+      return <p>Information Needed</p>;
 
-  function blurb() {
-    switch (status) {
-      case "awaiting-input":
-        return (
-          <a href={link} className="italic text-blue-600 underline">
-            Awaiting Information
-          </a>
-        );
+    case "in-review":
+      return <p>In Review</p>;
 
-      case "in-review":
-        return (
-          <>
-            Request In Review{" - "}
-            <a href={link} className="italic text-blue-600 underline">
-              Update Request
-            </a>
-          </>
-        );
+    case "requested":
+      return <p>Processing</p>;
 
-      case "requested":
-        return "Export Processing";
+    case "retrieved":
+      return <p>Complete</p>;
 
-      case "retrieved":
-        return (
-          <>
-            Export Complete{" - "}
-            <span className="italic underline">
-              <ExportJobLink jobId={job.id} />
-            </span>
-          </>
-        );
+    case "aborted":
+      return <p>Aborted</p>;
 
-      case "aborted":
-        return "Request Aborted";
-
-      case "rejected":
-        return "Request Rejected";
-    }
+    case "rejected":
+      return <p>Rejected</p>;
   }
-
-  return <p className="ml-2">{blurb()}</p>;
 }

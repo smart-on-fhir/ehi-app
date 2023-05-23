@@ -23,7 +23,7 @@ export default function ExportJobStatusIndicator({
     case "awaiting-input":
       return (
         <div
-          className="rounded-full bg-yellow-200"
+          className="rounded-full bg-yellow-200 "
           title={displayStatus(status)}
         >
           <Edit className="m-2" size={size} />
@@ -32,7 +32,7 @@ export default function ExportJobStatusIndicator({
     case "in-review":
       return (
         <div
-          className="rounded-full bg-yellow-500"
+          className="rounded-full bg-yellow-400 "
           title={displayStatus(status)}
         >
           <BookOpen className="m-2 " size={size} />
@@ -41,7 +41,7 @@ export default function ExportJobStatusIndicator({
     case "requested":
       return (
         <div
-          className="rounded-full bg-emerald-300"
+          className="rounded-full bg-green-300 "
           title={displayStatus(status)}
         >
           <Clock className="m-2" size={size} />
@@ -50,7 +50,7 @@ export default function ExportJobStatusIndicator({
     case "retrieved":
       return (
         <div
-          className="rounded-full bg-emerald-500"
+          className="rounded-full bg-green-400 "
           title={displayStatus(status)}
         >
           <CheckCircle className="m-2" size={size} />
@@ -58,13 +58,16 @@ export default function ExportJobStatusIndicator({
       );
     case "aborted":
       return (
-        <div className="rounded-full bg-red-300" title={displayStatus(status)}>
+        <div className="rounded-full bg-red-200 " title={displayStatus(status)}>
           <XOctagon className="m-2" size={size} />
         </div>
       );
     case "rejected":
       return (
-        <div className="rounded-full bg-red-500" title={displayStatus(status)}>
+        <div
+          className="rounded-full bg-red-400   "
+          title={displayStatus(status)}
+        >
           <Slash className="m-2" size={size} />
         </div>
       );

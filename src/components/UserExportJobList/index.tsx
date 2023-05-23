@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useAsync } from "../../hooks/useAsync";
-import ExportJobListItemSmall from "../ExportJobListItemSmall";
+import ExportJobListItemUser from "../ExportJobListItemUser";
 import LinkButton from "../../components/LinkButton";
 import { ExportJobSummary } from "../../types";
 import { getExportJobs } from "../../lib/exportJobHelpers";
@@ -29,7 +29,7 @@ export default function UserExportJobList() {
       return (
         <ul className="max-h-[calc(100vh-210px)] space-y-4 overflow-y-scroll sm:max-h-[calc(100vh-170px)]">
           {jobs && jobs.length > 0 ? (
-            jobs.map((job) => <ExportJobListItemSmall key={job.id} job={job} />)
+            jobs.map((job) => <ExportJobListItemUser key={job.id} job={job} />)
           ) : (
             <>
               <p>No exports were found on the server.</p>
