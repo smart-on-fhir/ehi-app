@@ -39,7 +39,7 @@ const green = {
   800: "#1d2e18",
   900: "#0e170c",
 };
-// ALMOND X YELLOW METAL
+// ALMOND
 const neutral = {
   50: "#fdfbfa",
   100: "#fbf8f5",
