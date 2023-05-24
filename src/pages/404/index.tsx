@@ -8,7 +8,7 @@ export default function FourOhFour() {
   const pageName = location.pathname;
   return (
     <div className="flex flex-col items-center">
-      <HeadingOne>No Page "{pageName}"</HeadingOne>
+      <HeadingOne alignment="center">No Page "{pageName}"</HeadingOne>
       <p className="mb-8">Sorry, the page you requested was not found.</p>
       <Button
         variant="emphasized"

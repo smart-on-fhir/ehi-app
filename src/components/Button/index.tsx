@@ -18,7 +18,7 @@ export default function Button({
   variant = "primary",
 }: ButtonProps) {
   let buttonStyles =
-    "cursor-pointer border text-center px-2 py-1 transition-all hover:shadow-lg";
+    "cursor-pointer border rounded text-center px-2 py-1 transition-all hover:shadow-lg";
   // Special case: Disabled buttons shouldn't apply any other special styling
   if (disabled) {
     buttonStyles +=
