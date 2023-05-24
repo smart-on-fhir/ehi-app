@@ -12,6 +12,7 @@ import ExportLaunch from "./pages/ExportLaunch";
 import ExportJobList from "./pages/ExportJobList";
 import FourOhFour from "./pages/404";
 import ExportJobViewer from "./pages/ExportJobViewer";
+import AuthCheckWrapper from "./components/AuthCheckWrapper";
 import { SMARTProvider } from "./context/smartContext";
 import { AuthProvider } from "./context/authContext";
 import { NotificationProvider } from "./context/notificationContext";
@@ -32,7 +33,14 @@ root.render(
               <Route path="/">
                 <Route index element={<HomePage />} />
                 <Route path="login" element={<Login />} />
-                <Route path="jobs" element={<App />} />
+                <Route
+                  path="jobs"
+                  element={
+                    <AuthCheckWrapper>
+                      <App />
+                    </AuthCheckWrapper>
+                  }
+                />
                 <Route path="admin">
                   <Route index element={<Navigate to="/admin/jobs" />} />
                   <Route path="jobs">

@@ -1,25 +1,16 @@
-import HeadingOne from "../../components/HeadingOne";
 import { useState } from "react";
-import { request } from "../../lib/fetchHelpers";
+import HeadingOne from "../../components/HeadingOne";
+import useAuthConsumer from "../../context/authContext";
 
 export default function Login() {
   const [user, setUser] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { login } = useAuthConsumer();
 
   function handleSubmit() {
-    request("/login", {
-      method: "post",
-      body: JSON.stringify({
-        user,
-        password,
-      }),
-    })
-      .then((resp) => {
-        console.log(resp);
-      })
-      .catch((err: Error) => {
-        console.error(err.message);
-      });
+    login(user, password).catch((err: Error) => {
+      console.error(err.message);
+    });
   }
 
   return (
