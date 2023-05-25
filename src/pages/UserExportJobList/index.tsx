@@ -8,7 +8,6 @@ import HeadingOne from "../../components/HeadingOne";
 import { ExportJobSummary } from "../../types";
 import { getExportJobs } from "../../lib/exportJobHelpers";
 import { Plus } from "react-feather";
-import useAuthConsumer from "../../context/authContext";
 import "./index.css";
 
 export default function UserExportJobList() {
@@ -17,7 +16,6 @@ export default function UserExportJobList() {
     result: jobs,
     error,
   } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
-  const { userName } = useAuthConsumer();
 
   function PageBody() {
     if (loading) {
