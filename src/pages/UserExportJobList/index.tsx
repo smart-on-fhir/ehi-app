@@ -1,13 +1,15 @@
 import { useCallback } from "react";
 import { useAsync } from "../../hooks/useAsync";
-import ExportJobListItemUser from "../ExportJobListItemUser";
+import ExportJobListItemUser from "../../components/ExportJobListItemUser";
 import LinkButton from "../../components/LinkButton";
+import Loading from "../../components/Loading";
+import ErrorMessage from "../../components/ErrorMessage";
+import HeadingOne from "../../components/HeadingOne";
 import { ExportJobSummary } from "../../types";
 import { getExportJobs } from "../../lib/exportJobHelpers";
-import Loading from "../Loading";
-import ErrorMessage from "../ErrorMessage";
-import HeadingOne from "../HeadingOne";
 import { Plus } from "react-feather";
+import useAuthConsumer from "../../context/authContext";
+import "./index.css";
 
 export default function UserExportJobList() {
   const {
@@ -15,6 +17,8 @@ export default function UserExportJobList() {
     result: jobs,
     error,
   } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
+  const { userName } = useAuthConsumer();
+
   function PageBody() {
     if (loading) {
       return <Loading display="Loading health record requests..." />;
@@ -49,7 +53,7 @@ export default function UserExportJobList() {
   return (
     <>
       <div className="flex items-baseline justify-between">
-        <HeadingOne>My EHI Exports</HeadingOne>
+        <HeadingOne>{userName}'s EHI Exports</HeadingOne>
         <LinkButton variant="emphasized" size="lg" to="/institutionSelection">
           <Plus size={16} className="mr-2 inline" />
           New Export

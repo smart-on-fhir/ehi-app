@@ -3,14 +3,14 @@ import ReactDOM from "react-dom/client";
 import { Route, BrowserRouter } from "react-router-dom";
 import { Navigate, Routes } from "react-router";
 import AppWrapper from "./components/AppWrapper";
-import App from "./pages/App";
+import UserExportJobList from "./pages/UserExportJobList";
 import Login from "./pages/Login";
 import AccountDetails from "./pages/AccountDetails";
 import Launch from "./pages/Launch";
 import HomePage from "./pages/HomePage";
 import InstitutionSelection from "./pages/InstitutionSelection";
 import ExportLaunch from "./pages/ExportLaunch";
-import ExportJobList from "./pages/ExportJobList";
+import AdminExportJobList from "./pages/AdminExportJobList";
 import FourOhFour from "./pages/404";
 import Forbidden from "./pages/Forbidden";
 import ExportJobViewer from "./pages/ExportJobViewer";
@@ -47,7 +47,7 @@ root.render(
                   path="jobs"
                   element={
                     <AuthCheckWrapper>
-                      <App />
+                      <UserExportJobList />
                     </AuthCheckWrapper>
                   }
                 />
@@ -61,7 +61,7 @@ root.render(
                       index
                       element={
                         <AuthCheckWrapper needsAdmin>
-                          <ExportJobList />
+                          <AdminExportJobList />
                         </AuthCheckWrapper>
                       }
                     />

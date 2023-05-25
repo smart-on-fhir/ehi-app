@@ -8,7 +8,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import HeadingOne from "../../components/HeadingOne";
 import { Link } from "react-router-dom";
 
-export default function ExportJobList() {
+export default function AdminExportJobList() {
   const {
     loading,
     result: jobs,
