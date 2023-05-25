@@ -16,7 +16,7 @@ export default function LinkButton({
   variant = "primary",
 }: LinkButtonProps) {
   let buttonStyles =
-    "cursor-pointer border text-center px-2 py-1 transition-all hover:shadow-lg";
+    "cursor-pointer border rounded text-center px-2 py-1 transition-all hover:shadow-lg";
   switch (variant) {
     case "emphasized":
       buttonStyles +=

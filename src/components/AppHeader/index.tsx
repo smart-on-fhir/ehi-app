@@ -1,10 +1,9 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import smartLogo from "../../assets/logo.svg";
-import { Shield } from "react-feather";
+import AccountLoginComponent from "../AccountLoginComponent";
+import ExportsNavLink from "../ExportsNavLink";
 
 export default function AppHeader() {
-  const location = useLocation();
-  const isAdmin = location.pathname.indexOf("admin") !== -1;
   return (
     <header className="flex w-full flex-wrap items-center justify-between py-6">
       <Link to="/" className="flex items-center">
@@ -22,25 +21,8 @@ export default function AppHeader() {
         >
           About
         </NavLink>
-        <NavLink
-          className={({ isActive }) => (isActive ? "font-bold" : "")}
-          to="/jobs"
-        >
-          Exports
-        </NavLink>
-        {isAdmin && (
-          <NavLink
-            to="/admin/jobs"
-            className={({ isActive }) => (isActive ? "flex font-bold" : "flex")}
-          >
-            Admin
-            <Shield
-              aria-hidden
-              className="ml-1 inline fill-active text-active"
-              name="admin"
-            />
-          </NavLink>
-        )}
+        <ExportsNavLink />
+        <AccountLoginComponent />
       </nav>
     </header>
   );

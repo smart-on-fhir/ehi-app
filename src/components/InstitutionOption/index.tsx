@@ -13,7 +13,7 @@ export default function InstitutionOption({
   const { disabled, imgSrc, displayName, location } = institution;
   return (
     <li
-      className={`flex h-16 items-center px-2 ${
+      className={`flex h-16 items-center px-2 first:rounded-t last:rounded-b ${
         disabled
           ? "bg-gray-100 italic text-gray-600"
           : "cursor-pointer bg-white hover:bg-primary-100"
