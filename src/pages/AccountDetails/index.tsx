@@ -10,9 +10,9 @@ export default function AccountDetails() {
         <HeadingOne alignment="center">Account Details</HeadingOne>
       </div>
       <h2 className="text-sm text-black text-opacity-70">User Name</h2>
-      <p className="mb-4 text-lg font-bold">{userName}</p>
+      <p className="mb-4 text-lg font-semibold">{userName}</p>
       <h2 className="text-sm text-black text-opacity-70">Account Type</h2>
-      <p className="mb-4 text-lg  font-bold">{userType}</p>
+      <p className="mb-4 text-lg font-semibold">{userType}</p>
       <Button
         className="mt-4 w-full"
         size="lg"
