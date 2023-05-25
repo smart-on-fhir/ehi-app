@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import HeadingOne from "../../components/HeadingOne";
 import useAuthConsumer from "../../context/authContext";
+import { AlertTriangle } from "react-feather";
 
 export default function Login() {
-  const [user, setUser] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [user, setUser] = useState<string | undefined>(undefined);
+  const [password, setPassword] = useState<string | undefined>(undefined);
   const { login } = useAuthConsumer();
 
-  function handleSubmit() {
-    login(user, password).catch((err: Error) => {
-      console.error(err.message);
-    });
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setAuthError(null);
+    if (user && password) {
+      login(user, password).catch((err: Error) => {
+        setAuthError(err.message);
+        console.error(err.message);
+      });
+    }
   }
 
   return (
@@ -21,8 +28,9 @@ export default function Login() {
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="flex w-full flex-col">
-            Username
+            <span className="after:content-['*']">Username</span>
             <input
+              required
               placeholder="Enter Username"
               className="w-full rounded border bg-primary-100 p-2 placeholder:italic placeholder:text-black placeholder:opacity-70"
               type="text"
@@ -31,8 +39,9 @@ export default function Login() {
             />
           </label>
           <label className="flex w-full flex-col">
-            Password
+            <span className="after:content-['*']">Password</span>
             <input
+              required
               placeholder="Enter Password"
               className="w-full rounded border bg-primary-100 p-2 placeholder:italic placeholder:text-black placeholder:opacity-70"
               type="password"
@@ -41,11 +50,18 @@ export default function Login() {
             />
           </label>
           <button
-            className="!mt-8 w-full rounded border bg-active py-2 text-xl text-white"
+            className="!mt-8 w-full rounded border bg-active py-2 text-xl text-white disabled:bg-opacity-80"
+            disabled={!(Boolean(user) && Boolean(password))}
             type="submit"
           >
             Submit
           </button>
+          {authError && (
+            <p className="flex w-full animate-fadeIn items-center rounded border bg-red-100 p-4">
+              <AlertTriangle className="mr-2 inline " />
+              Could not authenticate with those credentials, please try again.
+            </p>
+          )}
         </form>
       </div>
     </div>

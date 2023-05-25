@@ -18,6 +18,7 @@ import { AuthProvider } from "./context/authContext";
 import { NotificationProvider } from "./context/notificationContext";
 // Necessary for tailwind styles
 import "./index.css";
+import Forbidden from "./pages/Forbidden";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -42,19 +43,55 @@ root.render(
                   }
                 />
                 <Route path="admin">
-                  <Route index element={<Navigate to="/admin/jobs" />} />
+                  <Route
+                    index
+                    element={<Navigate to="/admin/jobs" replace />}
+                  />
                   <Route path="jobs">
-                    <Route path=":id" element={<ExportJobViewer />} />
-                    <Route index path="" element={<ExportJobList />} />
+                    <Route
+                      index
+                      element={
+                        <AuthCheckWrapper needsAdmin>
+                          <ExportJobList />
+                        </AuthCheckWrapper>
+                      }
+                    />
+                    <Route
+                      path=":id"
+                      element={
+                        <AuthCheckWrapper needsAdmin>
+                          <ExportJobViewer />
+                        </AuthCheckWrapper>
+                      }
+                    />
                   </Route>
                 </Route>
-                <Route path="exportLaunch" element={<ExportLaunch />} />
-                <Route path="launch" element={<Launch />} />
+                <Route
+                  path="exportLaunch"
+                  element={
+                    <AuthCheckWrapper>
+                      <ExportLaunch />
+                    </AuthCheckWrapper>
+                  }
+                />
+                <Route
+                  path="launch"
+                  element={
+                    <AuthCheckWrapper>
+                      <Launch />
+                    </AuthCheckWrapper>
+                  }
+                />
                 <Route
                   path="institutionSelection"
-                  element={<InstitutionSelection />}
+                  element={
+                    <AuthCheckWrapper>
+                      <InstitutionSelection />
+                    </AuthCheckWrapper>
+                  }
                 />
               </Route>
+              <Route path="forbidden" element={<Forbidden />} />
               <Route path="*" element={<FourOhFour />} />
             </Routes>
           </AppWrapper>

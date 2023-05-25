@@ -3,9 +3,12 @@ import { useLocation, useNavigate } from "react-router";
 // import { request } from "../lib/fetchHelpers";
 import useSessionStorage from "../hooks/useSesisonStorage";
 
+type UserType = "admin" | "user" | "guest" | null;
 interface AuthContextInterface {
   isAuthenticated: boolean;
-  userType: "admin" | "user" | "guest" | null;
+  isAdmin: boolean;
+  userName: string;
+  userType: UserType;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -15,16 +18,17 @@ const authContext = React.createContext<AuthContextInterface>(null!);
 function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [userName, setUserName] = useSessionStorage<string>("userName", "");
   const [isAuthenticated, setIsAuthenticated] = useSessionStorage<boolean>(
     "isAuthenticated",
     false
   );
-  const [userType, setUserType] = useSessionStorage<
-    AuthContextInterface["userType"]
-  >("userType", null);
-
+  const [userType, setUserType] = useSessionStorage<UserType>("userType", null);
+  const isAdmin = userType === "admin";
   return {
     isAuthenticated,
+    isAdmin,
+    userName,
     userType,
     async login(username: string, password: string): Promise<void> {
       // const response = await request<string>("/login", {
@@ -35,8 +39,18 @@ function useAuth() {
       //   }),
       // })
       setIsAuthenticated(true);
-      setUserType("user");
-      navigate(location.state?.redirect || "/");
+      if (username === "admin") {
+        setUserName("Admin Dylan");
+        setUserType("admin");
+        // Admins should always redirect to the admin panel
+        navigate("/admin");
+      } else if (username === "error") {
+        throw new Error("Could not authenticate with the provided credentials");
+      } else {
+        setUserName("Dylan Phelan");
+        setUserType("user");
+        navigate(location.state?.redirect || "/jobs");
+      }
     },
     logout() {
       return new Promise<void>((res) => {
