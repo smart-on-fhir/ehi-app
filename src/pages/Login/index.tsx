@@ -21,7 +21,7 @@ export default function Login() {
   }
 
   return (
-    <div className="container mx-auto flex max-w-screen-sm justify-center">
+    <div className="mx-auto flex max-w-screen-sm justify-center">
       <div className="w-full rounded-lg border bg-white p-4">
         <div className="flex justify-center">
           <HeadingOne alignment="center">Login</HeadingOne>

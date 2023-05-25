@@ -5,12 +5,14 @@ import { Navigate, Routes } from "react-router";
 import AppWrapper from "./components/AppWrapper";
 import App from "./pages/App";
 import Login from "./pages/Login";
+import AccountDetails from "./pages/AccountDetails";
 import Launch from "./pages/Launch";
 import HomePage from "./pages/HomePage";
 import InstitutionSelection from "./pages/InstitutionSelection";
 import ExportLaunch from "./pages/ExportLaunch";
 import ExportJobList from "./pages/ExportJobList";
 import FourOhFour from "./pages/404";
+import Forbidden from "./pages/Forbidden";
 import ExportJobViewer from "./pages/ExportJobViewer";
 import AuthCheckWrapper from "./components/AuthCheckWrapper";
 import { SMARTProvider } from "./context/smartContext";
@@ -18,7 +20,6 @@ import { AuthProvider } from "./context/authContext";
 import { NotificationProvider } from "./context/notificationContext";
 // Necessary for tailwind styles
 import "./index.css";
-import Forbidden from "./pages/Forbidden";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -34,6 +35,14 @@ root.render(
               <Route path="/">
                 <Route index element={<HomePage />} />
                 <Route path="login" element={<Login />} />
+                <Route
+                  path="account"
+                  element={
+                    <AuthCheckWrapper>
+                      <AccountDetails />
+                    </AuthCheckWrapper>
+                  }
+                />
                 <Route
                   path="jobs"
                   element={
