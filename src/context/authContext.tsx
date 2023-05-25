@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 // import { request } from "../lib/fetchHelpers";
 import useSessionStorage from "../hooks/useSesisonStorage";
 
-type UserType = "admin" | "user" | "guest" | null;
+type UserType = "admin" | "user" | null;
 interface AuthContextInterface {
   isAuthenticated: boolean;
   isAdmin: boolean;
