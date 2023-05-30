@@ -31,33 +31,62 @@ function useAuth() {
     userName,
     userType,
     async login(username: string, password: string): Promise<void> {
-      // const response = await request<string>("/login", {
-      //   method: "post",
-      //   body: JSON.stringify({
-      //     username,
-      //     password,
-      //   }),
-      // })
-      setIsAuthenticated(true);
-      if (username === "admin") {
-        setUserName("Admin Dylan");
-        setUserType("admin");
-        // Admins should always redirect to the admin panel
-        navigate("/admin");
-      } else if (username === "error") {
-        throw new Error("Could not authenticate with the provided credentials");
-      } else {
-        setUserName("Dylan Phelan");
-        setUserType("user");
-        navigate(location.state?.redirect || "/jobs");
-      }
-    },
-    logout() {
-      return new Promise<void>((res) => {
+
+      const payload = new URLSearchParams()
+      payload.set("username", username)
+      payload.set("password", password)
+
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { accept: "application/json" },
+        body: payload,
+        credentials: "include"
+      })
+
+      if (!response.ok) {
         setIsAuthenticated(false);
-        setUserType(null);
-        navigate("/");
-      });
+        console.warn(await response.text())
+      }
+
+      else {
+        const user = await response.json()
+        setUserName(user.username);
+        setUserType(user.role);
+        setIsAuthenticated(true);
+
+        if (user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate(location.state?.redirect || "/jobs");
+        }
+      }
+
+
+      // setIsAuthenticated(true);
+      // if (username === "admin") {
+      //   setUserName("Admin Dylan");
+      //   setUserType("admin");
+      //   // Admins should always redirect to the admin panel
+      //   navigate("/admin");
+      // } else if (username === "error") {
+      //   throw new Error("Could not authenticate with the provided credentials");
+      // } else {
+      //   setUserName("Dylan Phelan");
+      //   setUserType("user");
+      //   navigate(location.state?.redirect || "/jobs");
+      // }
+    },
+    async logout() {
+      await fetch("/logout", { headers: { accept: "application/json" }, credentials: "include" })
+      setIsAuthenticated(false);
+      setUserType(null);
+      setUserName("");
+      navigate("/");
+      // return new Promise<void>((res) => {
+      //   setIsAuthenticated(false);
+      //   setUserType(null);
+      //   navigate("/");
+      // });
     },
   };
 }
