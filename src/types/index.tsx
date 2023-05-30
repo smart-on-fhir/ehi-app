@@ -142,8 +142,9 @@ export interface ExportJobInformationParameter {
   name: string;
   enabled: boolean;
   notes?: string;
-  from?: string;
-  to?: string;
+  from?: string | false;
+  to?: string | false;
+  group?: number;
 }
 
 export interface ExportJobInformationParameters {
