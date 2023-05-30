@@ -3,10 +3,10 @@ import { Shield, User } from "react-feather";
 import useAuthConsumer from "../../context/authContext";
 
 export default function AccountLoginComponent() {
-  const { isAuthenticated, isAdmin, userName } = useAuthConsumer();
-  if (!isAuthenticated) {
+  const { authUser, isAdmin, getUsername } = useAuthConsumer();
+  if (!authUser) {
     return <NavLink to="/login">Login</NavLink>;
-  } else if (isAuthenticated && isAdmin) {
+  } else if (authUser && isAdmin(authUser)) {
     return (
       <NavLink
         to="/account"
@@ -26,7 +26,7 @@ export default function AccountLoginComponent() {
         to="/account"
         className={({ isActive }) => (isActive ? "flex font-bold" : "flex")}
       >
-        {userName}
+        {getUsername(authUser)}
         <User
           aria-hidden
           className="ml-1 inline stroke-2 text-active"

@@ -3,14 +3,21 @@ import { useLocation, useNavigate } from "react-router";
 // import { request } from "../lib/fetchHelpers";
 import useSessionStorage from "../hooks/useSesisonStorage";
 
-type UserType = "admin" | "user" | null;
+type UserRole = "admin" | "user" | null;
+
+type AuthUser = {
+  id: string;
+  username: string;
+  role: UserRole;
+};
+
 interface AuthContextInterface {
-  isAuthenticated: boolean;
-  isAdmin: boolean;
-  userName: string;
-  userType: UserType;
+  authUser: AuthUser | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  isAdmin: (authUser: AuthUser) => boolean;
+  getUsername: (authUser: AuthUser) => string;
+  getRole: (authUser: AuthUser) => UserRole;
 }
 
 const authContext = React.createContext<AuthContextInterface>(null!);
@@ -18,75 +25,54 @@ const authContext = React.createContext<AuthContextInterface>(null!);
 function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [userName, setUserName] = useSessionStorage<string>("userName", "");
-  const [isAuthenticated, setIsAuthenticated] = useSessionStorage<boolean>(
-    "isAuthenticated",
-    false
+  const [authUser, setAuthUser] = useSessionStorage<AuthUser | null>(
+    "user",
+    null
   );
-  const [userType, setUserType] = useSessionStorage<UserType>("userType", null);
-  const isAdmin = userType === "admin";
   return {
-    isAuthenticated,
-    isAdmin,
-    userName,
-    userType,
+    authUser,
     async login(username: string, password: string): Promise<void> {
-
-      const payload = new URLSearchParams()
-      payload.set("username", username)
-      payload.set("password", password)
+      const payload = new URLSearchParams();
+      payload.set("username", username);
+      payload.set("password", password);
 
       const response = await fetch("/login", {
         method: "POST",
         headers: { accept: "application/json" },
         body: payload,
-        credentials: "include"
-      })
+        credentials: "include",
+      });
 
       if (!response.ok) {
-        setIsAuthenticated(false);
-        console.warn(await response.text())
-      }
-
-      else {
-        const user = await response.json()
-        setUserName(user.username);
-        setUserType(user.role);
-        setIsAuthenticated(true);
-
+        setAuthUser(null);
+        console.warn(await response.text());
+      } else {
+        const user = await response.json();
+        setAuthUser(user);
         if (user.role === "admin") {
           navigate("/admin");
         } else {
           navigate(location.state?.redirect || "/jobs");
         }
       }
-
-
-      // setIsAuthenticated(true);
-      // if (username === "admin") {
-      //   setUserName("Admin Dylan");
-      //   setUserType("admin");
-      //   // Admins should always redirect to the admin panel
-      //   navigate("/admin");
-      // } else if (username === "error") {
-      //   throw new Error("Could not authenticate with the provided credentials");
-      // } else {
-      //   setUserName("Dylan Phelan");
-      //   setUserType("user");
-      //   navigate(location.state?.redirect || "/jobs");
-      // }
     },
     async logout() {
-      await fetch("/logout", { headers: { accept: "application/json" }, credentials: "include" })
-      setIsAuthenticated(false);
-      setUserType(null);
-      setUserName("");
+      await fetch("/logout", {
+        headers: { accept: "application/json" },
+        credentials: "include",
+      });
+      // TODO: Error handling?
+      setAuthUser(null);
       navigate("/");
-      // return new Promise<void>((res) => {
-      //   setIsAuthenticated(false);
-      //   setUserType(null);
-      //   navigate("/");
-      // });
+    },
+    isAdmin(authUser: AuthUser) {
+      return authUser.role === "admin";
+    },
+    getUsername(authUser: AuthUser) {
+      return authUser.username;
+    },
+    getRole(authUser: AuthUser) {
+      return authUser.role;
     },
   };
 }
