@@ -2,10 +2,10 @@ import { NavLink } from "react-router-dom";
 import useAuthConsumer from "../../context/authContext";
 
 export default function ExportsNavLink() {
-  const { authUser, isAdmin } = useAuthConsumer();
+  const { authUser } = useAuthConsumer();
   if (!authUser) {
     return null;
-  } else if (authUser && isAdmin(authUser)) {
+  } else if (authUser && authUser.role === "admin") {
     return (
       <NavLink
         className={({ isActive }) => (isActive ? "font-bold" : "")}

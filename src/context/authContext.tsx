@@ -1,6 +1,6 @@
 import * as React from "react";
+import { useContext, createContext, ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router";
-// import { request } from "../lib/fetchHelpers";
 import useSessionStorage from "../hooks/useSesisonStorage";
 
 type UserRole = "admin" | "user" | null;
@@ -15,12 +15,9 @@ interface AuthContextInterface {
   authUser: AuthUser | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  isAdmin: (authUser: AuthUser) => boolean;
-  getUsername: (authUser: AuthUser) => string;
-  getRole: (authUser: AuthUser) => UserRole;
 }
 
-const authContext = React.createContext<AuthContextInterface>(null!);
+const authContext = createContext<AuthContextInterface>(null!);
 
 function useAuth() {
   const navigate = useNavigate();
@@ -29,6 +26,7 @@ function useAuth() {
     "user",
     null
   );
+
   return {
     authUser,
     async login(username: string, password: string): Promise<void> {
@@ -65,22 +63,13 @@ function useAuth() {
       setAuthUser(null);
       navigate("/");
     },
-    isAdmin(authUser: AuthUser) {
-      return authUser.role === "admin";
-    },
-    getUsername(authUser: AuthUser) {
-      return authUser.username;
-    },
-    getRole(authUser: AuthUser) {
-      return authUser.role;
-    },
   };
 }
 
 export function AuthProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }): JSX.Element {
   const auth = useAuth();
 
@@ -88,5 +77,5 @@ export function AuthProvider({
 }
 
 export default function useAuthConsumer() {
-  return React.useContext(authContext);
+  return useContext(authContext);
 }

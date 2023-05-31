@@ -3,7 +3,7 @@ import HeadingOne from "../../components/HeadingOne";
 import useAuthConsumer from "../../context/authContext";
 
 export default function AccountDetails() {
-  const { authUser, getUsername, getRole, logout } = useAuthConsumer();
+  const { authUser, logout } = useAuthConsumer();
   if (!authUser) {
     return null;
   }
@@ -13,9 +13,9 @@ export default function AccountDetails() {
         <HeadingOne alignment="center">Account Details</HeadingOne>
       </div>
       <h2 className="text-sm text-black text-opacity-70">User Name</h2>
-      <p className="mb-4 text-lg font-semibold">{getUsername(authUser)}</p>
+      <p className="mb-4 text-lg font-semibold">{authUser.username}</p>
       <h2 className="text-sm text-black text-opacity-70">Account Type</h2>
-      <p className="mb-4 text-lg font-semibold">{getRole(authUser)}</p>
+      <p className="mb-4 text-lg font-semibold">{authUser.role}</p>
       <Button
         className="mt-4 w-full"
         size="lg"
