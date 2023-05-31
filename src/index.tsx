@@ -15,6 +15,7 @@ import FourOhFour from "./pages/404";
 import Forbidden from "./pages/Forbidden";
 import ExportJobViewer from "./pages/ExportJobViewer";
 import AuthCheckWrapper from "./components/AuthCheckWrapper";
+import AlreadyAuthedAccountRedirect from "./components/AlreadyAuthedAccountRedirect";
 import { SMARTProvider } from "./context/smartContext";
 import { AuthProvider } from "./context/authContext";
 import { NotificationProvider } from "./context/notificationContext";
@@ -34,7 +35,15 @@ root.render(
             <Routes>
               <Route path="/">
                 <Route index element={<HomePage />} />
-                <Route path="login" element={<Login />} />
+                <Route
+                  path="login"
+                  // If we're already logged in, bring us to another page
+                  element={
+                    <AlreadyAuthedAccountRedirect>
+                      <Login />
+                    </AlreadyAuthedAccountRedirect>
+                  }
+                />
                 <Route
                   path="account"
                   element={
