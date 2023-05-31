@@ -5,8 +5,8 @@ import { AlertTriangle } from "react-feather";
 
 export default function Login() {
   const [authError, setAuthError] = useState<string | null>(null);
-  const [user, setUser] = useState<string | undefined>(undefined);
-  const [password, setPassword] = useState<string | undefined>(undefined);
+  const [user, setUser] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const { login } = useAuthConsumer();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
