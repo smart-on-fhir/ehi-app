@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useContext, createContext, ReactNode } from "react";
+import { useState, useContext, createContext, ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router";
 import useSessionStorage from "../hooks/useSesisonStorage";
 
@@ -12,6 +11,8 @@ type AuthUser = {
 };
 
 interface AuthContextInterface {
+  authLoading: boolean;
+  authError: Error | null;
   authUser: AuthUser | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -26,10 +27,16 @@ function useAuth() {
     "user",
     null
   );
+  const [authLoading, setAuthLoading] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<Error | null>(null);
 
   return {
     authUser,
+    authLoading,
+    authError,
     async login(username: string, password: string): Promise<void> {
+      setAuthLoading(true);
+      setAuthError(null);
       const payload = new URLSearchParams();
       payload.set("username", username);
       payload.set("password", password);
@@ -42,10 +49,14 @@ function useAuth() {
       });
 
       if (!response.ok) {
-        setAuthUser(null);
-        console.warn(await response.text());
+        const errorMessage = await response.text();
+        const error = new Error(`${response.status}: ${errorMessage}`);
+        setAuthError(error);
+        setAuthLoading(false);
+        console.warn(errorMessage);
       } else {
         const user = await response.json();
+        setAuthLoading(false);
         setAuthUser(user);
         if (user.role === "admin") {
           navigate("/admin");

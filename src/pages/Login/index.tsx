@@ -1,22 +1,17 @@
 import { FormEvent, useState } from "react";
 import HeadingOne from "../../components/HeadingOne";
 import useAuthConsumer from "../../context/authContext";
-import { AlertTriangle } from "react-feather";
+import { AlertTriangle, Loader } from "react-feather";
 
 export default function Login() {
-  const [authError, setAuthError] = useState<string | null>(null);
-  const [user, setUser] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { login } = useAuthConsumer();
+  const { login, authLoading, authError } = useAuthConsumer();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setAuthError(null);
-    if (user && password) {
-      login(user, password).catch((err: Error) => {
-        setAuthError(err.message);
-        console.error(err.message);
-      });
+    if (username && password) {
+      login(username, password);
     }
   }
 
@@ -34,8 +29,8 @@ export default function Login() {
               placeholder="Enter Username"
               className="w-full rounded border bg-primary-100 p-2 placeholder:italic placeholder:text-black placeholder:opacity-70"
               type="text"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </label>
           <label className="flex w-full flex-col">
@@ -51,10 +46,16 @@ export default function Login() {
           </label>
           <button
             className="!mt-8 w-full rounded border bg-active py-2 text-xl text-white disabled:bg-opacity-80"
-            disabled={!(Boolean(user) && Boolean(password))}
+            disabled={authLoading || !(Boolean(username) && Boolean(password))}
             type="submit"
           >
-            Submit
+            {!authLoading && "Submit"}
+            {authLoading && (
+              <Loader
+                aria-label="Login request loading"
+                className="mx-auto animate-spin"
+              />
+            )}
           </button>
           {authError && (
             <p className="flex w-full animate-fadeIn items-center rounded border bg-red-100 p-4">
