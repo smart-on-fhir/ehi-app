@@ -1,63 +1,67 @@
 import * as React from "react";
+import { useContext, createContext, ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router";
-// import { request } from "../lib/fetchHelpers";
 import useSessionStorage from "../hooks/useSesisonStorage";
 
-type UserType = "admin" | "user" | null;
+type UserRole = "admin" | "user" | null;
+
+type AuthUser = {
+  id: string;
+  username: string;
+  role: UserRole;
+};
+
 interface AuthContextInterface {
-  isAuthenticated: boolean;
-  isAdmin: boolean;
-  userName: string;
-  userType: UserType;
+  authUser: AuthUser | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
-const authContext = React.createContext<AuthContextInterface>(null!);
+const authContext = createContext<AuthContextInterface>(null!);
 
 function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [userName, setUserName] = useSessionStorage<string>("userName", "");
-  const [isAuthenticated, setIsAuthenticated] = useSessionStorage<boolean>(
-    "isAuthenticated",
-    false
+  const [authUser, setAuthUser] = useSessionStorage<AuthUser | null>(
+    "user",
+    null
   );
-  const [userType, setUserType] = useSessionStorage<UserType>("userType", null);
-  const isAdmin = userType === "admin";
+
   return {
-    isAuthenticated,
-    isAdmin,
-    userName,
-    userType,
+    authUser,
     async login(username: string, password: string): Promise<void> {
-      // const response = await request<string>("/login", {
-      //   method: "post",
-      //   body: JSON.stringify({
-      //     username,
-      //     password,
-      //   }),
-      // })
-      setIsAuthenticated(true);
-      if (username === "admin") {
-        setUserName("Admin Dylan");
-        setUserType("admin");
-        // Admins should always redirect to the admin panel
-        navigate("/admin");
-      } else if (username === "error") {
-        throw new Error("Could not authenticate with the provided credentials");
+      const payload = new URLSearchParams();
+      payload.set("username", username);
+      payload.set("password", password);
+
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { accept: "application/json" },
+        body: payload,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        setAuthUser(null);
+        console.warn(await response.text());
       } else {
-        setUserName("Dylan Phelan");
-        setUserType("user");
-        navigate(location.state?.redirect || "/jobs");
+        const user = await response.json();
+        setAuthUser(user);
+        if (user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate(location.state?.redirect || "/jobs");
+        }
       }
     },
-    logout() {
-      return new Promise<void>((res) => {
-        setIsAuthenticated(false);
-        setUserType(null);
-        navigate("/");
+    async logout() {
+      await fetch("/logout", {
+        headers: { accept: "application/json" },
+        credentials: "include",
       });
+      // TODO: Error handling?
+      setAuthUser(null);
+      navigate("/");
     },
   };
 }
@@ -65,7 +69,7 @@ function useAuth() {
 export function AuthProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }): JSX.Element {
   const auth = useAuth();
 
@@ -73,5 +77,5 @@ export function AuthProvider({
 }
 
 export default function useAuthConsumer() {
-  return React.useContext(authContext);
+  return useContext(authContext);
 }

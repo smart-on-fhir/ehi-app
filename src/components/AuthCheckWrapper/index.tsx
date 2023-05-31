@@ -12,15 +12,15 @@ export default function AuthCheckWrapper({
   children,
 }: AuthCheckWrapperProps) {
   const location = useLocation();
-  const { isAuthenticated, userType } = useAuthConsumer();
+  const { authUser } = useAuthConsumer();
 
-  if (!isAuthenticated) {
+  if (!authUser) {
     return (
       <Navigate to="/login" replace state={{ redirect: location.pathname }} />
     );
   }
 
-  if (needsAdmin && userType !== "admin") {
+  if (needsAdmin && authUser.role !== "admin") {
     return (
       <Navigate to="/forbidden" replace state={{ from: location.pathname }} />
     );
