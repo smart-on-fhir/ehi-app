@@ -11,10 +11,14 @@ type AuthUser = {
 };
 
 interface AuthContextInterface {
-  authLoading: boolean;
-  authError: Error | null;
   authUser: AuthUser | null;
-  login: (username: string, password: string) => Promise<void>;
+  authLoading: boolean;
+  authError: string | null;
+  login: (
+    username: string,
+    password: string,
+    remember: boolean
+  ) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -28,18 +32,25 @@ function useAuth() {
     null
   );
   const [authLoading, setAuthLoading] = useState<boolean>(false);
-  const [authError, setAuthError] = useState<Error | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   return {
     authUser,
     authLoading,
     authError,
-    async login(username: string, password: string): Promise<void> {
+    async login(
+      username: string,
+      password: string,
+      remember: boolean
+    ): Promise<void> {
       setAuthLoading(true);
       setAuthError(null);
       const payload = new URLSearchParams();
       payload.set("username", username);
       payload.set("password", password);
+      if (remember) {
+        payload.set("remember", String(remember));
+      }
 
       const response = await fetch("/login", {
         method: "POST",
@@ -49,9 +60,18 @@ function useAuth() {
       });
 
       if (!response.ok) {
-        const errorMessage = await response.text();
-        const error = new Error(`${response.status}: ${errorMessage}`);
-        setAuthError(error);
+        let errorMessage = "";
+        if (
+          response.headers.get("Content-Type") &&
+          response.headers.get("Content-Type")?.indexOf("application/json") !==
+            -1
+        ) {
+          const errorJson = await response.json();
+          errorMessage = errorJson.error;
+        } else {
+          errorMessage = await response.text();
+        }
+        setAuthError(errorMessage);
         setAuthLoading(false);
       } else {
         const user = await response.json();

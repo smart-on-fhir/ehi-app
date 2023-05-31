@@ -18,7 +18,7 @@ function AnchorTag({
 export default function AppFooter() {
   return (
     <footer className="flex flex-wrap ">
-      <div className="flex basis-full flex-col space-y-2 sm:basis-1/2">
+      <div className="sm:basis-1/2 flex basis-full flex-col space-y-2">
         <AnchorTag href="https://github.com/smart-on-fhir/ehi-app">
           <GitHub size="18" className="mr-2 inline" />
           Web Application Code
@@ -36,7 +36,7 @@ export default function AppFooter() {
           Log a Backend Issue
         </AnchorTag>
       </div>
-      <div className="mt-2 flex basis-full flex-col space-y-2 sm:mt-0 sm:basis-1/2 sm:text-end">
+      <div className="sm:basis-1/2 mt-2 flex basis-full flex-col space-y-2 sm:mt-0 sm:text-end">
         <p>
           © Copyright {new Date().getFullYear()} by the Computational Health
           Informatics Program, Boston Children's Hospital, Boston, MA.
