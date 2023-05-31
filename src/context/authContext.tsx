@@ -53,7 +53,6 @@ function useAuth() {
         const error = new Error(`${response.status}: ${errorMessage}`);
         setAuthError(error);
         setAuthLoading(false);
-        console.warn(errorMessage);
       } else {
         const user = await response.json();
         setAuthLoading(false);
@@ -70,7 +69,6 @@ function useAuth() {
         headers: { accept: "application/json" },
         credentials: "include",
       });
-      // TODO: Error handling?
       setAuthUser(null);
       navigate("/");
     },
