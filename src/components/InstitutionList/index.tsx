@@ -18,7 +18,14 @@ export default function InstitutionList({
     return (
       <div className="max-h-[500px] overflow-auto">
         <HeadingOne>Select Institution for Export</HeadingOne>
+
         <ul className="divide-y rounded border border-gray-600">
+          <li className="flex h-16 items-center px-2 cursor-pointer bg-white hover:bg-primary-100">
+            <a href="http://localhost:5005/institutions/1/launch">TEST LAUNCH (https://ehi-server.herokuapp.com/fhir)</a>
+          </li>
+          <li className="flex h-16 items-center px-2 cursor-pointer bg-white hover:bg-primary-100">
+            <a href="http://localhost:5005/institutions/2/launch">TEST LAUNCH (http://localhost:8888/fhir)</a>
+          </li>
           {institutions.map((institution) => (
             <InstitutionOption
               key={institution.displayName}

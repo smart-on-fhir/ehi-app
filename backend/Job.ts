@@ -20,6 +20,20 @@ export default class Job {
         this.customizeUrl = rec.customizeUrl || "";
     }
 
+    public set(name: Partial<EHI.ExportJobDbRecord> | keyof EHI.ExportJobDbRecord, value: any): Job {
+        if (name && typeof name === "object") {
+            Object.assign(this.attributes, name)
+        }
+        else {
+            this.attributes[name] = value
+        }
+        return this
+    }
+
+    public get(name: keyof EHI.ExportJobDbRecord) {
+        return this.attributes[name]
+    }
+
     public async save() {
         if (this.id) {
             await db.promise(

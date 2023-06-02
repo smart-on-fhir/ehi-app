@@ -1,8 +1,9 @@
 import sqlite3, { Database } from "sqlite3"
 import Bcrypt from "bcryptjs"
+import config from "./config"
 
 const db = new (sqlite3.verbose()).Database('./db.sqlite3')
-const SALT = Bcrypt.genSaltSync(10)
+
 
 
 interface DB extends Database {
@@ -11,8 +12,9 @@ interface DB extends Database {
 
 db.serialize(() => {
 
-    // Create users table ------------------------------------------------------
+    // users -------------------------------------------------------------------
     db.run(`DROP TABLE IF EXISTS "users"`)
+
     db.run(`
         CREATE TABLE "users" (
             "id"        Integer NOT NULL PRIMARY KEY AutoIncrement,
@@ -24,14 +26,108 @@ db.serialize(() => {
         )`
     );
 
-    // Insert users ------------------------------------------------------------
     db.run(
         "INSERT INTO users (username,password,role) values ('admin', ?, 'admin')",
-        Bcrypt.hashSync('admin-password', SALT)
+        Bcrypt.hashSync('admin-password', config.salt)
     );
+
     db.run(
         "INSERT INTO users (username,password,role) values ('patient', ?, 'user')",
-        Bcrypt.hashSync('patient-password', SALT)
+        Bcrypt.hashSync('patient-password', config.salt)
+    );
+
+    // Institutions ------------------------------------------------------------
+    db.run(`DROP TABLE IF EXISTS "institutions"`)
+    db.run(`
+        CREATE TABLE "institutions" (
+            "id"          Integer NOT NULL PRIMARY KEY AutoIncrement,
+            "displayName" Text    NOT NULL,
+            "imgSrc"      Text,
+            "fhirUrl"     Text,
+            "location"    Text,
+            "disabled"    Boolean,
+            "clientId"    Text NOT NULL,
+            "scope"       Text NOT NULL
+        )`
+    );
+
+    db.run(
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            1,
+            "New York Gerontology Hospital",
+            "/assets/institution-logo.svg",
+            "https://ehi-server.herokuapp.com/fhir",
+            "211 Shortsteel Blvd New York, NY 10001",
+            0,
+            "test_client_id",
+            "offline_access patient/$ehi-export"
+        ]
+    );
+    db.run(
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            2,
+            "Local EHI server at localhost:8888",
+            "/assets/institution-logo.svg",
+            "http://localhost:8888/fhir",
+            "211 Shortsteel Blvd New York, NY 10001",
+            0,
+            "test_client_id",
+            "offline_access patient/$ehi-export"
+        ]
+    );
+    db.run(
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            null,
+            "Fana Darber",
+            "/assets/institution-logo.svg",
+            "http://example.com/fhir",
+            null,
+            1,
+            "test_client_id",
+            "offline_access patient/$ehi-export"
+        ]
+    );
+    db.run(
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            null,
+            "Journey Assessments",
+            "/assets/institution-logo.svg",
+            "http://example.com/fhir",
+            null,
+            1,
+            "test_client_id",
+            "offline_access patient/$ehi-export"
+        ]
+    );
+    db.run(
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            null,
+            "Billows Medicine",
+            "/assets/institution-logo.svg",
+            "http://example.com/fhir",
+            null,
+            1,
+            "test_client_id",
+            "offline_access patient/$ehi-export"
+        ]
+    );
+    db.run(
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            null,
+            "Gram Typical Young Health",
+            "/assets/institution-logo.svg",
+            "http://example.com/fhir",
+            null,
+            1,
+            "test_client_id",
+            "offline_access patient/$ehi-export"
+        ]
     );
 
     // Create jobs table -------------------------------------------------------

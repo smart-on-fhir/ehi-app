@@ -6,5 +6,9 @@ export default {
     port: env.PORT || 5005,
 
     // The host to listen on
-    host: env.HOST || "0.0.0.0"
+    host: env.HOST || "0.0.0.0",
+
+    // Change this in production
+    // To generate one run `require("bcryptjs").genSaltSync(10)`
+    salt: env.SALT || "$2a$10$ZyXp2reLAbPDwNIIqzurIu"
 }
