@@ -52,7 +52,7 @@ function useAuth() {
         payload.set("remember", String(remember));
       }
 
-      const response = await fetch("/login", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: { accept: "application/json" },
         body: payload,
@@ -63,8 +63,7 @@ function useAuth() {
         let errorMessage = "";
         if (
           response.headers.get("Content-Type") &&
-          response.headers.get("Content-Type")?.indexOf("application/json") !==
-            -1
+          response.headers.get("Content-Type")?.indexOf("application/json") !== -1
         ) {
           const errorJson = await response.json();
           errorMessage = errorJson.error;
@@ -85,7 +84,7 @@ function useAuth() {
       }
     },
     async logout() {
-      await fetch("/logout", {
+      await fetch("/api/logout", {
         headers: { accept: "application/json" },
         credentials: "include",
       });

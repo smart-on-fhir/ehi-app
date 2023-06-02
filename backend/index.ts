@@ -35,13 +35,13 @@ app.use(session({
 // app.use(urlencoded({ extended: false, limit: "64kb" }));
 // app.use(json());
 
-app.use("/institutions", institutionsRouter)
+app.use("/api/institutions", institutionsRouter)
 
-app.use("/jobs", jobsRouter)
+app.use("/api/jobs", jobsRouter)
 
-app.post("/login", urlencoded({ extended: false }), asyncRouteWrap(login));
+app.post("/api/login", urlencoded({ extended: false }), asyncRouteWrap(login));
 
-app.get("/logout", authenticate, asyncRouteWrap(logout))
+app.get("/api/logout", authenticate, asyncRouteWrap(logout))
 
 app.use(express.static(Path.join(__dirname, "../build/")));
 

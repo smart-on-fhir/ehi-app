@@ -33,7 +33,7 @@ export async function startAuthorization(req: Request, res: Response) {
     return smart(req, res).authorize({
         clientId: institution.clientId,
         scope: institution.scope,
-        redirectUri: `/institutions/${institution.id}/redirect`,
+        redirectUri: `/api/institutions/${institution.id}/redirect`,
         iss: institution.fhirUrl
     });
 }
