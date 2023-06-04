@@ -22,7 +22,8 @@ db.serialize(() => {
             "password"  Text    NOT NULL,
             "role"      Text    NOT NULL,
             "lastLogin" DateTime,
-            "sid"       Text
+            "sid"       Text,
+            "session"   Text
         )`
     );
 

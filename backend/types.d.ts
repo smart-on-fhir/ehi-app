@@ -17,6 +17,7 @@ declare namespace EHI {
         password: string
         lastLogin: number | null
         sid: string | null
+        session: string | null
     }
 
     interface ExportManifest {

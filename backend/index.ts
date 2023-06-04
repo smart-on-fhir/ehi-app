@@ -2,7 +2,6 @@ import Path from "path"
 import express, { NextFunction, Request, Response, urlencoded } from "express"
 import { AddressInfo } from "net"
 import cookieParser from "cookie-parser"
-import session from "express-session"
 // import multer from "multer"
 import config from "./config"
 import { asyncRouteWrap } from "./lib"
@@ -15,14 +14,6 @@ import jobsRouter from "./jobs"
 const app = express()
 app.use(cookieParser())
 
-
-// The SMART state is stored in a session. If you want to clear your session
-// and start over, you will have to delete your "connect.sid" cookie!
-app.use(session({
-    secret: "my secret", // FIXME:
-    resave: false,
-    saveUninitialized: false
-}));
 
 // const upload = multer({
 //     dest: "uploads/",
@@ -56,13 +47,12 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     res.status(error.code || 500).json({ error: error.message || 'Internal Server Error' });
 })
 
-// Only start is not imported
+// Only start if not imported
 if (require.main?.filename === __filename) {
     const server = app.listen(+config.port, config.host, () => {
         const address = server.address() as AddressInfo
         console.log(`Server available at http://${address.address}:${address.port}`)
     });
 }
-
 
 export default app
