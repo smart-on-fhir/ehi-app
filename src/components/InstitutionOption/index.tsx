@@ -1,16 +1,16 @@
-import { Dispatch, SetStateAction } from "react";
 import { Institution } from "../../types";
 
 type InstitutionOptionProps = {
   institution: Institution;
-  setInstitution: Dispatch<SetStateAction<Institution | null>>;
+  setInstitution: (selectedInstitution: Institution) => void;
 };
 
 export default function InstitutionOption({
   institution,
   setInstitution,
 }: InstitutionOptionProps) {
-  const { disabled, imgSrc, displayName, location } = institution;
+  const { disabled: disabledNum, imgSrc, displayName, location } = institution;
+  const disabled = Boolean(disabledNum);
   return (
     <li
       className={`flex h-16 items-center px-2 first:rounded-t last:rounded-b ${

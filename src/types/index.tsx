@@ -10,6 +10,8 @@ export interface SMARTContextInterface {
 }
 
 export interface Institution {
+  // The id of the institution, for use in routing and uniqueness
+  id: string;
   // The name of the institution, for use in visual displays
   displayName: string;
   // A URL pointing to a small, square image to be used as the institution's logo

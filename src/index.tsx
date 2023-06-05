@@ -6,10 +6,8 @@ import AppWrapper from "./components/AppWrapper";
 import UserExportJobList from "./pages/UserExportJobList";
 import Login from "./pages/Login";
 import AccountDetails from "./pages/AccountDetails";
-import Launch from "./pages/Launch";
 import HomePage from "./pages/HomePage";
 import InstitutionSelection from "./pages/InstitutionSelection";
-import ExportLaunch from "./pages/ExportLaunch";
 import AdminExportJobList from "./pages/AdminExportJobList";
 import FourOhFour from "./pages/404";
 import Forbidden from "./pages/Forbidden";
@@ -84,22 +82,6 @@ root.render(
                     />
                   </Route>
                 </Route>
-                <Route
-                  path="exportLaunch"
-                  element={
-                    <AuthCheckWrapper>
-                      <ExportLaunch />
-                    </AuthCheckWrapper>
-                  }
-                />
-                <Route
-                  path="launch"
-                  element={
-                    <AuthCheckWrapper>
-                      <Launch />
-                    </AuthCheckWrapper>
-                  }
-                />
                 <Route
                   path="institutionSelection"
                   element={

@@ -15,6 +15,7 @@ export default function ErrorMessage({
         {display}
       </p>
       <CodeBlock>{error?.message}</CodeBlock>
+      <CodeBlock>{error?.stack}</CodeBlock>
     </>
   );
 }
