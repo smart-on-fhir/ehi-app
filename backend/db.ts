@@ -69,9 +69,9 @@ db.serialize(() => {
         `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             2,
-            "Local EHI server at localhost:8888",
+            "Local EHI server at 127.0.0.1:8888",
             "/assets/institution-logo.svg",
-            "http://localhost:8888/fhir",
+            "http://127.0.0.1:8888/fhir",
             "211 Shortsteel Blvd New York, NY 10001",
             0,
             "test_client_id",
