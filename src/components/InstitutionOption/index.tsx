@@ -1,3 +1,4 @@
+import InstitutionIcon from "../../assets/institution-logo.svg";
 import { Institution } from "../../types";
 
 type InstitutionOptionProps = {
@@ -9,7 +10,7 @@ export default function InstitutionOption({
   institution,
   setInstitution,
 }: InstitutionOptionProps) {
-  const { disabled: disabledNum, imgSrc, displayName, location } = institution;
+  const { disabled: disabledNum, displayName, location } = institution;
   const disabled = Boolean(disabledNum);
   return (
     <li
@@ -25,7 +26,7 @@ export default function InstitutionOption({
       }}
     >
       <img
-        src={imgSrc}
+        src={InstitutionIcon}
         className={`inline h-8 w-8 object-contain ${disabled && "opacity-50"}`}
         alt={`Logo associated with ${displayName}`}
       />

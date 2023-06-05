@@ -24,7 +24,7 @@ export async function getOne(req: Request, res: Response) {
 }
 
 export async function getAll(req: Request, res: Response) {
-    res.json(await db.promise("all", "SELECT id, displayName, imgSrc, location, disabled FROM institutions"))
+    res.json(await db.promise("all", "SELECT id, displayName, location, disabled FROM institutions"))
 }
 
 function getStorage(req: Request) {
@@ -116,5 +116,6 @@ export async function completeAuthorization(req: Request, res: Response) {
 
 router.get("/", authenticate, requireAuth("user", "admin"), asyncRouteWrap(getAll))
 router.get("/:id", authenticate, requireAuth("user", "admin"), asyncRouteWrap(getOne))
+router.get("/:id/logo", authenticate, requireAuth("user", "admin"), asyncRouteWrap(getOne))
 router.get("/:id/launch", authenticate, requireAuth("user", "admin"), asyncRouteWrap(startAuthorization))
 router.get("/:id/redirect", authenticate, requireAuth("user", "admin"), asyncRouteWrap(completeAuthorization))
