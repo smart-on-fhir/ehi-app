@@ -17,7 +17,7 @@ router.get("/", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async
     const params: any[] = []
     let sql = "SELECT * FROM jobs"
     if (role !== "admin") {
-        sql += " WHERE user_id=?"
+        sql += " WHERE userId=?"
         params.push(role)
     }
     const jobs = await db.promise("all", sql, params)
