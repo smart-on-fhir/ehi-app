@@ -1,14 +1,3 @@
-import Client from "fhirclient/lib/Client";
-import { fhirclient } from "fhirclient/lib/types";
-
-export interface SMARTContextInterface {
-  client: Client | null;
-  error: Error | null;
-  loading: boolean;
-  startAuthorization: (options?: fhirclient.AuthorizeParams) => Promise<any>;
-  completeAuthorization: () => Promise<Client | void>;
-}
-
 export interface Institution {
   // The id of the institution, for use in routing and uniqueness
   id: string;

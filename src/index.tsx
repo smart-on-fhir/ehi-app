@@ -14,7 +14,6 @@ import Forbidden from "./pages/Forbidden";
 import ExportJobViewer from "./pages/ExportJobViewer";
 import AuthCheckWrapper from "./components/AuthCheckWrapper";
 import AlreadyAuthedAccountRedirect from "./components/AlreadyAuthedAccountRedirect";
-import { SMARTProvider } from "./context/smartContext";
 import { AuthProvider } from "./context/authContext";
 import { NotificationProvider } from "./context/notificationContext";
 // Necessary for tailwind styles
@@ -26,77 +25,72 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <BrowserRouter>
-    <SMARTProvider>
-      <AuthProvider>
-        <NotificationProvider>
-          <AppWrapper>
-            <Routes>
-              <Route path="/">
-                <Route index element={<HomePage />} />
-                <Route
-                  path="login"
-                  // If we're already logged in, bring us to another page
-                  element={
-                    <AlreadyAuthedAccountRedirect>
-                      <Login />
-                    </AlreadyAuthedAccountRedirect>
-                  }
-                />
-                <Route
-                  path="account"
-                  element={
-                    <AuthCheckWrapper>
-                      <AccountDetails />
-                    </AuthCheckWrapper>
-                  }
-                />
-                <Route
-                  path="jobs"
-                  element={
-                    <AuthCheckWrapper>
-                      <UserExportJobList />
-                    </AuthCheckWrapper>
-                  }
-                />
-                <Route path="admin">
+    <AuthProvider>
+      <NotificationProvider>
+        <AppWrapper>
+          <Routes>
+            <Route path="/">
+              <Route index element={<HomePage />} />
+              <Route
+                path="login"
+                // If we're already logged in, bring us to another page
+                element={
+                  <AlreadyAuthedAccountRedirect>
+                    <Login />
+                  </AlreadyAuthedAccountRedirect>
+                }
+              />
+              <Route
+                path="account"
+                element={
+                  <AuthCheckWrapper>
+                    <AccountDetails />
+                  </AuthCheckWrapper>
+                }
+              />
+              <Route
+                path="jobs"
+                element={
+                  <AuthCheckWrapper>
+                    <UserExportJobList />
+                  </AuthCheckWrapper>
+                }
+              />
+              <Route path="admin">
+                <Route index element={<Navigate to="/admin/jobs" replace />} />
+                <Route path="jobs">
                   <Route
                     index
-                    element={<Navigate to="/admin/jobs" replace />}
+                    element={
+                      <AuthCheckWrapper needsAdmin>
+                        <AdminExportJobList />
+                      </AuthCheckWrapper>
+                    }
                   />
-                  <Route path="jobs">
-                    <Route
-                      index
-                      element={
-                        <AuthCheckWrapper needsAdmin>
-                          <AdminExportJobList />
-                        </AuthCheckWrapper>
-                      }
-                    />
-                    <Route
-                      path=":id"
-                      element={
-                        <AuthCheckWrapper needsAdmin>
-                          <ExportJobViewer />
-                        </AuthCheckWrapper>
-                      }
-                    />
-                  </Route>
+                  <Route
+                    path=":id"
+                    element={
+                      <AuthCheckWrapper needsAdmin>
+                        <ExportJobViewer />
+                      </AuthCheckWrapper>
+                    }
+                  />
                 </Route>
-                <Route
-                  path="institutionSelection"
-                  element={
-                    <AuthCheckWrapper>
-                      <InstitutionSelection />
-                    </AuthCheckWrapper>
-                  }
-                />
               </Route>
-              <Route path="forbidden" element={<Forbidden />} />
-              <Route path="*" element={<FourOhFour />} />
-            </Routes>
-          </AppWrapper>
-        </NotificationProvider>
-      </AuthProvider>
-    </SMARTProvider>
+              <Route
+                path="institutionSelection"
+                element={
+                  <AuthCheckWrapper>
+                    <InstitutionSelection />
+                  </AuthCheckWrapper>
+                }
+              />
+            </Route>
+            <Route path="forbidden" element={<Forbidden />} />
+            <Route path="*" element={<FourOhFour />} />
+          </Routes>
+        </AppWrapper>
+      </NotificationProvider>
+    </AuthProvider>
   </BrowserRouter>
 );
