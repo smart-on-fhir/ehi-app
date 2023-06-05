@@ -102,7 +102,7 @@ export async function completeAuthorization(req: Request, res: Response) {
 
     let redirectUrl = "/jobs"
     if (process.env.NODE_ENV !== "production") {
-        redirectUrl = "http://localhost:3000/jobs"
+        redirectUrl = "http://127.0.0.1:3000/jobs"
     }
     if (customizeUrl) {
         let url = new URL(customizeUrl)

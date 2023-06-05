@@ -31,7 +31,7 @@ export default function InstitutionSelection() {
         institutions={institutions}
         setInstitution={(selectedInstitution) => {
           window.location.assign(
-            `http://localhost:5005/api/institutions/${selectedInstitution.id}/launch`
+            `http://127.0.0.1:5005/api/institutions/${selectedInstitution.id}/launch`
           );
         }}
       />
