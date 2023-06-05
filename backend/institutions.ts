@@ -116,6 +116,5 @@ export async function completeAuthorization(req: Request, res: Response) {
 
 router.get("/", authenticate, requireAuth("user", "admin"), asyncRouteWrap(getAll))
 router.get("/:id", authenticate, requireAuth("user", "admin"), asyncRouteWrap(getOne))
-router.get("/:id/logo", authenticate, requireAuth("user", "admin"), asyncRouteWrap(getOne))
 router.get("/:id/launch", authenticate, requireAuth("user", "admin"), asyncRouteWrap(startAuthorization))
 router.get("/:id/redirect", authenticate, requireAuth("user", "admin"), asyncRouteWrap(completeAuthorization))
