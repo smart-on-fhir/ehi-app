@@ -43,7 +43,6 @@ db.serialize(() => {
         CREATE TABLE "institutions" (
             "id"          Integer NOT NULL PRIMARY KEY AutoIncrement,
             "displayName" Text    NOT NULL,
-            "imgSrc"      Text,
             "fhirUrl"     Text,
             "location"    Text,
             "disabled"    Boolean,
@@ -53,11 +52,10 @@ db.serialize(() => {
     );
 
     db.run(
-        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             1,
             "New York Gerontology Hospital",
-            "/assets/institution-logo.svg",
             "https://ehi-server.herokuapp.com/fhir",
             "211 Shortsteel Blvd New York, NY 10001",
             0,
@@ -66,11 +64,10 @@ db.serialize(() => {
         ]
     );
     db.run(
-        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             2,
             "Local EHI server at 127.0.0.1:8888",
-            "/assets/institution-logo.svg",
             "http://127.0.0.1:8888/fhir",
             "211 Shortsteel Blvd New York, NY 10001",
             0,
@@ -79,11 +76,10 @@ db.serialize(() => {
         ]
     );
     db.run(
-        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             null,
             "Fana Darber",
-            "/assets/institution-logo.svg",
             "http://example.com/fhir",
             null,
             1,
@@ -92,11 +88,10 @@ db.serialize(() => {
         ]
     );
     db.run(
-        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             null,
             "Journey Assessments",
-            "/assets/institution-logo.svg",
             "http://example.com/fhir",
             null,
             1,
@@ -105,11 +100,10 @@ db.serialize(() => {
         ]
     );
     db.run(
-        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             null,
             "Billows Medicine",
-            "/assets/institution-logo.svg",
             "http://example.com/fhir",
             null,
             1,
@@ -118,11 +112,10 @@ db.serialize(() => {
         ]
     );
     db.run(
-        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             null,
             "Gram Typical Young Health",
-            "/assets/institution-logo.svg",
             "http://example.com/fhir",
             null,
             1,

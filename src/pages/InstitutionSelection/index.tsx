@@ -1,14 +1,15 @@
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAsync } from "../../hooks/useAsync";
 import InstitutionList from "../../components/InstitutionList";
-import { getInstitutions } from "../../lib/institutionHelpers";
 import { Institution } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 
 export default function InstitutionSelection() {
-  const navigate = useNavigate();
+  function getInstitutions(): Promise<Institution[]> {
+    return fetch("/api/institutions").then((resp) => resp.json());
+  }
+
   const {
     loading,
     result: institutions,
@@ -28,8 +29,10 @@ export default function InstitutionSelection() {
     return (
       <InstitutionList
         institutions={institutions}
-        setInstitution={(institution) => {
-          navigate("/launch", { state: { institution } });
+        setInstitution={(selectedInstitution) => {
+          window.location.assign(
+            `http://127.0.0.1:5005/api/institutions/${selectedInstitution.id}/launch`
+          );
         }}
       />
     );

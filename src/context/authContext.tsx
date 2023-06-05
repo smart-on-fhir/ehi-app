@@ -63,7 +63,8 @@ function useAuth() {
         let errorMessage = "";
         if (
           response.headers.get("Content-Type") &&
-          response.headers.get("Content-Type")?.indexOf("application/json") !== -1
+          response.headers.get("Content-Type")?.indexOf("application/json") !==
+            -1
         ) {
           const errorJson = await response.json();
           errorMessage = errorJson.error;

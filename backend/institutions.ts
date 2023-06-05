@@ -24,7 +24,7 @@ export async function getOne(req: Request, res: Response) {
 }
 
 export async function getAll(req: Request, res: Response) {
-    res.json(await db.promise("all", "SELECT id, displayName, imgSrc, location, disabled FROM institutions"))
+    res.json(await db.promise("all", "SELECT id, displayName, location, disabled FROM institutions"))
 }
 
 function getStorage(req: Request) {
@@ -102,7 +102,7 @@ export async function completeAuthorization(req: Request, res: Response) {
 
     let redirectUrl = "/jobs"
     if (process.env.NODE_ENV !== "production") {
-        redirectUrl = "http://localhost:3000/jobs"
+        redirectUrl = "http://127.0.0.1:3000/jobs"
     }
     if (customizeUrl) {
         let url = new URL(customizeUrl)

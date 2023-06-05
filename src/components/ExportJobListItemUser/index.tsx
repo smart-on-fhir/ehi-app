@@ -1,4 +1,3 @@
-import { findMatchingInstitution } from "../../lib/institutionHelpers";
 import { ExportJobSummary } from "../../types";
 import ExportJobStatusIndicator from "../ExportJobStatusIndicator";
 import ExportJobStatusBlurb from "../ExportJobStatusBlurb";
@@ -11,10 +10,8 @@ type ExportJobListItemUserProps = {
 export default function ExportJobListItemUser({
   job,
 }: ExportJobListItemUserProps) {
-  // NOTE: In a world where the export-jobs from multiple institutions are being listed in the same place,
-  //       this would be odd. Should be fine for demo purposes.
-  const url = `${process!.env!.REACT_APP_EHI_SERVER}/fhir`;
-  const institutionName = findMatchingInstitution(url)?.displayName;
+  // TODO: Get this information off of the job when supported on the job
+  const institutionName = "New York Gerontology Hospital";
   const { status, createdAt, completedAt } = job;
   return (
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
