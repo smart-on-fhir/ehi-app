@@ -1,12 +1,15 @@
 import { useCallback } from "react";
 import { useAsync } from "../../hooks/useAsync";
 import InstitutionList from "../../components/InstitutionList";
-import { getInstitutions } from "../../lib/institutionHelpers";
 import { Institution } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 
 export default function InstitutionSelection() {
+  function getInstitutions(): Promise<Institution[]> {
+    return fetch("/api/institutions").then((resp) => resp.json());
+  }
+
   const {
     loading,
     result: institutions,
@@ -23,7 +26,6 @@ export default function InstitutionSelection() {
       />
     );
   } else if (institutions) {
-    console.log(institutions);
     return (
       <InstitutionList
         institutions={institutions}
