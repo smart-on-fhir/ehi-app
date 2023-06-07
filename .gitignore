@@ -124,3 +124,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 db.sqlite3
+db-test.sqlite3

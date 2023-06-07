@@ -15,6 +15,7 @@
     "@types/react-dom": "^18.0.11",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "fhirclient": "^2.5.2",
     "jsonwebtoken": "^9.0.0",
     "react": "^18.2.0",
@@ -31,6 +32,8 @@
   "scripts": {
     "start:server": "ts-node --skipProject --transpile-only backend/index.ts",
     "start:server:dev": "nodemon -w backend -e ts -x 'npm run start:server'",
+    "test:server": "NODE_ENV=test nyc --reporter=lcov ts-mocha -p backend/test/tsconfig.json --config backend/test/.mocharc.js --exit",
+    "test:server:watch": "NODE_ENV=test nodemon -e ts -x 'npm run test:server'",
     "start": "react-scripts start",
     "start-prod": "npx serve -s build",
     "build": "react-scripts build",
@@ -57,16 +60,25 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/chai": "^4.3.5",
     "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.13",
     "@types/fhir": "^0.0.36",
     "@types/jsonwebtoken": "^9.0.1",
+    "@types/mocha": "^10.0.1",
     "@types/react-router-dom": "^5.3.3",
+    "@types/supertest": "^2.0.12",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
     "nock": "^13.3.1",
     "nodemon": "^2.0.22",
+    "nyc": "^15.1.0",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.7",
     "serve": "^14.2.0",
-    "tailwindcss": "^3.3.1"
+    "supertest": "^6.3.3",
+    "tailwindcss": "^3.3.1",
+    "ts-mocha": "^10.0.0"
   },
   "proxy": "http://127.0.0.1:5005"
 }
