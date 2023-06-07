@@ -11,5 +11,8 @@ export default {
     // Change this in production
     // To generate one run `require("bcryptjs").genSaltSync(10)`
     salt: env.SALT || "$2a$10$ZyXp2reLAbPDwNIIqzurIu",
+
+    db: env.NODE_ENV === "test" ? './db-test.sqlite3' : './db.sqlite3',
+
     authDelay: env.NODE_ENV === "test" ? 0 : 1000
 }

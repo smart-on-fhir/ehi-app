@@ -2,7 +2,7 @@ import sqlite3, { Database } from "sqlite3"
 import Bcrypt from "bcryptjs"
 import config from "./config"
 
-const db = new (sqlite3.verbose()).Database('./db.sqlite3')
+const db = new (sqlite3.verbose()).Database(config.db)
 
 
 
