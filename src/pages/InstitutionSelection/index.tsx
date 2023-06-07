@@ -4,10 +4,11 @@ import InstitutionList from "../../components/InstitutionList";
 import { Institution } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
+import { request } from "../../lib/fetchHelpers";
 
 export default function InstitutionSelection() {
   function getInstitutions(): Promise<Institution[]> {
-    return fetch("/api/institutions").then((resp) => resp.json());
+    return request<Institution[]>("/api/institutions");
   }
 
   const {

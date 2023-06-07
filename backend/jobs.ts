@@ -21,6 +21,7 @@ router.get("/", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async
         params.push(userId)
     }
     const jobs = await db.promise("all", sql, params)
+    // NEED TO UPDATE JOBS ON CALL
     res.json(jobs.map((j: any) => new Job(j)))
 }))
 
