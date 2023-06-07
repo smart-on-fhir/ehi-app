@@ -1,12 +1,15 @@
 import { NextFunction, Request, Response } from "express"
 import Crypto from "crypto"
 import Bcrypt from "bcryptjs"
+import { debuglog } from "node:util"
 import db from "./db"
 import { wait } from "./lib"
 import { EHI } from "./types"
 import config from "./config"
 
 type Role = "user" | "admin"
+
+const debug = debuglog("auth")
 
 
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
@@ -16,7 +19,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
             const user = await db.promise("get", "SELECT * FROM users WHERE sid=?", sid);
             (req as EHI.UserRequest).user = user || null
         } catch (ex) {
-            console.error(ex);
+            debug(ex + "");
         }
     }
 
@@ -57,7 +60,7 @@ export async function login(req: Request, res: Response) {
 
         // Wrong password (Do NOT specify what is wrong in the error message!)
         if (!Bcrypt.compareSync(password, user.password)) {
-            console.warn("Failed login attempt due to invalid password")
+            debug("Failed login attempt due to invalid password");
             return res.status(401).json({ error: "Invalid username or password" })
         }
 
@@ -80,7 +83,7 @@ export async function login(req: Request, res: Response) {
         res.json({ id: user.id, username: user.username, role: user.role });
 
     } catch (ex) {
-        console.error(ex)
+        debug(ex + "");
         res.status(401).end("Login failed");
     }
 }
@@ -94,7 +97,7 @@ export async function logout(req: EHI.UserRequest, res: Response) {
             res.clearCookie("sid")
             return res.end("Logout successful");
         } catch (ex) {
-            console.error(ex);
+            debug(ex + "");
         }
     }
 
