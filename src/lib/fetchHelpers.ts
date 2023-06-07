@@ -4,11 +4,14 @@ export async function request<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const fullPath = path.replace(/^\//, "");
+  // TODO: Deprecate this?
+  // const fullPath = path.replace(/^\//, "/");
+  const fullPath = path;
   const res = await fetch(fullPath, {
     mode: "cors",
     ...options,
   });
+  
 
   const type = res.headers.get("Content-Type") + "";
   let body = await res.text();
