@@ -13,15 +13,15 @@ export default router
 
 
 router.get("/", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async (req: Request, res: Response) => {
-    const role = (req as EHI.AuthenticatedRequest).user.role
+    const { role, id: userId } = (req as EHI.AuthenticatedRequest).user
     const params: any[] = []
     let sql = "SELECT * FROM jobs"
     if (role !== "admin") {
         sql += " WHERE userId=?"
-        params.push(role)
+        params.push(userId)
     }
     const jobs = await db.promise("all", sql, params)
-    res.json(jobs.map(j => new Job(j)))
+    res.json(jobs.map((j: any) => new Job(j)))
 }))
 
 router.get("/:id", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async (req: EHI.UserRequest, res: Response) => {
