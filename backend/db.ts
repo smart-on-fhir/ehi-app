@@ -4,18 +4,20 @@ import config from "./config"
 
 const db = new (sqlite3.verbose()).Database(config.db)
 
+let mainPromise: Promise<DB> | null = null
 
+type DbMethodName = "run" | "get" | "all" | "each" | "exec" | "prepare"
 
 interface DB extends Database {
     promise: <T = any>(method: DbMethodName, ...args: any[]) => Promise<T>
 }
 
-db.serialize(() => {
+async function seed(db: DB): Promise<DB> {
 
     // users -------------------------------------------------------------------
-    db.run(`DROP TABLE IF EXISTS "users"`)
+    await promise("run", `DROP TABLE IF EXISTS "users"`)
 
-    db.run(`
+    await promise("run", `
         CREATE TABLE "users" (
             "id"        Integer NOT NULL PRIMARY KEY AutoIncrement,
             "username"  Text    NOT NULL,
@@ -27,19 +29,20 @@ db.serialize(() => {
         )`
     );
 
-    db.run(
+    await promise("run",
         "INSERT INTO users (username,password,role) values ('admin', ?, 'admin')",
         Bcrypt.hashSync('admin-password', config.salt)
     );
 
-    db.run(
+    await promise("run",
         "INSERT INTO users (username,password,role) values ('patient', ?, 'user')",
         Bcrypt.hashSync('patient-password', config.salt)
     );
 
     // Institutions ------------------------------------------------------------
-    db.run(`DROP TABLE IF EXISTS "institutions"`)
-    db.run(`
+    await promise("run", `DROP TABLE IF EXISTS "institutions"`)
+
+    await promise("run", `
         CREATE TABLE "institutions" (
             "id"          Integer NOT NULL PRIMARY KEY AutoIncrement,
             "displayName" Text    NOT NULL,
@@ -51,7 +54,7 @@ db.serialize(() => {
         )`
     );
 
-    db.run(
+    await promise("run",
         `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             1,
@@ -63,7 +66,8 @@ db.serialize(() => {
             "offline_access patient/$ehi-export"
         ]
     );
-    db.run(
+
+    await promise("run",
         `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             2,
@@ -75,7 +79,8 @@ db.serialize(() => {
             "offline_access patient/$ehi-export"
         ]
     );
-    db.run(
+
+    await promise("run",
         `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             null,
@@ -87,7 +92,8 @@ db.serialize(() => {
             "offline_access patient/$ehi-export"
         ]
     );
-    db.run(
+
+    await promise("run",
         `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             null,
@@ -99,7 +105,8 @@ db.serialize(() => {
             "offline_access patient/$ehi-export"
         ]
     );
-    db.run(
+
+    await promise("run",
         `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             null,
@@ -111,7 +118,8 @@ db.serialize(() => {
             "offline_access patient/$ehi-export"
         ]
     );
-    db.run(
+
+    await promise("run",
         `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
         [
             null,
@@ -125,8 +133,9 @@ db.serialize(() => {
     );
 
     // Create jobs table -------------------------------------------------------
-    db.run(`DROP TABLE IF EXISTS "jobs"`)
-    db.run(`
+    await promise("run", `DROP TABLE IF EXISTS "jobs"`)
+
+    await promise("run", `
         CREATE TABLE "jobs" (
             "id"             Integer  NOT NULL PRIMARY KEY AutoIncrement,
             "userId"         Integer  NOT NULL,
@@ -138,7 +147,7 @@ db.serialize(() => {
     );
 
     // Insert one read-only job ------------------------------------------------
-    db.run(`
+    await promise("run", `
         INSERT INTO "jobs" (
             id, userId, json, readonly, statusUrl, customizeUrl
         ) values (
@@ -184,7 +193,7 @@ db.serialize(() => {
         $customizeUrl: ""
     });
 
-    db.run(`
+    await promise("run", `
         INSERT INTO "jobs" (
             id, userId, json, readonly, statusUrl, customizeUrl
         ) values (
@@ -230,30 +239,39 @@ db.serialize(() => {
         $customizeUrl: ""
     });
 
-});
+    return db
+}
 
+async function main(): Promise<DB> {
+    if (!mainPromise) {
+        mainPromise = seed(db as DB)
+    }
+    return mainPromise;
+}
 
-export default db as DB
-
-type DbMethodName = "run" | "get" | "all" | "each" | "exec" | "prepare"
+async function promise<T = any>(method: DbMethodName, ...args: any[]): Promise<T> {
+    return new Promise((resolve, reject) => {
+        args.push((error: Error, result: any) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result as T);
+            }
+        });
+        (db[method] as (...args: any[]) => any)(...args);
+    });
+};
 
 /**
  * Calls database methods and returns a promise
  */
-Object.defineProperty(db, "promise", {
-    get() {
-        return function (method: DbMethodName, ...args: any[]) {
-            return new Promise((resolve, reject) => {
-                args.push((error: Error, result: any) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    resolve(result);
-                });
-                (db[method] as (...args: any[]) => any)(...args);
-            });
-        }
+main.promise = async <T = any>(method: DbMethodName, ...args: any[]): Promise<T> => {
+    if (!mainPromise) {
+        mainPromise = main()
     }
-});
+    await mainPromise;
+    return await promise<T>(method, ...args)
+};
 
-// db.close();
+
+export default main
