@@ -32,11 +32,11 @@ export function requireAuth(...roles: Role[]) {
         const user = req.user
 
         if (!user) {
-            return res.status(401).end("Authorization required");
+            return res.status(401).type("text").end("Authorization required");
         }
 
         if (roles.length && !roles.includes(user.role)) {
-            return res.status(403).end("Permission denied");
+            return res.status(403).type("text").end("Permission denied");
         }
 
         next();
@@ -50,6 +50,11 @@ export async function login(req: Request, res: Response) {
 
     try {
         const { username, password, remember } = req.body;
+
+        // No such username (Do NOT specify what is wrong in the error message!)
+        if (!username || !password) {
+            return res.status(401).json({ error: "Invalid username or password" })
+        }
 
         const user = await db.promise("get", "SELECT * FROM users WHERE username=?", username);
 
@@ -84,7 +89,7 @@ export async function login(req: Request, res: Response) {
 
     } catch (ex) {
         debug(ex + "");
-        res.status(401).end("Login failed");
+        res.status(401).json({ error: "Login failed" });
     }
 }
 
