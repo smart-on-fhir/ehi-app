@@ -83,7 +83,13 @@ export async function completeAuthorization(req: Request, res: Response) {
 
     const job = new Job({
         statusUrl,
-        userId: 1
+        userId: (req as EHI.AuthenticatedRequest).user.id,
+        patient: {
+            id: client.patient.id!,
+            // TODO: Fetch the patient to get their name? Perhaps we can use the
+            // name of out current user here?
+            name: "John Doe (TODO)"
+        }
     })
 
     const linkUrl = response.headers.get("Link");

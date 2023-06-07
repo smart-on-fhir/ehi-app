@@ -133,6 +133,10 @@ declare namespace EHI {
         readonly: boolean | 0 | 1
         statusUrl: string
         customizeUrl: string | null
+        patient: {
+            id: string
+            name: string
+        };
     }
 
     interface ExportJobInformationParameter {
