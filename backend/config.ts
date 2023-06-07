@@ -10,5 +10,6 @@ export default {
 
     // Change this in production
     // To generate one run `require("bcryptjs").genSaltSync(10)`
-    salt: env.SALT || "$2a$10$ZyXp2reLAbPDwNIIqzurIu"
+    salt: env.SALT || "$2a$10$ZyXp2reLAbPDwNIIqzurIu",
+    authDelay: env.NODE_ENV === "test" ? 0 : 1000
 }

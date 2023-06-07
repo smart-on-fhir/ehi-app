@@ -4,6 +4,7 @@ import Bcrypt from "bcryptjs"
 import db from "./db"
 import { wait } from "./lib"
 import { EHI } from "./types"
+import config from "./config"
 
 type Role = "user" | "admin"
 
@@ -42,7 +43,7 @@ export function requireAuth(...roles: Role[]) {
 export async function login(req: Request, res: Response) {
 
     // 1 second artificial delay to protect from automated brute-force attacks
-    await wait(1000);
+    await wait(config.authDelay);
 
     try {
         const { username, password, remember } = req.body;
@@ -85,7 +86,7 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function logout(req: EHI.UserRequest, res: Response) {
-    await wait(1000);
+    await wait(config.authDelay);
     const user = req.user
     if (user) {
         try {
