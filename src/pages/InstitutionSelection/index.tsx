@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useAsync } from "../../hooks/useAsync";
+import useAsync from "../../hooks/useAsync";
 import InstitutionList from "../../components/InstitutionList";
 import { Institution } from "../../types";
 import Loading from "../../components/Loading";
@@ -14,7 +14,7 @@ export default function InstitutionSelection() {
     loading,
     result: institutions,
     error,
-  } = useAsync<Institution[]>(useCallback(getInstitutions, []), true);
+  } = useAsync<[], Institution[]>(useCallback(getInstitutions, []), true);
 
   if (loading) {
     return <Loading display="Loading institutions..." />;

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useAsync } from "../../hooks/useAsync";
+import useAsync from "../../hooks/useAsync";
 import ExportJobListItemUser from "../../components/ExportJobListItemUser";
 import LinkButton from "../../components/LinkButton";
 import Loading from "../../components/Loading";
@@ -15,7 +15,7 @@ export default function UserExportJobList() {
     loading,
     result: jobs,
     error,
-  } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
+  } = useAsync<[], ExportJobSummary[]>(useCallback(getExportJobs, []), true);
 
   function PageBody() {
     if (loading) {

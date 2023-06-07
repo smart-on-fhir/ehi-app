@@ -6,8 +6,8 @@ interface State<ReturnType> {
   result: ReturnType | null;
 }
 
-interface UseAsyncReturnValue<ArgType extends any[], ReturnType> {
-  execute: (signal?: AbortSignal, ...args: ArgType) => Promise<void>;
+interface useLoadingErrorReturnValue<ArgType extends any[], ReturnType> {
+  execute: (...args: ArgType) => Promise<void>;
   loading: boolean;
   error: Error | null;
   result: ReturnType | null;
@@ -20,11 +20,11 @@ function reducer<ReturnType>(
   return { ...state, ...payload };
 }
 
-export default function useAsync<ArgType extends any[], ReturnType>(
-  fn: (signal?: AbortSignal, ...args: ArgType) => Promise<ReturnType>,
+export default function useLoadingError<ArgType extends any[], ReturnType>(
+  fn: (...args: ArgType) => Promise<ReturnType>,
   immediate?: boolean,
   ...immediateArgs: ArgType
-): UseAsyncReturnValue<ArgType, ReturnType> {
+): useLoadingErrorReturnValue<ArgType, ReturnType> {
   const [state, dispatch] = useReducer(reducer<ReturnType>, {
     loading: immediate === undefined ? false : immediate,
     error: null,
@@ -32,18 +32,14 @@ export default function useAsync<ArgType extends any[], ReturnType>(
   });
 
   const execute = useCallback(
-    (signal?: AbortSignal, ...args: ArgType) => {
+    (...args: ArgType) => {
       dispatch({ loading: true, result: null, error: null });
-      return fn(signal, ...args).then(
+      return fn(...args).then(
         (result: ReturnType) => {
-          if (!signal?.aborted) {
-            dispatch({ loading: false, result });
-          }
+          dispatch({ loading: false, result });
         },
         (error: Error) => {
-          if (!signal?.aborted) {
-            dispatch({ loading: false, error });
-          }
+          dispatch({ loading: false, error });
         }
       );
     },
@@ -51,16 +47,13 @@ export default function useAsync<ArgType extends any[], ReturnType>(
   );
 
   useEffect(() => {
-    const abortController = new AbortController();
-
     if (immediate) {
-      execute(abortController.signal, ...immediateArgs);
+      execute(...immediateArgs);
     }
     return () => {
-      abortController.abort();
+      dispatch({ loading: false, error: null, result: null });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [execute, immediate]);
+  }, [execute, immediate, immediateArgs]);
 
   return {
     execute,

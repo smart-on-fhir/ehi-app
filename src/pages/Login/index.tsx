@@ -73,7 +73,7 @@ export default function Login() {
           {authError && (
             <p className="flex w-full animate-fadeIn items-center rounded border bg-red-100 p-4">
               <AlertTriangle className="mr-2 inline " />
-              {authError}
+              {authError.message}
             </p>
           )}
         </form>

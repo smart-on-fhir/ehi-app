@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useCallback } from "react";
 import { ExportJob } from "../../types";
-import { useAsync } from "../../hooks/useAsync";
+import useAsync from "../../hooks/useAsync";
 import { getExportJob } from "../../lib/exportJobHelpers";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -20,7 +20,7 @@ export default function ExportJobViewer() {
     loading,
     result: job,
     error,
-  } = useAsync<ExportJob>(useCallback(getExportJobWithId, [id]), true);
+  } = useAsync<[], ExportJob>(useCallback(getExportJobWithId, [id]), true);
 
   function BackLink() {
     return (

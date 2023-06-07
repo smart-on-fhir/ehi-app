@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useAsync } from "../../hooks/useAsync";
+import useAsync from "../../hooks/useAsync";
 import ExportJobListItemAdmin from "../../components/ExportJobListItemAdmin";
 import { getExportJobs } from "../../lib/exportJobHelpers";
 import { ExportJobSummary } from "../../types";
@@ -13,7 +13,7 @@ export default function AdminExportJobList() {
     loading,
     result: jobs,
     error,
-  } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
+  } = useAsync<[], ExportJobSummary[]>(useCallback(getExportJobs, []), true);
 
   function PageBody() {
     if (loading) {
