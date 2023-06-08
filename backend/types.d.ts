@@ -132,6 +132,7 @@ declare namespace EHI {
         userId: number
         readonly: boolean | 0 | 1
         statusUrl: string
+        status: EHI.ExportJobStatus
         customizeUrl: string | null
         patient: {
             id: string

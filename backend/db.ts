@@ -141,6 +141,7 @@ async function seed(db: DB): Promise<DB> {
             "userId"         Integer  NOT NULL,
             "json"           Text     NOT NULL,
             "readonly"       Boolean DEFAULT 0,
+            "status"         Text NOT NULL,
             "statusUrl"      Text NOT NULL,
             "customizeUrl"   Text
         )`
@@ -149,9 +150,9 @@ async function seed(db: DB): Promise<DB> {
     // Insert one read-only job ------------------------------------------------
     await promise("run", `
         INSERT INTO "jobs" (
-            id, userId, json, readonly, statusUrl, customizeUrl
+            id, userId, json, readonly, statusUrl, status, customizeUrl
         ) values (
-            NULL, $userId, $json, $readonly, $statusUrl, $customizeUrl
+            NULL, $userId, $json, $readonly, $statusUrl, $status, $customizeUrl
         )`, {
         $userId: 1,
         $json: JSON.stringify({
@@ -160,7 +161,6 @@ async function seed(db: DB): Promise<DB> {
             createdAt: Date.now(),
             completedAt: Date.now(),
             manifest: {},
-            status: "retrieved",
             parameters: {
                 // Electronic Records
                 visits: { group: 1, enabled: false, name: "Clinic Visits" },
@@ -190,14 +190,15 @@ async function seed(db: DB): Promise<DB> {
         }),
         $readonly: 1,
         $statusUrl: "",
+        $status: "retrieved",
         $customizeUrl: ""
     });
 
     await promise("run", `
         INSERT INTO "jobs" (
-            id, userId, json, readonly, statusUrl, customizeUrl
+            id, userId, json, readonly, statusUrl, status customizeUrl
         ) values (
-            NULL, $userId, $json, $readonly, $statusUrl, $customizeUrl
+            NULL, $userId, $json, $readonly, $statusUrl, $status $customizeUrl
         )`, {
         $userId: 2,
         $json: JSON.stringify({
@@ -206,7 +207,6 @@ async function seed(db: DB): Promise<DB> {
             createdAt: Date.now(),
             completedAt: Date.now(),
             manifest: {},
-            status: "retrieved",
             parameters: {
                 // Electronic Records
                 visits: { group: 1, enabled: false, name: "Clinic Visits" },
@@ -236,6 +236,7 @@ async function seed(db: DB): Promise<DB> {
         }),
         $readonly: 1,
         $statusUrl: "",
+        $status: "retrieved",
         $customizeUrl: ""
     });
 

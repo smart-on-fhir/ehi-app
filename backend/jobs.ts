@@ -22,7 +22,14 @@ router.get("/", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async
     }
     const jobs = await db.promise("all", sql, params)
     // NEED TO UPDATE JOBS ON CALL
-    res.json(jobs.map((j: any) => new Job(j)))
+    console.log(jobs)
+    const updatedJobs = await Promise.all(jobs.map(async (j: any) => { 
+        const job = new Job(j);
+        await job.update()
+        return job
+    }))
+    res.json(updatedJobs)
+    // res.json(jobs.map((j: any) => new Job(j)))
 }))
 
 router.get("/:id", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async (req: EHI.UserRequest, res: Response) => {

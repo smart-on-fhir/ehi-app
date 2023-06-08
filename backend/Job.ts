@@ -9,6 +9,7 @@ export default class Job {
     protected userId: number | null;
     protected readonly: boolean;
     protected statusUrl: string;
+    protected status: EHI.ExportJobStatus;
     protected customizeUrl: string;
 
     constructor(rec: Partial<EHI.ExportJobDbRecord> = {}) {
@@ -17,6 +18,7 @@ export default class Job {
         this.userId = rec.userId || null;
         this.readonly = !!rec.readonly;
         this.statusUrl = rec.statusUrl || "";
+        this.status = rec.status || "awaiting-input";
         this.customizeUrl = rec.customizeUrl || "";
     }
 
@@ -73,6 +75,20 @@ export default class Job {
         return this
     }
 
+    public async update() {
+        if (this.statusUrl) {
+            const statusRequest = await fetch(this.statusUrl);
+            if (statusRequest.status === 202) { 
+                this.attributes = await statusRequest.json()
+                return this.save();
+            } else if (statusRequest.status === 200) { 
+                this.status = 'retrieved'
+                return this.save()
+            }
+            return this
+        }
+    }
+
     public toJSON() {
         return this.attributes
     }
@@ -80,10 +96,10 @@ export default class Job {
     public async download() { }
 
     public async approve() {
-        if (this.attributes.status !== "in-review") {
+        if (this.status !== "in-review") {
             throw new HttpError('Only "in-review" exports can be approved').status(400)
         }
-        this.attributes.status = "requested"
+        this.status = "requested"
         await this.save()
         return this
     }
@@ -93,10 +109,10 @@ export default class Job {
      * "in-review" or "awaiting-input" state.
      */
     public async reject() {
-        if (this.attributes.status !== "in-review" && this.attributes.status !== "awaiting-input") {
+        if (this.status !== "in-review" && this.status !== "awaiting-input") {
             throw new HttpError('Only "in-review" and "awaiting-input" exports can be rejected').status(400)
         }
-        this.attributes.status = "rejected"
+        this.status = "rejected"
         await this.save()
         return this;
     }
@@ -106,7 +122,7 @@ export default class Job {
      * "requested" state.
      */
     public async abort() {
-        if (this.attributes.status !== "requested") {
+        if (this.status !== "requested") {
             throw new HttpError('Only jobs in "requested" state can be aborted').status(400)
         }
         if (this.statusUrl) {
