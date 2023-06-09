@@ -196,9 +196,9 @@ async function seed(db: DB): Promise<DB> {
 
     await promise("run", `
         INSERT INTO "jobs" (
-            id, userId, json, readonly, statusUrl, status customizeUrl
+            id, userId, json, readonly, statusUrl, status, customizeUrl
         ) values (
-            NULL, $userId, $json, $readonly, $statusUrl, $status $customizeUrl
+            NULL, $userId, $json, $readonly, $statusUrl, $status, $customizeUrl
         )`, {
         $userId: 2,
         $json: JSON.stringify({

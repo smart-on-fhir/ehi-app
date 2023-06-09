@@ -79,6 +79,7 @@ export default class Job {
         if (this.statusUrl) {
             const statusRequest = await fetch(this.statusUrl);
             if (statusRequest.status === 202) { 
+                // Maybe this should be a try catch? 
                 this.attributes = await statusRequest.json()
                 return this.save();
             } else if (statusRequest.status === 200) { 
@@ -93,7 +94,11 @@ export default class Job {
         return this.attributes
     }
 
-    public async download() { }
+    public async download() { 
+        if (this.status !== "retrieved") { 
+            throw new HttpError('Only "in-review" exports can be approved').status(400)
+        }
+    }
 
     public async approve() {
         if (this.status !== "in-review") {
