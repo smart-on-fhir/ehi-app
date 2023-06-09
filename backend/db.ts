@@ -141,8 +141,8 @@ async function seed(db: DB): Promise<DB> {
             "userId"         Integer  NOT NULL,
             "json"           Text     NOT NULL,
             "readonly"       Boolean DEFAULT 0,
-            "status"         Text NOT NULL,
             "statusUrl"      Text NOT NULL,
+            "status"         Text NOT NULL,
             "customizeUrl"   Text
         )`
     );

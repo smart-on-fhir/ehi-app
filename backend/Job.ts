@@ -40,13 +40,14 @@ export default class Job {
         if (this.id) {
             await db.promise(
                 "run",
-                `UPDATE "jobs" SET json=?, userId=?, readonly=?, statusUrl=?,
+                `UPDATE "jobs" SET json=?, userId=?, readonly=?, statusUrl=?, status=?,
                 customizeUrl=? WHERE id=?`,
                 [
                     JSON.stringify(this.attributes),
                     this.userId,
                     this.readonly,
                     this.statusUrl,
+                    this.status,
                     this.customizeUrl,
                     this.id
                 ]
@@ -54,13 +55,14 @@ export default class Job {
         } else {
             await db.promise(
                 "run",
-                `INSERT INTO "jobs" (json, userId, readonly, statusUrl, customizeUrl)
-                 VALUES (?, ?, ?, ?, ?)`,
+                `INSERT INTO "jobs" (json, userId, readonly, statusUrl, status, customizeUrl)
+                 VALUES (?, ?, ?, ?, ?, ?)`,
                 [
                     JSON.stringify(this.attributes),
                     this.userId,
                     this.readonly,
                     this.statusUrl,
+                    this.status,
                     this.customizeUrl
                 ]
             )
@@ -80,7 +82,8 @@ export default class Job {
             const statusRequest = await fetch(this.statusUrl);
             if (statusRequest.status === 202) { 
                 // Maybe this should be a try catch? 
-                this.attributes = await statusRequest.json()
+                const x = await statusRequest.json()
+                this.attributes = x 
                 return this.save();
             } else if (statusRequest.status === 200) { 
                 this.status = 'retrieved'
@@ -88,10 +91,15 @@ export default class Job {
             }
             return this
         }
+        return this
     }
 
+    /**
+     * Serialize the job 
+     * @returns External job information, including all job attributes and status
+     */
     public toJSON() {
-        return this.attributes
+        return {...this.attributes, status: this.status}
     }
 
     public async download() { 
