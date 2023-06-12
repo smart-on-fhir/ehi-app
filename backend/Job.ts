@@ -36,6 +36,15 @@ export default class Job {
         return this.attributes[name]
     }
 
+    // TODO: Maybe combine with the above set/get fn? Use clever case-analysis to decide if we're setting a 
+    // top level or attribute level property? Define just two methods for attributes vs. top-level properties?
+    public setCustomizeUrl(url: string) { 
+        this.customizeUrl = url
+    }
+    public getCustomizeUrl(): string { 
+        return this.customizeUrl
+    }
+
     public async save() {
         if (this.id) {
             await db.promise(
@@ -77,17 +86,20 @@ export default class Job {
         return this
     }
 
+    // public async update(client: any) {
     public async update() {
         if (this.statusUrl) {
+            // TODO: Get client-mediated requests working
+            // const { response: statusRequest } = await client.request({ url: this.statusUrl })
             const statusRequest = await fetch(this.statusUrl);
             if (statusRequest.status === 202) { 
                 // Maybe this should be a try catch? 
                 const x = await statusRequest.json()
                 this.attributes = x 
-                return this.save();
+                return await this.save();
             } else if (statusRequest.status === 200) { 
                 this.status = 'retrieved'
-                return this.save()
+                return await this.save()
             }
             return this
         }
@@ -99,7 +111,7 @@ export default class Job {
      * @returns External job information, including all job attributes and status
      */
     public toJSON() {
-        return {...this.attributes, status: this.status}
+        return {...this.attributes, status: this.status, id: this.id, customizeUrl: this.customizeUrl}
     }
 
     public async download() { 

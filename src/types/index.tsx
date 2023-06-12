@@ -20,6 +20,8 @@ export interface ExportJob {
    */
   id: string;
 
+  customizeUrl: string;
+
   /**
    * The ID and humanized name of the patient
    */
@@ -68,6 +70,8 @@ export interface ExportJobSummary {
    * Random 8 char hex job ID
    */
   id: string;
+
+  customizeUrl: string;
 
   /**
    * The ID and humanized name of the patient

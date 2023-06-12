@@ -10,11 +10,10 @@ import { EHI } from "./types"
 const router = express.Router({ mergeParams: true });
 export default router
 
-async function getUpdatedJob(j: any): Promise<Job> { 
+async function getUpdatedJobPromise(j: any): Promise<Job> { 
     return new Promise<Job>(async (res, rej) => { 
-        const job = new Job(j);
-        await job.update()
-        res(job)
+        // TODO: Pass in clients for data fetching? 
+        res(new Job(j).update())
     })
 }
 
@@ -28,7 +27,7 @@ router.get("/", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async
         params.push(userId)
     }
     const jobs = await db.promise("all", sql, params)
-    const jobsRequests:Promise<Job>[] = jobs.map((j) => getUpdatedJob(j))
+    const jobsRequests: Promise<Job>[] = jobs.map((j) => getUpdatedJobPromise(j))
     const updatedJobs = await Promise.all(jobsRequests)
     res.json(updatedJobs)
 }))

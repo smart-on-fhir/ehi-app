@@ -101,13 +101,13 @@ export async function completeAuthorization(req: Request, res: Response) {
         // If there is a patient-interaction link, get it so we can redirect the user there
         const [href, rel] = linkUrl.split(/\s*;\s*/);
         if (href && rel === 'rel="patient-interaction"') {
-            job.set("customizeUrl", href)
+            job.setCustomizeUrl(href)
         }
     }
 
     await job.save()
 
-    const customizeUrl = job.get("customizeUrl")
+    const customizeUrl = job.getCustomizeUrl()
 
     let redirectUrl = "/jobs"
     if (process.env.NODE_ENV !== "production") {

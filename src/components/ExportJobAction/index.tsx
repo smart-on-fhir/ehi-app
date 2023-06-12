@@ -8,9 +8,7 @@ type ExportJobActionProps = {
 };
 
 export default function ExportJobAction({ job, status }: ExportJobActionProps) {
-  const link = `${process!.env!.REACT_APP_EHI_SERVER}/jobs/${
-    job.id
-  }/customize?_patient=${job.patient.id}&redirect=${
+  const link = `${job.customizeUrl}&redirect=${
     window.location.origin + window.location.pathname
   }`;
 
