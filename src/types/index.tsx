@@ -20,6 +20,12 @@ export interface ExportJob {
    */
   id: string;
 
+  userId: number;
+  statusUrl: string
+  readonly: boolean
+  customizeUrl: string | null
+  manifest: any
+
   /**
    * The ID and humanized name of the patient
    */
@@ -65,9 +71,9 @@ export interface ExportJob {
  */
 export interface ExportJobSummary {
   /**
-   * Random 8 char hex job ID
+   * Job ID
    */
-  id: string;
+  id: string// | number;
 
   /**
    * The ID and humanized name of the patient
