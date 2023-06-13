@@ -4,11 +4,7 @@ export async function request<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const fullPath = path.replace(
-    /^\//,
-    (process!.env!.REACT_APP_EHI_SERVER || "") + "/"
-  );
-  const res = await fetch(fullPath, {
+  const res = await fetch(path, {
     mode: "cors",
     ...options,
   });
