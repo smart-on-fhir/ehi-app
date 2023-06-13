@@ -28,7 +28,7 @@ export default function AttachmentSection({
       {jobEditable && (
         <AttachmentUpload jobId={jobId} refreshJob={refreshJob} />
       )}
-      <ul className="max-h-[calc(100vh-510px)] w-full space-y-2 overflow-scroll sm:max-h-[calc(100vh-470px)]">
+      <ul className="max-h-[calc(100vh-510px)] w-full space-y-2 overflow-auto sm:max-h-[calc(100vh-470px)]">
         {job.attachments.map((attachment) => {
           return (
             <AttachmentComponent
