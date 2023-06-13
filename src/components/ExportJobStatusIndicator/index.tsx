@@ -29,22 +29,22 @@ export default function ExportJobStatusIndicator({
           <Edit className="m-2" size={size} />
         </div>
       );
-    case "in-review":
-      return (
-        <div
-          className="rounded-full bg-yellow-400 "
-          title={displayStatus(status)}
-        >
-          <BookOpen className="m-2 " size={size} />
-        </div>
-      );
     case "requested":
       return (
         <div
-          className="rounded-full bg-green-300 "
+          className="rounded-full bg-yellow-400  "
           title={displayStatus(status)}
         >
           <Clock className="m-2" size={size} />
+        </div>
+      );
+    case "in-review":
+      return (
+        <div
+          className="rounded-full bg-blue-300 "
+          title={displayStatus(status)}
+        >
+          <BookOpen className="m-2 " size={size} />
         </div>
       );
     case "approved":

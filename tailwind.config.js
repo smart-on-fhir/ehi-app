@@ -15,6 +15,18 @@ const red = {
   800: "#53100e",
   900: "#290807",
 };
+const blue = {
+  50: "#eaf0f8",
+  100: "#d5e0f2",
+  200: "#abc1e4",
+  300: "#81a2d7",
+  400: "#5783c9",
+  500: "#2d64bc",
+  600: "#245096",
+  700: "#1b3c71",
+  800: "#12284b",
+  900: "#091426",
+};
 const yellow = {
   50: "#faf6e9",
   100: "#f4ecd2",
@@ -87,6 +99,7 @@ module.exports = {
         // Palettes
         red: red,
         green: green,
+        blue: blue,
         yellow: yellow,
         neutral: neutral,
         primary: primary,
