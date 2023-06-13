@@ -21,10 +21,10 @@ export interface ExportJob {
   id: string;
 
   userId: number;
-  statusUrl: string
-  readonly: boolean
-  customizeUrl: string | null
-  manifest: any
+  statusUrl: string;
+  readonly: boolean;
+  customizeUrl: string | null;
+  manifest: any;
 
   /**
    * The ID and humanized name of the patient
@@ -67,44 +67,9 @@ export interface ExportJob {
 }
 
 /**
- * The JSON representation of an export job summary
+ * The JSON representation of an export job summary, omitting some unnecessary fields
  */
-export interface ExportJobSummary {
-  /**
-   * Job ID
-   */
-  id: string// | number;
-
-  /**
-   * The ID and humanized name of the patient
-   */
-  patient: {
-    id: string;
-    name: string;
-  };
-
-  /**
-   * The job status
-   */
-  status: ExportJobStatus;
-
-  /**
-   * The JS timestamp showing when this job was created
-   */
-  createdAt: number;
-
-  /**
-   * The JS timestamp showing when this job was completed, or `0` if it
-   * hasn't been completed yet
-   */
-  completedAt: number;
-
-  /**
-   * Array of additional attachments which should be made available via
-   * DocumentReference
-   */
-  attachments: fhir4.Attachment[];
-}
+export type ExportJobSummary = Omit<ExportJob, "manifest" | "readonly">;
 
 /**
  * Can be:

@@ -1,7 +1,7 @@
 import { ExportJobSummary, ExportJob } from "../types";
 import { request } from "./fetchHelpers";
 
-export const EXPORT_ROUTE = `/jobs`;
+export const EXPORT_ROUTE = `/api/jobs`;
 
 export function getExportJobLink(id: string) {
   // Needs the actual server URL since this is used in an <a> tag, not in the request library
