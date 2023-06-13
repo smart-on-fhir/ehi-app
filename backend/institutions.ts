@@ -3,7 +3,7 @@ import express, { Request, Response } from "express"
 import Job from "./Job"
 import db from "./db"
 import { HttpError } from "./errors"
-import { asyncRouteWrap } from "./lib"
+import { asyncRouteWrap, getStorage } from "./lib"
 import { authenticate, requireAuth } from "./auth"
 import { EHI } from "./types"
 
@@ -27,37 +27,6 @@ export async function getAll(req: Request, res: Response) {
     res.json(await db.promise("all", "SELECT id, displayName, location, disabled FROM institutions"))
 }
 
-function getStorage(req: Request) {
-    return {
-        async set(key: string, value: any) {
-            const user = (req as EHI.UserRequest).user!
-            const session = JSON.parse(user.session || "{}")
-            session[key] = value
-            user.session = JSON.stringify(session)
-            await db.promise("run", `update "users" set "session"=? where id=?`, [user.session, user.id])
-        },
-        async get(key: string) {
-            const user = (req as EHI.UserRequest).user!
-            const session = JSON.parse(user.session || "{}")
-            return session[key]
-        },
-        async unset(key: string) {
-            const user = (req as EHI.UserRequest).user!
-            const session = JSON.parse(user.session || "{}")
-            if (session.hasOwnProperty(key)) {
-                delete session[key]
-                user.session = JSON.stringify(session)
-                await db.promise("run", `update "users" set "session"=? where "id"=?`, [user.session, user.id])
-                return true
-            }
-            return false
-        },
-        async clear() {
-            const user = (req as EHI.UserRequest).user!
-            await db.promise("run", `update "users" set "session"=? where "id"=?`, ['{}', +user.id])
-        }
-    }
-}
 
 export async function startAuthorization(req: Request, res: Response) {
     const institution = await byId(+req.params.id)
