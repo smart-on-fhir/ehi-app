@@ -18,7 +18,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
         </div>
       </div>
       {authUser?.role === "admin" && (
-        <div className="w-full bg-active py-2 text-center text-xl text-white">
+        <div className="w-full bg-[#900] py-2 text-center text-xl font-bold text-white">
           Admin Mode
         </div>
       )}
