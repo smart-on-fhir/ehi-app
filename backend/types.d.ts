@@ -142,6 +142,7 @@ declare namespace EHI {
         accessToken: string
         refreshToken: string
         tokenUri: string
+        status: ExportJobStatus | null
     }
 
     interface ExportJobInformationParameter {

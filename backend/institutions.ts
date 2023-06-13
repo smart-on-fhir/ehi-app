@@ -76,6 +76,9 @@ export async function completeAuthorization(req: Request, res: Response) {
     if (process.env.NODE_ENV !== "production") {
         redirectUrl = "http://127.0.0.1:3000/jobs"
     }
+
+    job.sync() // START POOLING!!!
+
     if (customizeUrl) {
         let url = new URL(customizeUrl)
         url.searchParams.set("redirect", redirectUrl)

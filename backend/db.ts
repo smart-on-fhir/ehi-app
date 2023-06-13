@@ -150,7 +150,8 @@ async function seed(db: DB): Promise<DB> {
             "createdAt"      DateTime DEFAULT CURRENT_TIMESTAMP,
             "accessToken"    Text NOT NULL,
             "refreshToken"   Text NOT NULL,
-            "tokenUri"       Text NOT NULL
+            "tokenUri"       Text NOT NULL,
+            "status"         Text
         )`
     );
 
@@ -170,8 +171,9 @@ async function seed(db: DB): Promise<DB> {
             attachments,
             accessToken,
             refreshToken,
-            tokenUri
-        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            tokenUri,
+            status
+        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
             1,    // id
             1,    // userId (admin)
@@ -203,9 +205,10 @@ async function seed(db: DB): Promise<DB> {
                 other: { value: "", name: "Other(s)" }
             }),
             JSON.stringify([]), // attachments
-            "", // accessToken
-            "", // refreshToken
-            ""  // tokenUri
+            "",         // accessToken
+            "",         // refreshToken
+            "",         // tokenUri
+            "in-review" // status
         ]
     );
 
@@ -224,8 +227,9 @@ async function seed(db: DB): Promise<DB> {
             attachments,
             accessToken,
             refreshToken,
-            tokenUri
-        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            tokenUri,
+            status
+        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
             2,    // id
             2,    // userId (patient)
@@ -257,9 +261,10 @@ async function seed(db: DB): Promise<DB> {
                 other: { value: "", name: "Other(s)" }
             }),
             JSON.stringify([]), // attachments
-            "", // accessToken
-            "", // refreshToken
-            ""  // tokenUri
+            "",         // accessToken
+            "",         // refreshToken
+            "",         // tokenUri
+            "in-review" // status
         ]
     );
 

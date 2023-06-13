@@ -1,12 +1,13 @@
 // import Path, { basename } from "path"
 // import smart from "fhirclient"
+import config from "./config";
 import db from "./db"
 import { HttpError } from "./errors"
+import { wait } from "./lib";
 import { EHI } from "./types"
 // import { Request, Response } from "express"
 // import { getPrefixedFilePath, getRequestBaseURL, getStorage, wait } from "./lib"
 // import { copyFile, mkdir, unlink } from "fs/promises"
-// import fetch from "node-fetch"
 
 export default class Job {
 
@@ -68,7 +69,7 @@ export default class Job {
      */
     protected createdAt: number;
 
-    protected _status: "approved" | "rejected" | "aborted" | undefined;
+    protected status: EHI.ExportJobStatus | null;
 
     protected accessToken: string
 
@@ -91,6 +92,7 @@ export default class Job {
         this.accessToken = rec.accessToken
         this.refreshToken = rec.refreshToken
         this.tokenUri = rec.tokenUri
+        this.status = rec.status
     }
 
     public static async byId(id: number) {
@@ -126,61 +128,50 @@ export default class Job {
         return Job.byId(lastID)
     }
 
-    public get status(): EHI.ExportJobStatus {
-        // If explicitly set to "approved", "rejected", "aborted" then no further changes are possible
-        if (this._status) {
-            return this._status;
-        }
-
-        if (this.customizeUrl && (!this.parameters || !this.authorizations)) {
-            return "awaiting-input";
-        }
-
-        if (!this.manifest) {
-            return "requested"
-        }
-
-        return "in-review"
-    }
-
     // =========================================================================
 
-    public async sync(): Promise<Job> {
-        if (this.statusUrl && !this.manifest) {
-            let res = await fetch(this.statusUrl, {
+    private async fetch(): Promise<Job> {
+
+        let res = await fetch(this.statusUrl, {
+            headers: {
+                "authorization": "Bearer " + this.accessToken
+            }
+        })
+
+        if (res.status === 401) {
+            await this.refresh()
+            res = await fetch(this.statusUrl, {
                 headers: {
                     "authorization": "Bearer " + this.accessToken
                 }
             })
+        }
 
-            if (res.status === 401) {
-                await this.refresh()
-                res = await fetch(this.statusUrl, {
-                    headers: {
-                        "authorization": "Bearer " + this.accessToken
-                    }
-                })
-            }
+        if (res.status == 200) {
+            this.manifest = await res.json()
+            this.status = "in-review"
+            return this.save()
+        }
 
-            if (res.status == 200) {
-                this.manifest = await res.json()
-                console.log(this)
-                return this.save()
-            }
+        if (res.status == 202) {
+            await wait(config.statusCheckInterval)
+            return this.fetch()
+        }
 
-            if (res.status == 202) {
-                // await wait(1000)
-                // return this.sync()
-                return this
-            }
+        throw new HttpError(`Unexpected bulk status response ${res.status} ${res.statusText}`)
+    }
 
-            throw new HttpError(`Unexpected bulk status response ${res.status} ${res.statusText}`)
+    public async sync(): Promise<Job> {
+        if (!this._status) {
+            this._status = "requested"
+            await this.save()
+            await this.fetch()
         }
 
         return this
     }
 
-    protected async refresh() {
+    private async refresh() {
         const { refreshToken, tokenUri } = this
         const res = await fetch(tokenUri, {
             method: "POST",
@@ -216,6 +207,7 @@ export default class Job {
             parameters: this.parameters ? JSON.stringify(this.parameters) : null,
             authorizations: this.authorizations ? JSON.stringify(this.authorizations) : null,
             attachments: this.attachments ? JSON.stringify(this.attachments) : null,
+            status: this.status
         }
         if (this.id) {
             await db.promise(
@@ -253,8 +245,8 @@ export default class Job {
             createdAt: this.createdAt,
             completedAt: 0,// TODO:
             attachments: this.attachments,
-            parameters: this.parameters, // || {},
-            authorizations: this.authorizations, // || {},
+            parameters: this.parameters || {},
+            authorizations: this.authorizations || {},
             statusUrl: this.statusUrl,
             readonly: this.readonly,
             customizeUrl: this.customizeUrl,

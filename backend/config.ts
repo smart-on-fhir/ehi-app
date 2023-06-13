@@ -14,5 +14,8 @@ export default {
 
     db: env.NODE_ENV === "test" ? './db-test.sqlite3' : './db.sqlite3',
 
-    authDelay: env.NODE_ENV === "test" ? 0 : 1000
+    authDelay: env.NODE_ENV === "test" ? 0 : 1000,
+
+    // How often to check export status (in milliseconds)
+    statusCheckInterval: +(env.STATUS_CHECK_INTERVAL || 5000)
 }

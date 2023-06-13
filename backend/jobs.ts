@@ -30,7 +30,6 @@ router.get("/:id", authenticate, requireAuth("user", "admin"), asyncRouteWrap(as
     if (role !== "admin" && job.userId !== id) {
         throw new HttpError("Permission denied").status(403)
     }
-    await job.sync()
     res.json(job)
 }))
 
