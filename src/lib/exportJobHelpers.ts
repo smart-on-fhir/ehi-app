@@ -25,13 +25,8 @@ export async function updateExportStatus(
   id: string,
   newStatus: "approve" | "reject"
 ): Promise<ExportJob> {
-  return request<ExportJob>(`${EXPORT_ROUTE}/${id}`, {
+  return request<ExportJob>(`${EXPORT_ROUTE}/${id}/${newStatus}`, {
     method: "post",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ action: newStatus }),
   });
 }
 
