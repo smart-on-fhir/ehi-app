@@ -1,5 +1,9 @@
 {
-  "cSpell.words": ["fhirclient", "tailwindcss"],
+  "cSpell.words": [
+    "fhirclient",
+    "fieldname",
+    "tailwindcss"
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
