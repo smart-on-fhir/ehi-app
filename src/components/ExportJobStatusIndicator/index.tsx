@@ -47,7 +47,7 @@ export default function ExportJobStatusIndicator({
           <Clock className="m-2" size={size} />
         </div>
       );
-    case "retrieved":
+    case "approved":
       return (
         <div
           className="rounded-full bg-green-400 "

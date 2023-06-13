@@ -20,7 +20,7 @@ export default function ExportJobListItemAdmin({
       </div>
       <div className="w-full">
         <h1 className="mr-2 inline-block text-lg font-bold">Job #{id}</h1>
-        {status === "retrieved" && <ExportJobLink jobId={id} />}
+        {status === "approved" && <ExportJobLink jobId={id} />}
         <pre className="whitespace-pre-wrap text-xs italic opacity-50">
           {[
             `Patient ${patient.name}`,
