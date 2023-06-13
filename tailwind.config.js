@@ -15,18 +15,6 @@ const red = {
   800: "#53100e",
   900: "#290807",
 };
-const blue = {
-  50: "#eaf0f8",
-  100: "#d5e0f2",
-  200: "#abc1e4",
-  300: "#81a2d7",
-  400: "#5783c9",
-  500: "#2d64bc",
-  600: "#245096",
-  700: "#1b3c71",
-  800: "#12284b",
-  900: "#091426",
-};
 const yellow = {
   50: "#faf6e9",
   100: "#f4ecd2",
@@ -77,6 +65,19 @@ const primary = {
   800: "#2e2918",
   900: "#17140c",
 };
+// Status Indicator Colors
+// awaiting-input`
+const awaitingInput = yellow[200];
+// requested`
+const requested = yellow[400];
+// in-review`
+const inReview = "#abc1e4";
+// approved`
+const approved = green[400];
+// aborted`
+const aborted = "#e4aa86";
+// rejected`
+const rejected = red[400];
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -99,7 +100,6 @@ module.exports = {
         // Palettes
         red: red,
         green: green,
-        blue: blue,
         yellow: yellow,
         neutral: neutral,
         primary: primary,
@@ -108,6 +108,12 @@ module.exports = {
         "active-dark": primary["600"],
         alert: red["500"],
         "alert-dark": red["600"],
+        "awaiting-input": awaitingInput,
+        requested,
+        "in-review": inReview,
+        approved,
+        aborted,
+        rejected,
       },
       borderColor: {
         DEFAULT: colors.stone[500],
