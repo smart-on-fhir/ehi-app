@@ -1,9 +1,11 @@
 // import Path, { basename } from "path"
 // import smart from "fhirclient"
+import { rmSync } from "fs";
+import { basename, join } from "path";
 import config from "./config";
 import db from "./db"
 import { HttpError } from "./errors"
-import { wait } from "./lib";
+import { downloadFile, getPrefixedFilePath, mkdirSyncRecursive, wait } from "./lib";
 import { EHI } from "./types"
 // import { Request, Response } from "express"
 // import { getPrefixedFilePath, getRequestBaseURL, getStorage, wait } from "./lib"
@@ -77,6 +79,8 @@ export default class Job {
 
     protected tokenUri: string
 
+    protected directory: string
+
     constructor(rec: EHI.ExportJobDbRecord) {
         this.id = rec.id
         this.userId = rec.userId
@@ -93,6 +97,8 @@ export default class Job {
         this.refreshToken = rec.refreshToken
         this.tokenUri = rec.tokenUri
         this.status = rec.status
+        this.directory = join(__dirname, "jobs", this.id + "")
+        mkdirSyncRecursive(this.directory)
     }
 
     public static async byId(id: number) {
@@ -130,22 +136,38 @@ export default class Job {
 
     // =========================================================================
 
-    private async fetch(): Promise<Job> {
-
-        let res = await fetch(this.statusUrl, {
-            headers: {
-                "authorization": "Bearer " + this.accessToken
-            }
-        })
-
-        if (res.status === 401) {
-            await this.refresh()
-            res = await fetch(this.statusUrl, {
-                headers: {
-                    "authorization": "Bearer " + this.accessToken
+    private request<T = any>(useAuth?: boolean) {
+        return async (input: RequestInfo | URL, options: RequestInit = {}): Promise<T> => {
+            if (useAuth) {
+                options.headers = {
+                    ...options.headers,
+                    authorization: "Bearer " + this.accessToken
                 }
-            })
+            } else {
+                // @ts-ignore
+                delete options.headers?.authorization
+            }
+
+            let res = await fetch(input, options)
+
+            if (useAuth && res.status === 401) {
+                await this.refresh()
+                res = await fetch(input, {
+                    ...options,
+                    headers: {
+                        ...options.headers,
+                        authorization: "Bearer " + this.accessToken
+                    }
+                })
+            }
+
+            return res as T
         }
+    }
+
+    private async waitForExport(): Promise<Job> {
+
+        let res = await this.request(true)(this.statusUrl)
 
         if (res.status == 200) {
             this.manifest = await res.json()
@@ -155,17 +177,31 @@ export default class Job {
 
         if (res.status == 202) {
             await wait(config.statusCheckInterval)
-            return this.fetch()
+            return this.waitForExport()
         }
 
         throw new HttpError(`Unexpected bulk status response ${res.status} ${res.statusText}`)
+    }
+
+    private async fetchExport(): Promise<Job> {
+        for (const file of this.manifest!.output) {
+            console.log(`Downloading ${file.type} file from ${file.url}`)
+            const dst = getPrefixedFilePath(this.directory, basename(file.url.replace(/(\.ndjson)?$/, ".ndjson")))
+            await downloadFile(file.url, dst, {
+                headers: {
+                    "authorization": this.manifest!.requiresAccessToken ? "Bearer " + this.accessToken : undefined
+                }
+            })
+        }
+        return this
     }
 
     public async sync(): Promise<Job> {
         if (!this.status) {
             this.status = "requested"
             await this.save()
-            await this.fetch()
+            await this.waitForExport()
+            await this.fetchExport()
         }
 
         return this
@@ -228,7 +264,16 @@ export default class Job {
 
     public async destroy() {
         if (this.id) {
-            await db.promise("run", "DELETE FROM jobs WHERE id=?", [this.id])
+            await db.promise("run", "BEGIN")
+            try {
+                await db.promise("run", "DELETE FROM jobs WHERE id=?", [this.id])
+                rmSync(this.directory, { force: true, recursive: true })
+            } catch (ex) {
+                console.error(ex)
+                await db.promise("run", "ROLLBACK")
+                throw new Error(`Unable to delete  job with id jobs/${this.id}/`)
+            }
+            await db.promise("run", "COMMIT")
         }
         return this
     }

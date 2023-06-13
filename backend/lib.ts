@@ -1,10 +1,18 @@
 
 // import jwt from "jsonwebtoken"
-// import Path from "path"
+import Path from "path"
 import { NextFunction, Request, Response, RequestHandler } from "express"
-// import { readdirSync, statSync } from "fs"
+import {
+    // readdirSync,
+    statSync,
+    createWriteStream,
+    existsSync,
+    mkdirSync
+} from "fs"
 import { EHI } from "./types";
 import db from "./db"
+import http, { IncomingMessage, RequestOptions } from "http"
+import https from "https"
 // import { HttpError, InvalidRequestError, OAuthError } from "./errors"
 // import config from "./config"
 
@@ -185,13 +193,13 @@ export function wait(ms: number) {
 //     }
 // }
 
-// export function getPrefixedFilePath(destination: string, fileName: string) {
-//     let dst = Path.join(destination, fileName), counter = 0;
-//     while (statSync(dst, { throwIfNoEntry: false })?.isFile()) {
-//         dst = Path.join(destination, ++counter + "." + fileName)
-//     }
-//     return dst
-// }
+export function getPrefixedFilePath(destination: string, fileName: string) {
+    let dst = Path.join(destination, fileName), counter = 0;
+    while (statSync(dst, { throwIfNoEntry: false })?.isFile()) {
+        dst = Path.join(destination, ++counter + "." + fileName)
+    }
+    return dst
+}
 
 // export function getPath(obj: any, path: string) {
 //     return path.split(".").reduce((out, key) => out ? out[key] : undefined, obj)
@@ -260,5 +268,42 @@ export function getStorage(req: Request) {
             const user = (req as EHI.UserRequest).user!
             await db.promise("run", `update "users" set "session"=? where "id"=?`, ['{}', +user.id])
         }
+    }
+}
+
+export function downloadFile(url: string, destination: string, options: RequestOptions = {}): Promise<void> {
+    return new Promise((resolve, reject) => {
+        const protocol = url.startsWith('https') ? https : http;
+
+        const fileStream = createWriteStream(destination);
+
+        const request = protocol.get(url, options, (response: IncomingMessage) => {
+
+            if (response.statusCode !== 200) {
+                reject(new Error(`Failed to download file: ${response.statusCode} ${response.statusMessage}`));
+                return;
+            }
+
+            response.pipe(fileStream);
+
+            fileStream.on('finish', () => {
+                fileStream.close();
+                resolve();
+            });
+
+            fileStream.on('error', (error: Error) => {
+                reject(error);
+            });
+        });
+
+        request.on('error', (error: Error) => {
+            reject(error);
+        });
+    });
+}
+
+export function mkdirSyncRecursive(directoryPath: string) {
+    if (!existsSync(directoryPath)) {
+        mkdirSync(directoryPath, { recursive: true });
     }
 }

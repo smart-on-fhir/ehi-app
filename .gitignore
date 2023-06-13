@@ -125,3 +125,5 @@ yarn-debug.log*
 yarn-error.log*
 db.sqlite3
 db-test.sqlite3
+backend/jobs/*
+!backend/jobs/.gitkeep
