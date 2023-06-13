@@ -83,7 +83,7 @@ export type ExportJobSummary = Omit<ExportJob, "manifest" | "readonly">;
  * - `requested` - After the export is approved by the admin and while the
  *   data is being exported.
  *
- * - `retrieved` - All the data transmitted to its destination.
+ * - `approved` - All the data transmitted to its destination.
  *
  * - `aborted` - The admin or the patient aborted/canceled this export.
  *
@@ -94,7 +94,7 @@ export type ExportJobStatus =
   | "awaiting-input"
   | "in-review"
   | "requested"
-  | "retrieved"
+  | "approved"
   | "aborted"
   | "rejected";
 

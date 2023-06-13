@@ -1,9 +1,9 @@
 import { ExportJobStatus } from "../../types";
 import {
   Edit, // awaiting-input`
-  BookOpen, // in-review`
   Clock, // requested`
-  CheckCircle, // retrieved`
+  Search, // in-review`
+  CheckCircle, // approved`
   XOctagon, // aborted`
   Slash, // rejected`
 } from "react-feather";
@@ -23,34 +23,34 @@ export default function ExportJobStatusIndicator({
     case "awaiting-input":
       return (
         <div
-          className="rounded-full bg-yellow-200 "
+          className="rounded-full bg-awaiting-input "
           title={displayStatus(status)}
         >
           <Edit className="m-2" size={size} />
         </div>
       );
-    case "in-review":
-      return (
-        <div
-          className="rounded-full bg-yellow-400 "
-          title={displayStatus(status)}
-        >
-          <BookOpen className="m-2 " size={size} />
-        </div>
-      );
     case "requested":
       return (
         <div
-          className="rounded-full bg-green-300 "
+          className="rounded-full bg-requested "
           title={displayStatus(status)}
         >
           <Clock className="m-2" size={size} />
         </div>
       );
-    case "retrieved":
+    case "in-review":
       return (
         <div
-          className="rounded-full bg-green-400 "
+          className="rounded-full bg-in-review "
+          title={displayStatus(status)}
+        >
+          <Search className="m-2 " size={size} />
+        </div>
+      );
+    case "approved":
+      return (
+        <div
+          className="rounded-full bg-green-400 text-white text-opacity-90 "
           title={displayStatus(status)}
         >
           <CheckCircle className="m-2" size={size} />
@@ -58,20 +58,20 @@ export default function ExportJobStatusIndicator({
       );
     case "aborted":
       return (
-        <div className="rounded-full bg-red-200 " title={displayStatus(status)}>
+        <div className="rounded-full bg-aborted " title={displayStatus(status)}>
           <XOctagon className="m-2" size={size} />
         </div>
       );
     case "rejected":
       return (
         <div
-          className="rounded-full bg-red-400   "
+          className="rounded-full bg-rejected text-white text-opacity-90 "
           title={displayStatus(status)}
         >
           <Slash className="m-2" size={size} />
         </div>
       );
     default:
-      return <p>Unknown Export status</p>;
+      return <p className="text-sm">Unknown Export status</p>;
   }
 }

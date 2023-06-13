@@ -25,7 +25,7 @@ export default function ApproveButton({ job, refreshJob }: ApproveButtonProps) {
 
       case "awaiting-input":
       case "requested":
-      case "retrieved":
+      case "approved":
       case "aborted":
       case "rejected":
         return null;

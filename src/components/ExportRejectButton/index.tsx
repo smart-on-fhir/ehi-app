@@ -51,7 +51,7 @@ export default function RejectButton({ job, refreshJob }: RejectButtonProps) {
             Delete Now
           </Button>
         );
-      case "retrieved":
+      case "approved":
       case "aborted":
       case "rejected":
         return (

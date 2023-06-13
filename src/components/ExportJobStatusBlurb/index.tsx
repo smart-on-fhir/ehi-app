@@ -15,7 +15,7 @@ export default function ExportJobBlurb({ status }: ExportJobBlurbProps) {
     case "requested":
       return <p>Processing</p>;
 
-    case "retrieved":
+    case "approved":
       return <p>Complete</p>;
 
     case "aborted":
