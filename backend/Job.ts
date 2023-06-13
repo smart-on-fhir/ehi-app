@@ -69,7 +69,7 @@ export default class Job {
      */
     protected createdAt: number;
 
-    protected status: EHI.ExportJobStatus | null;
+    public status: EHI.ExportJobStatus | null;
 
     protected accessToken: string
 
@@ -162,8 +162,8 @@ export default class Job {
     }
 
     public async sync(): Promise<Job> {
-        if (!this._status) {
-            this._status = "requested"
+        if (!this.status) {
+            this.status = "requested"
             await this.save()
             await this.fetch()
         }
@@ -273,7 +273,7 @@ export default class Job {
     //     if (this.status !== "in-review" && this.status !== "awaiting-input") {
     //         throw new HttpError('Only "in-review" and "awaiting-input" exports can be rejected').status(400)
     //     }
-    //     this._status = "rejected"
+    //     this.status = "rejected"
     //     await this.save()
     //     return this;
     // }
