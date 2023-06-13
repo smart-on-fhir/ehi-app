@@ -139,44 +139,60 @@ async function seed(db: DB): Promise<DB> {
         CREATE TABLE "jobs" (
             "id"             Integer  NOT NULL PRIMARY KEY AutoIncrement,
             "userId"         Integer  NOT NULL,
-            "json"           Text     NOT NULL,
+            "patientId"      Integer  NOT NULL,
+            "statusUrl"      Text     NOT NULL,
             "readonly"       Boolean DEFAULT 0,
-            "statusUrl"      Text NOT NULL,
-            "customizeUrl"   Text
+            "customizeUrl"   Text,
+            "manifest"       Text,
+            "parameters"     Text,
+            "authorizations" Text,
+            "attachments"    Text,
+            "createdAt"      DateTime DEFAULT CURRENT_TIMESTAMP,
+            "accessToken"    Text NOT NULL,
+            "refreshToken"   Text NOT NULL,
+            "tokenUri"       Text NOT NULL
         )`
     );
 
     // Insert one read-only job ------------------------------------------------
-    await promise("run", `
-        INSERT INTO "jobs" (
-            id, userId, json, readonly, statusUrl, customizeUrl
-        ) values (
-            NULL, $userId, $json, $readonly, $statusUrl, $customizeUrl
-        )`, {
-        $userId: 1,
-        $json: JSON.stringify({
-            id: "job-1",
-            patient: { id: "sample_patient_id", name: "Patient Name" },
-            createdAt: Date.now(),
-            completedAt: Date.now(),
-            manifest: {},
-            status: "retrieved",
-            parameters: {
-                // Electronic Records
+    await promise(
+        "run",
+        `INSERT INTO "jobs" (
+            id,
+            userId,
+            patientId,
+            statusUrl,
+            readonly,
+            customizeUrl,
+            manifest,
+            parameters,
+            authorizations,
+            attachments,
+            accessToken,
+            refreshToken,
+            tokenUri
+        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [
+            1,    // id
+            1,    // userId (admin)
+            "sample_patient_id", // patientId
+            "",   // statusUrl
+            1,    // readonly
+            "",   // customizeUrl
+            null, // manifest,
+            JSON.stringify({ // parameters
                 visits: { group: 1, enabled: false, name: "Clinic Visits" },
                 labs: { group: 1, enabled: false, name: "Lab Reports" },
                 billing: { group: 1, enabled: false, name: "Billing Records" },
                 medicalRecord: { group: 1, enabled: false, name: "Other Records", from: false, to: false },
-
-                // Other Records and Documents
                 dischargeSummary: { group: 2, enabled: false, name: "Discharge Summary" },
                 operative: { group: 2, enabled: false, name: "Operative Reports" },
                 pathology: { group: 2, enabled: false, name: "Pathology Reports" },
                 radiology: { group: 2, enabled: false, name: "Radiology Reports" },
                 photographs: { group: 2, enabled: false, name: "Photographs" },
                 other: { group: 2, enabled: false, name: "Other" },
-            },
-            authorizations: {
+            }),
+            JSON.stringify({ // authorizations
                 hiv: { value: false, name: "HIV test results" },
                 alcoholAndDrug: { value: false, name: "Alcohol and Drug Abuse Records" },
                 mentalHealth: { value: false, name: "Details of Mental Health Diagnosis and/or Treatment" },
@@ -185,44 +201,52 @@ async function seed(db: DB): Promise<DB> {
                 sexualAssault: { value: false, name: "Details of Sexual Assault Counseling" },
                 genetic: { value: "", name: "Genetic Screening" },
                 other: { value: "", name: "Other(s)" }
-            },
-            attachments: []
-        }),
-        $readonly: 1,
-        $statusUrl: "",
-        $customizeUrl: ""
-    });
+            }),
+            JSON.stringify([]), // attachments
+            "", // accessToken
+            "", // refreshToken
+            ""  // tokenUri
+        ]
+    );
 
-    await promise("run", `
-        INSERT INTO "jobs" (
-            id, userId, json, readonly, statusUrl, customizeUrl
-        ) values (
-            NULL, $userId, $json, $readonly, $statusUrl, $customizeUrl
-        )`, {
-        $userId: 2,
-        $json: JSON.stringify({
-            id: "job-2",
-            patient: { id: "sample_patient_id", name: "Patient Name" },
-            createdAt: Date.now(),
-            completedAt: Date.now(),
-            manifest: {},
-            status: "retrieved",
-            parameters: {
-                // Electronic Records
+    await promise(
+        "run",
+        `INSERT INTO "jobs" (
+            id,
+            userId,
+            patientId,
+            statusUrl,
+            readonly,
+            customizeUrl,
+            manifest,
+            parameters,
+            authorizations,
+            attachments,
+            accessToken,
+            refreshToken,
+            tokenUri
+        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [
+            2,    // id
+            2,    // userId (patient)
+            "sample_patient_id", // patientId
+            "",   // statusUrl
+            1,    // readonly
+            "",   // customizeUrl
+            null, // manifest,
+            JSON.stringify({ // parameters
                 visits: { group: 1, enabled: false, name: "Clinic Visits" },
                 labs: { group: 1, enabled: false, name: "Lab Reports" },
                 billing: { group: 1, enabled: false, name: "Billing Records" },
                 medicalRecord: { group: 1, enabled: false, name: "Other Records", from: false, to: false },
-
-                // Other Records and Documents
                 dischargeSummary: { group: 2, enabled: false, name: "Discharge Summary" },
                 operative: { group: 2, enabled: false, name: "Operative Reports" },
                 pathology: { group: 2, enabled: false, name: "Pathology Reports" },
                 radiology: { group: 2, enabled: false, name: "Radiology Reports" },
                 photographs: { group: 2, enabled: false, name: "Photographs" },
                 other: { group: 2, enabled: false, name: "Other" },
-            },
-            authorizations: {
+            }),
+            JSON.stringify({ // authorizations
                 hiv: { value: false, name: "HIV test results" },
                 alcoholAndDrug: { value: false, name: "Alcohol and Drug Abuse Records" },
                 mentalHealth: { value: false, name: "Details of Mental Health Diagnosis and/or Treatment" },
@@ -231,13 +255,13 @@ async function seed(db: DB): Promise<DB> {
                 sexualAssault: { value: false, name: "Details of Sexual Assault Counseling" },
                 genetic: { value: "", name: "Genetic Screening" },
                 other: { value: "", name: "Other(s)" }
-            },
-            attachments: []
-        }),
-        $readonly: 1,
-        $statusUrl: "",
-        $customizeUrl: ""
-    });
+            }),
+            JSON.stringify([]), // attachments
+            "", // accessToken
+            "", // refreshToken
+            ""  // tokenUri
+        ]
+    );
 
     return db
 }
@@ -251,11 +275,11 @@ async function main(): Promise<DB> {
 
 async function promise<T = any>(method: DbMethodName, ...args: any[]): Promise<T> {
     return new Promise((resolve, reject) => {
-        args.push((error: Error, result: any) => {
+        args.push(function (this: unknown, error: Error, result: any) {
             if (error) {
                 reject(error);
             } else {
-                resolve(result as T);
+                resolve(method === "run" ? this as T : result as T);
             }
         });
         (db[method] as (...args: any[]) => any)(...args);

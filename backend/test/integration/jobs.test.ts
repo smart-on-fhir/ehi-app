@@ -70,7 +70,7 @@ describe("GET /api/jobs/:id", () => {
             .expect(200)
             .expect("content-type", /\bjson\b/)
             .expect(r => {
-                expect(r.body.id).to.equal("job-1")
+                expect(r.body.id).to.equal(1)
             })
     });
 

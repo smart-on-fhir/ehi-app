@@ -25,13 +25,15 @@ router.get("/", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async
 }))
 
 router.get("/:id", authenticate, requireAuth("user", "admin"), asyncRouteWrap(async (req: EHI.UserRequest, res: Response) => {
-    const job = await db.promise("get", "SELECT * FROM jobs WHERE id = ?", req.params.id)
-    if (!job) {
-        throw new HttpError("Job not found").status(404)
-    }
-    const { role, username } = (req as EHI.AuthenticatedRequest).user
-    if (role !== "admin" && job.patient_id !== username) {
+    const job = await Job.byId(+req.params.id)
+    const { role, id } = (req as EHI.AuthenticatedRequest).user
+    if (role !== "admin" && job.userId !== id) {
         throw new HttpError("Permission denied").status(403)
     }
-    res.json(new Job(job))
+    await job.sync()
+    res.json(job)
 }))
+
+router.post("/:id/:action", (req: EHI.UserRequest, res: Response) => {
+    res.json({ result: "Not implemented yet" })
+})

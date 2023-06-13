@@ -50,30 +50,27 @@ export async function completeAuthorization(req: Request, res: Response) {
 
     const statusUrl = response.headers.get("Content-Location");
 
-    const job = new Job({
-        statusUrl,
-        userId: (req as EHI.AuthenticatedRequest).user.id,
-        patient: {
-            id: client.patient.id!,
-            // TODO: Fetch the patient to get their name? Perhaps we can use the
-            // name of out current user here?
-            name: "John Doe (TODO)"
-        }
-    })
-
     const linkUrl = response.headers.get("Link");
+
+    let customizeUrl = ""
 
     if (linkUrl) {
         // If there is a patient-interaction link, get it so we can redirect the user there
         const [href, rel] = linkUrl.split(/\s*;\s*/);
         if (href && rel === 'rel="patient-interaction"') {
-            job.set("customizeUrl", href)
+            customizeUrl = href
         }
     }
 
-    await job.save()
-
-    const customizeUrl = job.get("customizeUrl")
+    const job = await Job.create({
+        userId: (req as EHI.AuthenticatedRequest).user.id,
+        patientId: client.patient.id!,
+        statusUrl,
+        customizeUrl,
+        accessToken: client.state.tokenResponse!.access_token!,
+        refreshToken: client.state.tokenResponse!.refresh_token!,
+        tokenUri: client.state.tokenUri!
+    })
 
     let redirectUrl = "/jobs"
     if (process.env.NODE_ENV !== "production") {

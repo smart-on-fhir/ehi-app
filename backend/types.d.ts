@@ -63,11 +63,12 @@ declare namespace EHI {
      * - `rejected`       - Expire immediately
      */
     type ExportJobStatus = "awaiting-input" |
-        "in-review" |
         "requested" |
-        "retrieved" |
+        "in-review" |
+        "approved" |
         "aborted" |
         "rejected";
+
 
     /**
      * The JSON representation of an export job
@@ -128,15 +129,19 @@ declare namespace EHI {
 
     interface ExportJobDbRecord {
         id: number
-        json: string
         userId: number
+        patientId: string | number
+        statusUrl: string | null
         readonly: boolean | 0 | 1
-        statusUrl: string
         customizeUrl: string | null
-        patient: {
-            id: string
-            name: string
-        };
+        manifest: string | null // JSON -> ExportManifest
+        parameters: string | null // JSON -> ExportJobInformationParameters
+        authorizations: string | null // JSON -> ExportJobAuthorizations
+        attachments: string | null // JSON -> Attachment[]
+        createdAt: number
+        accessToken: string
+        refreshToken: string
+        tokenUri: string
     }
 
     interface ExportJobInformationParameter {
