@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express"
+import archiver from "archiver"
 import Job from "./Job"
 import db from "./db"
 import { HttpError } from "./errors"
@@ -6,6 +7,9 @@ import { asyncRouteWrap, getRequestBaseURL } from "./lib"
 import { authenticate, requireAuth } from "./auth"
 import { EHI } from "./types"
 import multer from "multer"
+import { readdir } from "fs/promises"
+import { join } from "path"
+import { statSync } from "fs"
 
 
 const router = express.Router({ mergeParams: true });
@@ -106,6 +110,27 @@ router.post("/:id/remove-files", express.json(), asyncRouteWrap(async (req: Requ
 }))
 
 router.post("/:id/download", asyncRouteWrap(async (req: Request, res: Response) => {
-    throw new HttpError(`Action "download" not implemented yet`).status(400)
+    const job = await Job.byId(+req.params.id)
+    requireAdminOrOwner(job, req)
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    const date = new Date(job.manifest!.transactionTime)
+    const filename = `EHI Export ${date.toDateString()}.zip`
+
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+    archive.pipe(res);
+
+    const items = await readdir(job.directory);
+    for (const name of items) {
+        const path = join(job.directory, name)
+        if (name.endsWith(".ndjson") && statSync(path).isFile()) {
+            archive.file(path, { name });
+        }
+        archive.directory(join(job.directory, "attachments"), "attachments");
+        archive.append(JSON.stringify(job.manifest, null, 4), { name: "manifest.json" });
+    }
+
+    archive.finalize();
 }))
 

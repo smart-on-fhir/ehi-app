@@ -46,7 +46,7 @@ export default class Job {
     /**
      * The export job manifest if available
      */
-    protected manifest: EHI.ExportManifest | null;
+    public manifest: EHI.ExportManifest | null;
 
     /**
      * Customization parameters (if any)
@@ -76,7 +76,7 @@ export default class Job {
 
     protected tokenUri: string
 
-    protected directory: string
+    readonly directory: string
 
     constructor(rec: EHI.ExportJobDbRecord) {
         this.id = rec.id
