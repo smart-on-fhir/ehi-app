@@ -4,7 +4,6 @@ import {
   updateExportStatus,
   deleteExportJob,
 } from "../../lib/exportJobHelpers";
-import { operationOutcomeSummary } from "../../lib/fhirHelpers";
 import { useNavigate } from "react-router";
 
 type RejectButtonProps = {
@@ -22,15 +21,6 @@ export default function RejectButton({ job, refreshJob }: RejectButtonProps) {
   }
   function deleteJob() {
     deleteExportJob(job.id)
-      .then((operationOutcome: fhir4.OperationOutcome) => {
-        // If we have operationOutcome information, use it
-        if (
-          operationOutcome?.issue[0]?.severity &&
-          operationOutcome?.issue[0]?.diagnostics
-        ) {
-          console.log(operationOutcomeSummary(operationOutcome));
-        }
-      })
       // Go back to the previous page since we've deleted the current job
       .then(() => navigate(-1))
       .catch((err) => alert(err.message));

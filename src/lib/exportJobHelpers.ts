@@ -33,8 +33,8 @@ export async function updateExportStatus(
 export async function deleteExportJob(
   id: string,
   signal?: AbortSignal
-): Promise<fhir4.OperationOutcome> {
-  return request<fhir4.OperationOutcome>(`${EXPORT_ROUTE}/${id}`, {
+): Promise<ExportJob> {
+  return request<ExportJob>(`${EXPORT_ROUTE}/${id}`, {
     method: "delete",
     signal,
   });
