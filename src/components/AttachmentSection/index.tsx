@@ -28,19 +28,21 @@ export default function AttachmentSection({
       {jobEditable && (
         <AttachmentUpload jobId={jobId} refreshJob={refreshJob} />
       )}
-      <ul className="max-h-[calc(100vh-510px)] w-full space-y-2 overflow-auto sm:max-h-[calc(100vh-470px)]">
-        {job.attachments.map((attachment) => {
-          return (
-            <AttachmentComponent
-              jobEditable={jobEditable}
-              key={attachment.url}
-              jobId={jobId}
-              attachment={attachment}
-              refreshJob={refreshJob}
-            />
-          );
-        })}
-      </ul>
+      {job.attachments && job.attachments.length !== 0 && (
+        <ul className="max-h-[calc(100vh-510px)] min-h-[250px] w-full space-y-2 overflow-auto sm:max-h-[calc(100vh-470px)]">
+          {job.attachments.map((attachment) => {
+            return (
+              <AttachmentComponent
+                jobEditable={jobEditable}
+                key={attachment.url}
+                jobId={jobId}
+                attachment={attachment}
+                refreshJob={refreshJob}
+              />
+            );
+          })}
+        </ul>
+      )}
     </section>
   );
 }
