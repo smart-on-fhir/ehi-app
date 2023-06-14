@@ -69,7 +69,7 @@ export async function uploadAttachments(
     formData.append("attachments", file, file.name);
   });
   formData.append("action", "addAttachments");
-  return request(`/api/jobs/${jobId}/add-file`, {
+  return request(`/api/jobs/${jobId}/add-files`, {
     method: "post",
     body: formData,
   });
@@ -85,7 +85,7 @@ export async function deleteAttachment(
   jobId: ExportJob["id"],
   attachmentName: string
 ): Promise<void> {
-  return await request(`/api/jobs/${jobId}/remove-file`, {
+  return await request(`/api/jobs/${jobId}/remove-files`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
