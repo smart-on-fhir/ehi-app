@@ -7,16 +7,20 @@ import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import HeadingOne from "../../components/HeadingOne";
 import { Link } from "react-router-dom";
+import { usePolling } from "../../hooks/usePolling";
 
 export default function AdminExportJobList() {
   const {
+    execute: syncJobs,
     loading,
     result: jobs,
     error,
   } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
 
+  usePolling(syncJobs);
+
   function PageBody() {
-    if (loading) {
+    if (loading && jobs === null) {
       return <Loading display={"Loading current export jobs"} />;
     } else if (error) {
       return (

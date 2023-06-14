@@ -7,6 +7,7 @@ import { getExportJob } from "../../lib/exportJobHelpers";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import ExportJobDetailView from "../../components/ExportJobDetailView";
+import { usePolling } from "../../hooks/usePolling";
 
 export default function ExportJobViewer() {
   const { id } = useParams();
@@ -16,11 +17,13 @@ export default function ExportJobViewer() {
   }
 
   const {
-    execute,
+    execute: refreshJob,
     loading,
     result: job,
     error,
   } = useAsync<ExportJob>(useCallback(getExportJobWithId, [id]), true);
+
+  usePolling(refreshJob);
 
   function BackLink() {
     return (
@@ -31,7 +34,7 @@ export default function ExportJobViewer() {
   }
 
   // Show loading component whole the job is being loaded
-  if (loading) {
+  if (loading && job === null) {
     return (
       <>
         <BackLink />
@@ -69,7 +72,7 @@ export default function ExportJobViewer() {
   return (
     <>
       <BackLink />
-      <ExportJobDetailView job={job} refreshJob={execute} />
+      <ExportJobDetailView job={job} refreshJob={refreshJob} />
     </>
   );
 }

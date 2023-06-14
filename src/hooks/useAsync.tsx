@@ -29,7 +29,7 @@ export function useAsync<T>(
 
   const execute = useCallback(
     (signal?: AbortSignal) => {
-      dispatch({ loading: true, result: null, error: null });
+      dispatch({ loading: true, error: null });
       return fn(signal).then(
         (result: T) => {
           if (!signal?.aborted) {
@@ -53,6 +53,7 @@ export function useAsync<T>(
       execute(abortController.signal);
     }
     return () => {
+      dispatch({ result: null, loading: false });
       abortController.abort();
     };
   }, [execute, immediate]);

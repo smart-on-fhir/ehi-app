@@ -9,16 +9,20 @@ import { ExportJobSummary } from "../../types";
 import { getExportJobs } from "../../lib/exportJobHelpers";
 import { Plus } from "react-feather";
 import "./index.css";
+import { usePolling } from "../../hooks/usePolling";
 
 export default function UserExportJobList() {
   const {
+    execute: syncJobs,
     loading,
     result: jobs,
     error,
   } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
 
+  usePolling(syncJobs);
+
   function PageBody() {
-    if (loading) {
+    if (loading && jobs === null) {
       return <Loading display="Loading health record requests..." />;
     } else if (error) {
       return (
