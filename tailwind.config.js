@@ -69,7 +69,7 @@ const primary = {
 // awaiting-input`
 const awaitingInput = yellow[200];
 // requested`
-const requested = yellow[400];
+const requested = yellow[200];
 // in-review`
 const inReview = "#abc1e4";
 // approved`
@@ -94,7 +94,8 @@ module.exports = {
         },
       },
       animation: {
-        fadeIn: "fadeIn 500ms ease-in-out",
+        "fade-in": "fadeIn 500ms ease-in-out",
+        "spin-slow": "spin 2s linear infinite",
       },
       colors: {
         // Palettes

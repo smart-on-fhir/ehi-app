@@ -71,7 +71,7 @@ export default function Login() {
             )}
           </button>
           {authError && (
-            <p className="flex w-full animate-fadeIn items-center rounded border bg-red-100 p-4">
+            <p className="animate-fade-in flex w-full items-center rounded border bg-red-100 p-4">
               <AlertTriangle className="mr-2 inline " />
               {authError}
             </p>

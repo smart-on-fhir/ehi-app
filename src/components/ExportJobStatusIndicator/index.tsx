@@ -1,11 +1,17 @@
 import { ExportJobStatus } from "../../types";
 import {
-  Edit, // awaiting-input`
-  Clock, // requested`
-  Search, // in-review`
-  CheckCircle, // approved`
-  XOctagon, // aborted`
-  Slash, // rejected`
+  // awaiting-input`
+  Edit,
+  // requested`
+  Loader,
+  // in-review`
+  Search,
+  // approved`
+  CheckCircle,
+  // aborted`
+  XOctagon,
+  // rejected`
+  Slash,
 } from "react-feather";
 
 function displayStatus(status: ExportJobStatus) {
@@ -32,10 +38,10 @@ export default function ExportJobStatusIndicator({
     case "requested":
       return (
         <div
-          className="rounded-full bg-requested "
+          className="animate-spin-slow rounded-full bg-requested "
           title={displayStatus(status)}
         >
-          <Clock className="m-2" size={size} />
+          <Loader className="m-2" size={size} />
         </div>
       );
     case "in-review":
