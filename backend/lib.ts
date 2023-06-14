@@ -17,14 +17,14 @@ import https from "https"
 // import config from "./config"
 
 
-// /**
-//  * Given a request object, returns its base URL
-//  */
-// export function getRequestBaseURL(req: Request) {
-//     const host = req.headers["x-forwarded-host"] || req.headers.host;
-//     const protocol = req.headers["x-forwarded-proto"] || req.protocol || "http";
-//     return protocol + "://" + host;
-// }
+/**
+ * Given a request object, returns its base URL
+ */
+export function getRequestBaseURL(req: Request) {
+    const host = req.headers["x-forwarded-host"] || req.headers.host;
+    const protocol = req.headers["x-forwarded-proto"] || req.protocol || "http";
+    return protocol + "://" + host;
+}
 
 /**
  * Creates and returns a route-wrapper function that allows for using an async

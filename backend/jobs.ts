@@ -2,13 +2,22 @@ import express, { Request, Response } from "express"
 import Job from "./Job"
 import db from "./db"
 import { HttpError } from "./errors"
-import { asyncRouteWrap } from "./lib"
+import { asyncRouteWrap, getRequestBaseURL } from "./lib"
 import { authenticate, requireAuth } from "./auth"
 import { EHI } from "./types"
+import multer from "multer"
 
 
 const router = express.Router({ mergeParams: true });
 export default router
+
+const upload = multer({
+    dest: "uploads/",
+    limits: {
+        files: 5,
+        fileSize: 1024 * 1024 * 10 // 10MB
+    }
+})
 
 
 function requireAdminOrOwner(job: Job, req: Request) {
@@ -66,12 +75,31 @@ router.post("/:id/abort", asyncRouteWrap(async (req: Request, res: Response) => 
     throw new HttpError(`Action "abort" not implemented yet`).status(400)
 }))
 
-router.post("/:id/add-file", asyncRouteWrap(async (req: Request, res: Response) => {
-    throw new HttpError(`Action "add-file" not implemented yet`).status(400)
+router.post("/:id/add-files", upload.array("attachments", 10), asyncRouteWrap(async (req: Request, res: Response) => {
+    const files = (req.files as Express.Multer.File[]).filter(f => f.fieldname === "attachments")
+    if (!files.length) {
+        throw new HttpError('Called "addAttachments" without uploaded "attachments"').status(400)
+    }
+    const job = await Job.byId(+req.params.id)
+    requireAdminOrOwner(job, req)
+    const baseUrl = getRequestBaseURL(req)
+    for (const file of files) {
+        await job.addAttachment(file, baseUrl)
+    }
+    res.json(job)
 }))
 
-router.post("/:id/remove-file", asyncRouteWrap(async (req: Request, res: Response) => {
-    throw new HttpError(`Action "remove-file" not implemented yet`).status(400)
+router.post("/:id/remove-files", express.json(), asyncRouteWrap(async (req: Request, res: Response) => {
+    const files = req.body.params
+    if (!files || !files.length) {
+        throw new HttpError('Called "remove-file" without attachment filenames').status(400)
+    }
+    const job = await Job.byId(+req.params.id)
+    requireAdminOrOwner(job, req)
+    for (const file of files) {
+        await job.removeAttachment(file)
+    }
+    res.json(job)
 }))
 
 router.post("/:id/download", asyncRouteWrap(async (req: Request, res: Response) => {

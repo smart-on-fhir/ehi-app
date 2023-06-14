@@ -2,7 +2,6 @@ import Path from "path"
 import express, { NextFunction, Request, Response, urlencoded } from "express"
 import { AddressInfo } from "net"
 import cookieParser from "cookie-parser"
-import multer from "multer"
 import config from "./config"
 import { asyncRouteWrap } from "./lib"
 import { HttpError } from "./errors"
@@ -13,15 +12,6 @@ import jobsRouter from "./jobs"
 
 const app = express()
 app.use(cookieParser())
-
-
-const upload = multer({
-    dest: "uploads/",
-    limits: {
-        files: 5,
-        fileSize: 1024 * 1024 * 10 // 10MB
-    }
-})
 
 // app.use(urlencoded({ extended: false, limit: "64kb" }));
 // app.use(json());

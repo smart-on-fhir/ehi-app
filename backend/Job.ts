@@ -1,6 +1,7 @@
 // import Path, { basename } from "path"
 // import smart from "fhirclient"
 import { rmSync } from "fs";
+import { copyFile, mkdir, unlink } from "fs/promises";
 import { basename, join } from "path";
 import config from "./config";
 import db from "./db"
@@ -185,7 +186,7 @@ export default class Job {
 
     private async fetchExport(): Promise<Job> {
         for (const file of this.manifest!.output) {
-            console.log(`Downloading ${file.type} file from ${file.url}`)
+            // console.log(`Downloading ${file.type} file from ${file.url}`)
             const dst = getPrefixedFilePath(this.directory, basename(file.url.replace(/(\.ndjson)?$/, ".ndjson")))
             await downloadFile(file.url, dst, {
                 headers: {
@@ -301,28 +302,6 @@ export default class Job {
 
     public async download() { }
 
-    // public async approve() {
-    //     if (this.attributes.status !== "in-review") {
-    //         throw new HttpError('Only "in-review" exports can be approved').status(400)
-    //     }
-    //     this.attributes.status = "requested"
-    //     await this.save()
-    //     return this
-    // }
-
-    /**
-     * Switches status to "rejected". This is only available for jobs in
-     * "in-review" or "awaiting-input" state.
-     */
-    // public async reject() {
-    //     if (this.status !== "in-review" && this.status !== "awaiting-input") {
-    //         throw new HttpError('Only "in-review" and "awaiting-input" exports can be rejected').status(400)
-    //     }
-    //     this.status = "rejected"
-    //     await this.save()
-    //     return this;
-    // }
-
     /**
      * Aborts a running export and deletes the job. Only available for jobs in
      * "requested" state.
@@ -338,40 +317,29 @@ export default class Job {
     //     return this;
     // }
 
-    // public async addAttachments(req: Request, res: Response) {
-    //     const files = (req.files as Express.Multer.File[]).filter(f => f.fieldname === "attachments")
-    //     if (!files.length) {
-    //         throw new HttpError('Called "addAttachments" without uploaded "attachments"').status(400)
-    //     }
-    //     const baseUrl = getRequestBaseURL(req)
-    //     for (const file of files) {
-    //         await this.addAttachment(file, baseUrl)
-    //     }
-    //     return res.json(this)
-    // }
-
     /**
      * Add results to a task (e.g., dragging a CSV file into the browser to
      * simulate the manual gathering of data from different underlying systems)
      */
-    // public async addAttachment(attachment: Express.Multer.File, baseUrl: string) {
-    //     console.log(attachment)
-    //     // const src = Path.join(__dirname, "..", attachment.path)
-    //     // const dst = Path.join(this.path, "attachments")
-    //     // const path = getPrefixedFilePath(dst, attachment.originalname)
-    //     // const filename = basename(path)
-    //     // await mkdir(dst, { recursive: true });
-    //     // await copyFile(src, path);
-    //     // this.attachments.push({
-    //     //     title: filename,
-    //     //     contentType: attachment.mimetype,
-    //     //     size: attachment.size,
-    //     //     url: `${baseUrl}/jobs/${this.id}/download/attachments/${filename}`
-    //     // });
-    //     // await this.save()
-    //     // await unlink(src)
-    // }
+    public async addAttachment(attachment: Express.Multer.File, baseUrl: string) {
+        const src = join(__dirname, "..", attachment.path)
+        const dst = join(this.directory, "attachments")
+        const path = getPrefixedFilePath(dst, attachment.originalname)
+        const filename = basename(path)
+        await mkdir(dst, { recursive: true });
+        await copyFile(src, path);
+        this.attachments.push({
+            title: filename,
+            contentType: attachment.mimetype,
+            size: attachment.size,
+            url: `${baseUrl}/jobs/${this.id}/download/attachments/${filename}`
+        });
+        await this.save()
+        await unlink(src)
+    }
 
-
-    // public async removeAttachments() { }
+    public async removeAttachment(fileName: string) {
+        this.attachments = this.attachments.filter(x => !x.url!.endsWith(`/${this.id}/download/attachments/${fileName}`))
+        await this.save()
+    }
 }
