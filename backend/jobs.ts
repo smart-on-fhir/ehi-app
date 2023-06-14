@@ -109,7 +109,7 @@ router.post("/:id/remove-files", express.json(), asyncRouteWrap(async (req: Requ
     res.json(job)
 }))
 
-router.post("/:id/download", asyncRouteWrap(async (req: Request, res: Response) => {
+router.get("/:id/download", asyncRouteWrap(async (req: Request, res: Response) => {
     const job = await Job.byId(+req.params.id)
     requireAdminOrOwner(job, req)
     const archive = archiver('zip', { zlib: { level: 9 } });
