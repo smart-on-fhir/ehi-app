@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useAsync } from "../../hooks/useAsync";
 import ExportJobListItemAdmin from "../../components/ExportJobListItemAdmin";
-import { getExportJobs } from "../../lib/exportJobHelpers";
+import { canJobChangeStatus, getExportJobs } from "../../lib/exportJobHelpers";
 import { ExportJobSummary } from "../../types";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
@@ -17,7 +17,14 @@ export default function AdminExportJobList() {
     error,
   } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
 
-  usePolling(syncJobs);
+  // Always check for new jobs every minute
+  usePolling(syncJobs, undefined, 60000);
+  // Do a regular poll if we have jobs that can change status
+  const pollingCondition = useCallback(() => {
+    if (jobs === null) return false;
+    return jobs.some(canJobChangeStatus);
+  }, [jobs]);
+  usePolling(syncJobs, pollingCondition);
 
   function PageBody() {
     if (loading && jobs === null) {
