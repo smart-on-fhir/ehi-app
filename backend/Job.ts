@@ -298,8 +298,6 @@ export default class Job {
         }
     }
 
-    public async download() { }
-
     /**
      * Aborts a running export
      */
