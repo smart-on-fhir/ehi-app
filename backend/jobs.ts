@@ -72,7 +72,10 @@ router.post("/:id/reject", asyncRouteWrap(async (req: Request, res: Response) =>
 }))
 
 router.post("/:id/abort", asyncRouteWrap(async (req: Request, res: Response) => {
-    throw new HttpError(`Action "abort" not implemented yet`).status(400)
+    const job = await Job.byId(+req.params.id)
+    requireAdminOrOwner(job, req)
+    await job.abort()
+    res.json(job)
 }))
 
 router.post("/:id/add-files", upload.array("attachments", 10), asyncRouteWrap(async (req: Request, res: Response) => {

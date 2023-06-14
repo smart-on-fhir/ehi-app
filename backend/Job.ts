@@ -303,19 +303,16 @@ export default class Job {
     public async download() { }
 
     /**
-     * Aborts a running export and deletes the job. Only available for jobs in
-     * "requested" state.
+     * Aborts a running export
      */
-    // public async abort() {
-    //     if (this.status !== "requested") {
-    //         throw new HttpError('Only jobs in "requested" state can be aborted').status(400)
-    //     }
-    //     if (this.statusUrl) {
-    //         await fetch(this.statusUrl, { method: "DELETE" }) // TODO: Bearer auth
-    //     }
-    //     await this.destroy()
-    //     return this;
-    // }
+    public async abort() {
+        if (this.status === "awaiting-input" || this.status === "requested") {
+            await this.request(true)(this.statusUrl, { method: "DELETE" })
+            this.status = "aborted"
+            await this.save()
+        }
+        return this
+    }
 
     /**
      * Add results to a task (e.g., dragging a CSV file into the browser to
