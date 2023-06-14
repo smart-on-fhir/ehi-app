@@ -151,7 +151,8 @@ async function seed(db: DB): Promise<DB> {
             "accessToken"    Text NOT NULL,
             "refreshToken"   Text NOT NULL,
             "tokenUri"       Text NOT NULL,
-            "status"         Text
+            "status"         Text,
+            "patientName"    Text
         )`
     );
 
@@ -172,8 +173,9 @@ async function seed(db: DB): Promise<DB> {
             accessToken,
             refreshToken,
             tokenUri,
-            status
-        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            status,
+            patientName
+        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
             1,    // id
             1,    // userId (admin)
@@ -205,10 +207,11 @@ async function seed(db: DB): Promise<DB> {
                 other: { value: "", name: "Other(s)" }
             }),
             JSON.stringify([]), // attachments
-            "",         // accessToken
-            "",         // refreshToken
-            "",         // tokenUri
-            "in-review" // status
+            "",          // accessToken
+            "",          // refreshToken
+            "",          // tokenUri
+            "in-review", // status
+            ""           // patientName
         ]
     );
 
@@ -228,8 +231,9 @@ async function seed(db: DB): Promise<DB> {
             accessToken,
             refreshToken,
             tokenUri,
-            status
-        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            status,
+            patientName
+        ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
             2,    // id
             2,    // userId (patient)
@@ -261,10 +265,11 @@ async function seed(db: DB): Promise<DB> {
                 other: { value: "", name: "Other(s)" }
             }),
             JSON.stringify([]), // attachments
-            "",         // accessToken
-            "",         // refreshToken
-            "",         // tokenUri
-            "in-review" // status
+            "",          // accessToken
+            "",          // refreshToken
+            "",          // tokenUri
+            "in-review", // status
+            ""           // patientName
         ]
     );
 

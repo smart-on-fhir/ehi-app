@@ -25,6 +25,7 @@ declare namespace EHI {
         requiresAccessToken: boolean
         output: ExportManifestFileEntry[]
         error: any[]
+        extension?: Record<string, string>
     }
 
     interface ExportManifestFileEntry {
@@ -143,6 +144,7 @@ declare namespace EHI {
         refreshToken: string
         tokenUri: string
         status: ExportJobStatus | null
+        patientName: string | null
     }
 
     interface ExportJobInformationParameter {

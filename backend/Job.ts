@@ -28,6 +28,12 @@ export default class Job {
     readonly patientId: string | number;
 
     /**
+     * The humanized name of the patient who's data is exported. Note that this
+     * is not available before the export is completed on the EHI server.
+     */
+    protected patientName: string | null = null;
+
+    /**
      * The URL of the status endpoint fot this job
      */
     readonly statusUrl: string;
@@ -82,6 +88,7 @@ export default class Job {
         this.id = rec.id
         this.userId = rec.userId
         this.patientId = rec.patientId
+        this.patientName = rec.patientName
         this.statusUrl = rec.statusUrl || ""
         this.readonly = !!rec.readonly
         this.customizeUrl = rec.customizeUrl || ""
@@ -179,7 +186,7 @@ export default class Job {
         throw new HttpError(`Unexpected bulk status response ${res.status} ${res.statusText}`)
     }
 
-    private async fetchExport(): Promise<Job> {
+    private async fetchExportedFiles(): Promise<Job> {
         for (const file of this.manifest!.output) {
             // console.log(`Downloading ${file.type} file from ${file.url}`)
             const dst = getPrefixedFilePath(this.directory, basename(file.url.replace(/(\.ndjson)?$/, ".ndjson")))
@@ -192,12 +199,32 @@ export default class Job {
         return this
     }
 
+    private async fetchJobMetadata(): Promise<Job> {
+        const url = this.manifest?.extension?.metadata
+        if (url) {
+            const remoteJobResponse = await this.request(true)(url)
+
+            if (!remoteJobResponse.ok) {
+                throw new HttpError("Failed fetching job metadata")
+            }
+
+            const remoteJob = await remoteJobResponse.json()
+
+            this.parameters = remoteJob.parameters
+            this.authorizations = remoteJob.authorizations
+            this.patientName = remoteJob.patient.name
+            await this.save()
+        }
+        return this
+    }
+
     public async sync(): Promise<Job> {
         if (!this.status) {
             this.status = "requested"
             await this.save()
             await this.waitForExport()
-            await this.fetchExport()
+            await this.fetchJobMetadata()
+            await this.fetchExportedFiles()
             this.status = "in-review"
             await this.save()
         }
@@ -241,7 +268,8 @@ export default class Job {
             parameters: this.parameters ? JSON.stringify(this.parameters) : null,
             authorizations: this.authorizations ? JSON.stringify(this.authorizations) : null,
             attachments: this.attachments ? JSON.stringify(this.attachments) : null,
-            status: this.status
+            status: this.status,
+            patientName: this.patientName
         }
         if (this.id) {
             await db.promise(
@@ -283,7 +311,7 @@ export default class Job {
             userId: this.userId,
             patient: {
                 id: this.patientId,
-                name: "John Doe" // TODO:
+                name: this.patientName
             },
             status: this.status,
             createdAt: this.createdAt,
