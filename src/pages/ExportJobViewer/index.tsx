@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import { useCallback } from "react";
 import { ExportJob } from "../../types";
 import { useAsync } from "../../hooks/useAsync";
-import { getExportJob } from "../../lib/exportJobHelpers";
+import { canJobChangeStatus, getExportJob } from "../../lib/exportJobHelpers";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import ExportJobDetailView from "../../components/ExportJobDetailView";
@@ -23,7 +23,13 @@ export default function ExportJobViewer() {
     error,
   } = useAsync<ExportJob>(useCallback(getExportJobWithId, [id]), true);
 
-  usePolling(refreshJob);
+  // Poll for job changes if the current status is one that can change
+  const pollingCondition = useCallback(() => {
+    if (job === null) return false;
+    return canJobChangeStatus(job);
+  }, [job]);
+
+  usePolling(refreshJob, pollingCondition);
 
   function BackLink() {
     return (

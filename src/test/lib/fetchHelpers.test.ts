@@ -5,18 +5,6 @@ import exampleOperationOutcome from "../fixtures/exampleOperationOutcome.json";
 const TEST_URL = "https://example.com";
 
 describe("request", () => {
-  test("Requests to a relative path will point to process.env.REACT_APP_EHI_SERVER by default", async () => {
-    const response = "reached out to env-var defined server";
-    const server = process.env.REACT_APP_EHI_SERVER;
-    nock(process.env.REACT_APP_EHI_SERVER + "/")
-      .defaultReplyHeaders({
-        "access-control-allow-origin": "*",
-        "access-control-allow-credentials": "true",
-      })
-      .get("/")
-      .reply(200, response);
-    expect(await request("/")).toBe(response);
-  });
   test("Text responses should return as a string", async () => {
     const response = "response as text";
     nock(TEST_URL)

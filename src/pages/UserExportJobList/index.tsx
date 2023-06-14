@@ -6,7 +6,7 @@ import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import HeadingOne from "../../components/HeadingOne";
 import { ExportJobSummary } from "../../types";
-import { getExportJobs } from "../../lib/exportJobHelpers";
+import { getExportJobs, canJobChangeStatus } from "../../lib/exportJobHelpers";
 import { Plus } from "react-feather";
 import "./index.css";
 import { usePolling } from "../../hooks/usePolling";
@@ -19,7 +19,12 @@ export default function UserExportJobList() {
     error,
   } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
 
-  usePolling(syncJobs);
+  // Poll for job changes if we have any that can change status
+  const pollingCondition = useCallback(() => {
+    if (jobs === null) return false;
+    return jobs.some(canJobChangeStatus);
+  }, [jobs]);
+  usePolling(syncJobs, pollingCondition);
 
   function PageBody() {
     if (loading && jobs === null) {

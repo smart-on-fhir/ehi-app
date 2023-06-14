@@ -8,9 +8,9 @@ export function getExportJobLink(id: string) {
   // Needs the actual server URL since this is used in an <a> tag, not in the request library
   // return `${process!.env!.REACT_APP_EHI_SERVER}${EXPORT_ROUTE}/${id}/download`;
   if (process.env.NODE_ENV === "production") {
-    return `${EXPORT_ROUTE}/${id}/download`
+    return `${EXPORT_ROUTE}/${id}/download`;
   }
-  return `${pkg.proxy}${EXPORT_ROUTE}/${id}/download`
+  return `${pkg.proxy}${EXPORT_ROUTE}/${id}/download`;
 }
 
 export async function getExportJobs(
@@ -43,4 +43,12 @@ export async function deleteExportJob(
     method: "delete",
     signal,
   });
+}
+
+export function canJobChangeStatus(job: ExportJob | ExportJobSummary): boolean {
+  return (
+    job.status === "awaiting-input" ||
+    job.status === "in-review" ||
+    job.status === "requested"
+  );
 }
