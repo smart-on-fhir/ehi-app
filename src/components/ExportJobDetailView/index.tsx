@@ -32,7 +32,9 @@ export default function ExportJobDetailView({
             {status === "approved" && <ExportJobLink jobId={id} />}
             <pre className="whitespace-pre-wrap text-xs italic opacity-50">
               {[
-                `Patient ${patient.name}`,
+                `Patient ${
+                  patient.name !== "" ? patient.name : "#" + patient.id
+                }`,
                 `Created ${new Date(createdAt).toLocaleString()}`,
                 `${attachments.length} Attachments`,
               ].join("\n")}
