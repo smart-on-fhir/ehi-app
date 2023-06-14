@@ -1,16 +1,12 @@
-// import Path, { basename } from "path"
-// import smart from "fhirclient"
-import { rmSync } from "fs";
-import { copyFile, mkdir, unlink } from "fs/promises";
-import { basename, join } from "path";
-import config from "./config";
+import { rmSync } from "fs"
+import { copyFile, mkdir, unlink } from "fs/promises"
+import { basename, join } from "path"
+import config from "./config"
 import db from "./db"
 import { HttpError } from "./errors"
-import { downloadFile, getPrefixedFilePath, mkdirSyncRecursive, wait } from "./lib";
+import { downloadFile, getPrefixedFilePath, mkdirSyncRecursive, wait } from "./lib"
 import { EHI } from "./types"
-// import { Request, Response } from "express"
-// import { getPrefixedFilePath, getRequestBaseURL, getStorage, wait } from "./lib"
-// import { copyFile, mkdir, unlink } from "fs/promises"
+
 
 export default class Job {
 
@@ -269,6 +265,7 @@ export default class Job {
             try {
                 await db.promise("run", "DELETE FROM jobs WHERE id=?", [this.id])
                 rmSync(this.directory, { force: true, recursive: true })
+                await this.request(true)(this.statusUrl, { method: "DELETE" })
             } catch (ex) {
                 console.error(ex)
                 await db.promise("run", "ROLLBACK")
