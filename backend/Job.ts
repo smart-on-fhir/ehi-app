@@ -168,7 +168,6 @@ export default class Job {
 
         if (res.status == 200) {
             this.manifest = await res.json()
-            this.status = "in-review"
             return this.save()
         }
 
@@ -199,6 +198,8 @@ export default class Job {
             await this.save()
             await this.waitForExport()
             await this.fetchExport()
+            this.status = "in-review"
+            await this.save()
         }
 
         return this
@@ -264,8 +265,8 @@ export default class Job {
             await db.promise("run", "BEGIN")
             try {
                 await db.promise("run", "DELETE FROM jobs WHERE id=?", [this.id])
+                if (this.statusUrl) await this.request(true)(this.statusUrl, { method: "DELETE" })
                 rmSync(this.directory, { force: true, recursive: true })
-                await this.request(true)(this.statusUrl, { method: "DELETE" })
             } catch (ex) {
                 console.error(ex)
                 await db.promise("run", "ROLLBACK")
