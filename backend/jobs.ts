@@ -52,7 +52,7 @@ router.get("/:id", asyncRouteWrap(async (req: Request, res: Response) => {
     res.json(job)
 }))
 
-router.delete("/:id", asyncRouteWrap(async (req: Request, res: Response) => {
+router.delete("/:id", requireAuth("admin"), asyncRouteWrap(async (req: Request, res: Response) => {
     const job = await Job.byId(+req.params.id)
     requireAdminOrOwner(job, req)
     await job.destroy()
@@ -82,13 +82,12 @@ router.post("/:id/abort", asyncRouteWrap(async (req: Request, res: Response) => 
     res.json(job)
 }))
 
-router.post("/:id/add-files", upload.array("attachments", 10), asyncRouteWrap(async (req: Request, res: Response) => {
-    const files = (req.files as Express.Multer.File[]).filter(f => f.fieldname === "attachments")
+router.post("/:id/add-files", upload.array("attachments", 10), requireAuth("admin"), asyncRouteWrap(async (req: Request, res: Response) => {
+    const job = await Job.byId(+req.params.id)
+    const files = ((req.files || []) as Express.Multer.File[]).filter(f => f.fieldname === "attachments")
     if (!files.length) {
         throw new HttpError('Called "addAttachments" without uploaded "attachments"').status(400)
     }
-    const job = await Job.byId(+req.params.id)
-    requireAdminOrOwner(job, req)
     const baseUrl = getRequestBaseURL(req)
     for (const file of files) {
         await job.addAttachment(file, baseUrl)
@@ -96,13 +95,9 @@ router.post("/:id/add-files", upload.array("attachments", 10), asyncRouteWrap(as
     res.json(job)
 }))
 
-router.post("/:id/remove-files", express.json(), asyncRouteWrap(async (req: Request, res: Response) => {
-    const files = req.body.params
-    if (!files || !files.length) {
-        throw new HttpError('Called "remove-file" without attachment filenames').status(400)
-    }
+router.post("/:id/remove-files", express.json(), requireAuth("admin"), asyncRouteWrap(async (req: Request, res: Response) => {
     const job = await Job.byId(+req.params.id)
-    requireAdminOrOwner(job, req)
+    const files = req.body.params || []
     for (const file of files) {
         await job.removeAttachment(file)
     }

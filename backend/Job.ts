@@ -1,5 +1,5 @@
-import { rmSync } from "fs"
-import { appendFile, copyFile, mkdir, unlink } from "fs/promises"
+import { appendFileSync, rmSync } from "fs"
+import { copyFile, mkdir, unlink } from "fs/promises"
 import { basename, join } from "path"
 import config from "./config"
 import db from "./db"
@@ -322,7 +322,7 @@ export default class Job {
             statusUrl: this.statusUrl,
             readonly: this.readonly,
             customizeUrl: this.customizeUrl,
-            manifest: this.manifest, // || {}
+            manifest: this.getAugmentedManifest()
         }
     }
 
@@ -336,6 +336,47 @@ export default class Job {
             await this.save()
         }
         return this
+    }
+
+    protected getAugmentedManifest() {
+        if (!this.attachments.length) {
+            return this.manifest
+        }
+
+        const result = {
+            ...this.manifest,
+            output: [...this.manifest!.output]
+        }
+
+        const docRef: fhir4.DocumentReference = {
+            resourceType: "DocumentReference",
+            status: "current",
+            subject: { reference: "Patient/" + this.patientId },
+            content: this.attachments.map(x => ({ attachment: x })),
+            meta: {
+                tag: [{
+                    code: "ehi-export",
+                    display: "generated as part of an ehi-export request"
+                }]
+            }
+        }
+
+        const destination = join(this.directory, "DocumentReference.ndjson")
+        appendFileSync(destination, JSON.stringify(docRef) + "\n")
+
+        let fileEntry = result.output.find(x => x.type === "DocumentReference")
+        if (!fileEntry) {
+            const baseUrl = this.attachments[0].url!.replace(/\/jobs\/.*/, "")
+            result.output.push({
+                type: "DocumentReference",
+                url: `${baseUrl}/jobs/${this.id}/download/DocumentReference`,
+                count: this.attachments.length
+            })
+        } else {
+            fileEntry.count = (fileEntry.count || 1) + this.attachments.length
+        }
+
+        return result
     }
 
     /**
@@ -356,18 +397,6 @@ export default class Job {
             url: `${baseUrl}/jobs/${this.id}/download/attachments/${filename}`
         }
         this.attachments.push(entry);
-        await this.addOutputEntry({
-            resourceType: "DocumentReference",
-            status: "current",
-            subject: { reference: "Patient/" + this.patientId },
-            content: [{ attachment: entry }],
-            meta: {
-                tag: [{
-                    code: "ehi-export",
-                    display: "generated as part of an ehi-export request"
-                }]
-            }
-        }, baseUrl)
         await this.save()
         await unlink(src)
     }
@@ -375,22 +404,5 @@ export default class Job {
     public async removeAttachment(fileName: string) {
         this.attachments = this.attachments.filter(x => !x.url!.endsWith(`/${this.id}/download/attachments/${fileName}`))
         await this.save()
-    }
-
-    private async addOutputEntry<T extends fhir4.Resource>(resource: T, baseUrl: string) {
-        const { resourceType } = resource
-        const destination = join(this.directory, resourceType + ".ndjson")
-        await appendFile(destination, JSON.stringify(resource) + "\n")
-
-        let fileEntry = this.manifest!.output.find(x => x.type === resourceType)
-        if (!fileEntry) {
-            this.manifest!.output.push({
-                type: resourceType,
-                url: `${baseUrl}/jobs/${this.id}/download/${resourceType}`,
-                count: 1
-            })
-        } else {
-            fileEntry.count = (fileEntry.count || 1) + 1
-        }
     }
 }
