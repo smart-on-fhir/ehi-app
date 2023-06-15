@@ -1,6 +1,8 @@
 import sqlite3, { Database } from "sqlite3"
 import Bcrypt from "bcryptjs"
 import config from "./config"
+import { join } from "path"
+import { readdirSync, rmSync, statSync } from "fs"
 
 const db = new (sqlite3.verbose()).Database(config.db)
 
@@ -390,5 +392,16 @@ main.promise = async <T = any>(method: DbMethodName, ...args: any[]): Promise<T>
     return await promise<T>(method, ...args)
 };
 
+function cleanup() {
+    const base = join(__dirname, "jobs")
+    const items = readdirSync(base);
+    for (const id of items) {
+        const dir = join(base, id)
+        if (statSync(dir).isDirectory()) {
+            rmSync(dir, { force: true, recursive: true })
+        }
+    }
+}
+cleanup()
 
 export default main
