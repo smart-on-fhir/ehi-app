@@ -1,9 +1,8 @@
 import InstitutionIcon from "./institution-logo.svg";
-import { Institution } from "../../../types";
 
 type InstitutionOptionProps = {
-  institution: Institution;
-  setInstitution: (selectedInstitution: Institution) => void;
+  institution: EHIApp.Institution;
+  setInstitution: (selectedInstitution: EHIApp.Institution) => void;
 };
 
 export default function InstitutionOption({

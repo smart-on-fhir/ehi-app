@@ -1,4 +1,3 @@
-import { ExportJobSummary } from "../../types";
 import LinkButton from "../generic/LinkButton";
 import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
 import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
@@ -7,7 +6,7 @@ import ExportJobLink from "./ExportJobLink";
 export default function ExportJobListItemAdmin({
   job,
 }: {
-  job: ExportJobSummary;
+  job: EHIApp.ExportJobSummary;
 }) {
   const { id, status, patient, createdAt, attachments } = job;
   return (

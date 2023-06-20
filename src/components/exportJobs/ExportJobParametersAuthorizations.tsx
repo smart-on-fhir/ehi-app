@@ -1,13 +1,5 @@
-import {
-  ExportJob,
-  ExportJobInformationParameters,
-  ExportJobInformationParameter,
-  ExportJobAuthorization,
-  ExportJobAuthorizations,
-} from "../../types";
-
 function formatAuthorizations(
-  authorizations: ExportJobAuthorizations | undefined
+  authorizations: EHIApp.ExportJobAuthorizations | undefined
 ) {
   const emptyMessage =
     "Authorizations have not been provided for any protected or privileged health information";
@@ -18,7 +10,7 @@ function formatAuthorizations(
     return emptyMessage;
   }
   const activeParameters = Object.entries(authorizations)
-    .map(([paramKey, paramValue]: [string, ExportJobAuthorization]) => {
+    .map(([paramKey, paramValue]: [string, EHIApp.ExportJobAuthorization]) => {
       if (paramValue.value) {
         return paramKey;
       } else {
@@ -38,7 +30,7 @@ function formatAuthorizations(
 }
 
 function formatParameters(
-  parameters: ExportJobInformationParameters | undefined
+  parameters: EHIApp.ExportJobInformationParameters | undefined
 ) {
   const emptyMessage = "No attachments requested";
 
@@ -46,13 +38,18 @@ function formatParameters(
     return emptyMessage;
   }
   const activeParameters = Object.entries(parameters)
-    .map(([paramKey, paramValue]: [string, ExportJobInformationParameter]) => {
-      if (paramValue.enabled) {
-        return paramKey;
-      } else {
-        return undefined;
+    .map(
+      ([paramKey, paramValue]: [
+        string,
+        EHIApp.ExportJobInformationParameter
+      ]) => {
+        if (paramValue.enabled) {
+          return paramKey;
+        } else {
+          return undefined;
+        }
       }
-    })
+    )
     .filter((x) => !!x)
     .join(", ");
   if (activeParameters.length === 0) {
@@ -64,7 +61,7 @@ function formatParameters(
 export default function ExportJobParametersAuthorizations({
   job,
 }: {
-  job: ExportJob;
+  job: EHIApp.ExportJob;
 }) {
   const authorizations = job.authorizations;
   const parameters = job.parameters;

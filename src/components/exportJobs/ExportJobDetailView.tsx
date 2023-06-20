@@ -5,10 +5,9 @@ import ExportApproveButton from "./ExportApproveButton";
 import ExportRejectButton from "./ExportRejectButton";
 import AttachmentSection from "../attachments/AttachmentSection";
 import ExportJobLink from "./ExportJobLink";
-import { ExportJob } from "../../types";
 
 type ExportJobDetailViewProps = {
-  job: ExportJob;
+  job: EHIApp.ExportJob;
   refreshJob: () => Promise<void>;
 };
 

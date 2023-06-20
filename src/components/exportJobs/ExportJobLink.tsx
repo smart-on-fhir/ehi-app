@@ -1,8 +1,7 @@
-import { ExportJob } from "../../types";
 import { getExportJobLink } from "../../lib/exportJobHelpers";
 
 type ExportJobLinkProps = {
-  jobId: ExportJob["id"];
+  jobId: EHIApp.ExportJob["id"];
 };
 
 export default function ExportJobLink({ jobId }: ExportJobLinkProps) {

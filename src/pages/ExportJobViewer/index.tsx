@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useCallback } from "react";
-import { ExportJob } from "../../types";
+import { ExportJob } from "../../types.js";
 import { useAsync } from "../../hooks/useAsync";
 import { canJobChangeStatus, getExportJob } from "../../lib/exportJobHelpers";
 import Loading from "../../components/generic/Loading";

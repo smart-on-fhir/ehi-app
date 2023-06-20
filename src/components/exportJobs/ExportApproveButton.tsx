@@ -1,9 +1,8 @@
 import Button from "../generic/Button";
-import { ExportJob } from "../../types";
 import { updateExportStatus } from "../../lib/exportJobHelpers";
 
 type ApproveButtonProps = {
-  job: ExportJob;
+  job: EHIApp.ExportJob;
   refreshJob: () => Promise<void>;
 };
 

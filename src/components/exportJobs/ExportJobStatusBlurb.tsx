@@ -1,7 +1,5 @@
-import { ExportJobStatus } from "../../types";
-
 type ExportJobBlurbProps = {
-  status: ExportJobStatus;
+  status: EHIApp.ExportJobStatus;
 };
 
 export default function ExportJobBlurb({ status }: ExportJobBlurbProps) {

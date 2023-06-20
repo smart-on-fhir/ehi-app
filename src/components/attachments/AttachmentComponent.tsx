@@ -6,11 +6,10 @@ import {
   getAttachmentName,
 } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
-import { ExportJob } from "../../types";
 import NotificationModal from "../generic/NotificationModal";
 
 type AttachmentComponentProps = {
-  jobId: ExportJob["id"];
+  jobId: EHIApp.ExportJob["id"];
   jobEditable: boolean;
   refreshJob: () => Promise<void>;
   attachment: fhir4.Attachment;

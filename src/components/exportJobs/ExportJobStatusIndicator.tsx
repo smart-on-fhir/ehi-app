@@ -1,4 +1,3 @@
-import { ExportJobStatus } from "../../types";
 import {
   // awaiting-input`
   Edit,
@@ -14,7 +13,7 @@ import {
   Slash,
 } from "react-feather";
 
-function displayStatus(status: ExportJobStatus) {
+function displayStatus(status: EHIApp.ExportJobStatus) {
   return status.split("-").join(" ");
 }
 
@@ -22,7 +21,7 @@ export default function ExportJobStatusIndicator({
   status,
   size,
 }: {
-  status: ExportJobStatus;
+  status: EHIApp.ExportJobStatus;
   size?: string | number;
 }) {
   switch (status) {

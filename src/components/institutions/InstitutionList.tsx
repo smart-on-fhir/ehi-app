@@ -1,10 +1,9 @@
-import { Institution } from "../../types";
 import InstitutionOption from "./InstitutionOption";
 import HeadingOne from "../generic/HeadingOne";
 
 type InstitutionListProps = {
-  institutions: Institution[];
-  setInstitution: (selectedInstitution: Institution) => void;
+  institutions: EHIApp.Institution[];
+  setInstitution: (selectedInstitution: EHIApp.Institution) => void;
 };
 
 export default function InstitutionList({

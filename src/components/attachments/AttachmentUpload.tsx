@@ -6,7 +6,6 @@ import {
   MAX_FILE_SIZE,
 } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
-import { ExportJob } from "../../types";
 import NotificationModal from "../generic/NotificationModal";
 
 const SUPPORTED_FILES = [
@@ -33,7 +32,7 @@ const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document
 )} total across ${MAX_FILE_NUM} different files at a time.`;
 
 type AttachmentUploadProps = {
-  jobId: ExportJob["id"];
+  jobId: EHIApp.ExportJob["id"];
   refreshJob: () => Promise<void>;
 };
 

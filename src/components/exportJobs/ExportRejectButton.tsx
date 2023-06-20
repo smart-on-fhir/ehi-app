@@ -1,5 +1,4 @@
 import Button from "../generic/Button";
-import { ExportJob } from "../../types";
 import {
   updateExportStatus,
   deleteExportJob,
@@ -7,7 +6,7 @@ import {
 import { useNavigate } from "react-router";
 
 type RejectButtonProps = {
-  job: ExportJob;
+  job: EHIApp.ExportJob;
   refreshJob: () => Promise<void>;
 };
 

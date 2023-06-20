@@ -1,10 +1,9 @@
-import { ExportJobSummary } from "../../types";
 import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
 import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
 import ExportJobAction from "./ExportJobAction";
 
 type ExportJobListItemUserProps = {
-  job: ExportJobSummary;
+  job: EHIApp.ExportJobSummary;
 };
 
 export default function ExportJobListItemUser({

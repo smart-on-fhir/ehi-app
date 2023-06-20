@@ -1,4 +1,4 @@
-import { ExportJobSummary, ExportJob } from "../types";
+import { ExportJobSummary, ExportJob } from "../types.js";
 import { request } from ".";
 import pkg from "../../package.json";
 

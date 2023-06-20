@@ -1,10 +1,9 @@
 import LinkButton from "../generic/LinkButton";
 import { getExportJobLink } from "../../lib/exportJobHelpers";
-import { ExportJobSummary, ExportJobStatus } from "../../types";
 
 type ExportJobActionProps = {
-  job: ExportJobSummary;
-  status: ExportJobStatus;
+  job: EHIApp.ExportJobSummary;
+  status: EHIApp.ExportJobStatus;
 };
 
 export default function ExportJobAction({ job, status }: ExportJobActionProps) {

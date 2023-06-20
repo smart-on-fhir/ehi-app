@@ -1,9 +1,8 @@
 import AttachmentUpload from "./AttachmentUpload";
 import AttachmentComponent from "./AttachmentComponent";
-import { ExportJob } from "../../types";
 
 type AttachmentSectionProps = {
-  job: ExportJob;
+  job: EHIApp.ExportJob;
   refreshJob: () => Promise<void>;
 };
 
