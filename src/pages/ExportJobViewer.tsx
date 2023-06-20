@@ -1,17 +1,16 @@
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useCallback } from "react";
-import { ExportJob } from "../../types.js";
-import { useAsync } from "../../hooks/useAsync";
-import { canJobChangeStatus, getExportJob } from "../../lib/exportJobHelpers";
-import Loading from "../../components/generic/Loading";
-import ErrorMessage from "../../components/generic/ErrorMessage";
-import ExportJobDetailView from "../../components/exportJobs/ExportJobDetailView";
-import { usePolling } from "../../hooks/usePolling";
+import Loading from "../components/generic/Loading";
+import ErrorMessage from "../components/generic/ErrorMessage";
+import ExportJobDetailView from "../components/exportJobs/ExportJobDetailView";
+import { useAsync } from "../hooks/useAsync";
+import { usePolling } from "../hooks/usePolling";
+import { canJobChangeStatus, getExportJob } from "../lib/exportJobHelpers";
 
 export default function ExportJobViewer() {
   const { id } = useParams();
-  function getExportJobWithId(signal?: AbortSignal): Promise<ExportJob> {
+  function getExportJobWithId(signal?: AbortSignal): Promise<EHIApp.ExportJob> {
     if (id) return getExportJob(id, signal);
     else throw Error("Error in viewing a job: there was no id");
   }
@@ -21,7 +20,7 @@ export default function ExportJobViewer() {
     loading,
     result: job,
     error,
-  } = useAsync<ExportJob>(useCallback(getExportJobWithId, [id]), true);
+  } = useAsync<EHIApp.ExportJob>(useCallback(getExportJobWithId, [id]), true);
 
   // Poll for job changes if the current status is one that can change
   const pollingCondition = useCallback(() => {

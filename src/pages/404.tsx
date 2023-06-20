@@ -1,6 +1,6 @@
-import HeadingOne from "../../components/generic/HeadingOne";
+import HeadingOne from "../components/generic/HeadingOne";
 import { useLocation, useNavigate } from "react-router";
-import Button from "../../components/generic/Button";
+import Button from "../components/generic/Button";
 
 export default function FourOhFour() {
   const location = useLocation();

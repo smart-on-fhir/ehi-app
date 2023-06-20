@@ -1,13 +1,12 @@
 import { useCallback } from "react";
-import { useAsync } from "../../hooks/useAsync";
-import ExportJobListItemAdmin from "../../components/exportJobs/ExportJobListItemAdmin";
-import { canJobChangeStatus, getExportJobs } from "../../lib/exportJobHelpers";
-import { ExportJobSummary } from "../../types";
-import Loading from "../../components/generic/Loading";
-import ErrorMessage from "../../components/generic/ErrorMessage";
-import HeadingOne from "../../components/generic/HeadingOne";
+import { useAsync } from "../hooks/useAsync";
+import ExportJobListItemAdmin from "../components/exportJobs/ExportJobListItemAdmin";
+import { canJobChangeStatus, getExportJobs } from "../lib/exportJobHelpers";
+import Loading from "../components/generic/Loading";
+import ErrorMessage from "../components/generic/ErrorMessage";
+import HeadingOne from "../components/generic/HeadingOne";
 import { Link } from "react-router-dom";
-import { usePolling } from "../../hooks/usePolling";
+import { usePolling } from "../hooks/usePolling";
 
 export default function AdminExportJobList() {
   const {
@@ -15,7 +14,7 @@ export default function AdminExportJobList() {
     loading,
     result: jobs,
     error,
-  } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
+  } = useAsync<EHIApp.ExportJobSummary[]>(useCallback(getExportJobs, []), true);
 
   // Always check for new jobs every minute
   usePolling(syncJobs, undefined, 60000);

@@ -1,15 +1,13 @@
 import { useCallback } from "react";
-import { useAsync } from "../../hooks/useAsync";
-import ExportJobListItemUser from "../../components/exportJobs/ExportJobListItemUser";
-import LinkButton from "../../components/generic/LinkButton";
-import Loading from "../../components/generic/Loading";
-import ErrorMessage from "../../components/generic/ErrorMessage";
-import HeadingOne from "../../components/generic/HeadingOne";
-import { ExportJobSummary } from "../../types";
-import { getExportJobs, canJobChangeStatus } from "../../lib/exportJobHelpers";
+import { useAsync } from "../hooks/useAsync";
+import ExportJobListItemUser from "../components/exportJobs/ExportJobListItemUser";
+import LinkButton from "../components/generic/LinkButton";
+import Loading from "../components/generic/Loading";
+import ErrorMessage from "../components/generic/ErrorMessage";
+import HeadingOne from "../components/generic/HeadingOne";
+import { getExportJobs, canJobChangeStatus } from "../lib/exportJobHelpers";
 import { Plus } from "react-feather";
-import "./index.css";
-import { usePolling } from "../../hooks/usePolling";
+import { usePolling } from "../hooks/usePolling";
 
 export default function UserExportJobList() {
   const {
@@ -17,7 +15,7 @@ export default function UserExportJobList() {
     loading,
     result: jobs,
     error,
-  } = useAsync<ExportJobSummary[]>(useCallback(getExportJobs, []), true);
+  } = useAsync<EHIApp.ExportJobSummary[]>(useCallback(getExportJobs, []), true);
 
   // Poll for job changes if we have any that can change status
   const pollingCondition = useCallback(() => {

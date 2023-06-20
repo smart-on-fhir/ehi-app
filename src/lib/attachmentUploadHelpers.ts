@@ -1,5 +1,4 @@
 import { request } from ".";
-import { ExportJob } from "../types";
 
 export const MAX_FILE_SIZE = 1e7;
 export const MAX_FILE_NUM = 5;
@@ -52,7 +51,7 @@ export function getAttachmentName(attachment: fhir4.Attachment) {
  * @returns Promise corresponding to the upload request,  resulting in a new attachments
  */
 export async function uploadAttachments(
-  jobId: ExportJob["id"],
+  jobId: EHIApp.ExportJob["id"],
   attachments: FileList
 ): Promise<void> {
   // attachments is a FileList, must convert into an iterable for filtering
@@ -82,7 +81,7 @@ export async function uploadAttachments(
  * @returns nothing, but should remove the attachment from the job
  */
 export async function deleteAttachment(
-  jobId: ExportJob["id"],
+  jobId: EHIApp.ExportJob["id"],
   attachmentName: string
 ): Promise<void> {
   return await request(`/api/jobs/${jobId}/remove-files`, {

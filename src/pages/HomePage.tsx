@@ -1,5 +1,5 @@
-import HeadingOne from "../../components/generic/HeadingOne";
-import LinkButton from "../../components/generic/LinkButton";
+import HeadingOne from "../components/generic/HeadingOne";
+import LinkButton from "../components/generic/LinkButton";
 
 export default function Home() {
   return (

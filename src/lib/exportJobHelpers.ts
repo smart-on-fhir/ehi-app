@@ -1,4 +1,3 @@
-import { ExportJobSummary, ExportJob } from "../types.js";
 import { request } from ".";
 import pkg from "../../package.json";
 
@@ -13,22 +12,22 @@ export function getExportJobLink(id: string) {
 
 export async function getExportJobs(
   signal?: AbortSignal
-): Promise<ExportJobSummary[]> {
-  return request<ExportJobSummary[]>("/api/jobs", { signal });
+): Promise<EHIApp.ExportJobSummary[]> {
+  return request<EHIApp.ExportJobSummary[]>("/api/jobs", { signal });
 }
 
 export async function getExportJob(
   id: string,
   signal?: AbortSignal
-): Promise<ExportJob> {
-  return request<ExportJob>(`/api/jobs/${id}`, { signal });
+): Promise<EHIApp.ExportJob> {
+  return request<EHIApp.ExportJob>(`/api/jobs/${id}`, { signal });
 }
 
 export async function updateExportStatus(
   id: string,
   newStatus: "approve" | "reject"
-): Promise<ExportJob> {
-  return request<ExportJob>(`/api/jobs/${id}/${newStatus}`, {
+): Promise<EHIApp.ExportJob> {
+  return request<EHIApp.ExportJob>(`/api/jobs/${id}/${newStatus}`, {
     method: "post",
   });
 }
@@ -36,14 +35,16 @@ export async function updateExportStatus(
 export async function deleteExportJob(
   id: string,
   signal?: AbortSignal
-): Promise<ExportJob> {
-  return request<ExportJob>(`/api/jobs/${id}`, {
+): Promise<EHIApp.ExportJob> {
+  return request<EHIApp.ExportJob>(`/api/jobs/${id}`, {
     method: "delete",
     signal,
   });
 }
 
-export function canJobChangeStatus(job: ExportJob | ExportJobSummary): boolean {
+export function canJobChangeStatus(
+  job: EHIApp.ExportJob | EHIApp.ExportJobSummary
+): boolean {
   return (
     job.status === "awaiting-input" ||
     job.status === "in-review" ||

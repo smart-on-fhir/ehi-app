@@ -1,6 +1,6 @@
-import Button from "../../components/generic/Button";
-import HeadingOne from "../../components/generic/HeadingOne";
-import useAuthConsumer from "../../context/authContext";
+import Button from "../components/generic/Button";
+import HeadingOne from "../components/generic/HeadingOne";
+import useAuthConsumer from "../context/authContext";
 
 export default function AccountDetails() {
   const { authUser, logout } = useAuthConsumer();

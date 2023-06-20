@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import HeadingOne from "../../components/generic/HeadingOne";
-import useAuthConsumer from "../../context/authContext";
+import HeadingOne from "../components/generic/HeadingOne";
+import useAuthConsumer from "../context/authContext";
 import { AlertTriangle, Loader } from "react-feather";
 
 export default function Login() {
