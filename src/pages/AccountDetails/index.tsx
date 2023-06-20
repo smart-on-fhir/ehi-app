@@ -1,5 +1,5 @@
-import Button from "../../components/Button";
-import HeadingOne from "../../components/HeadingOne";
+import Button from "../../components/generic/Button";
+import HeadingOne from "../../components/generic/HeadingOne";
 import useAuthConsumer from "../../context/authContext";
 
 export default function AccountDetails() {

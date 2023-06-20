@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 import { useAsync } from "../../hooks/useAsync";
-import ExportJobListItemAdmin from "../../components/ExportJobListItemAdmin";
+import ExportJobListItemAdmin from "../../components/exportJobs/ExportJobListItemAdmin";
 import { canJobChangeStatus, getExportJobs } from "../../lib/exportJobHelpers";
 import { ExportJobSummary } from "../../types";
-import Loading from "../../components/Loading";
-import ErrorMessage from "../../components/ErrorMessage";
-import HeadingOne from "../../components/HeadingOne";
+import Loading from "../../components/generic/Loading";
+import ErrorMessage from "../../components/generic/ErrorMessage";
+import HeadingOne from "../../components/generic/HeadingOne";
 import { Link } from "react-router-dom";
 import { usePolling } from "../../hooks/usePolling";
 

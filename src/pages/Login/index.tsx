@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import HeadingOne from "../../components/HeadingOne";
+import HeadingOne from "../../components/generic/HeadingOne";
 import useAuthConsumer from "../../context/authContext";
 import { AlertTriangle, Loader } from "react-feather";
 
@@ -71,7 +71,7 @@ export default function Login() {
             )}
           </button>
           {authError && (
-            <p className="animate-fade-in flex w-full items-center rounded border bg-red-100 p-4">
+            <p className="flex w-full animate-fade-in items-center rounded border bg-red-100 p-4">
               <AlertTriangle className="mr-2 inline " />
               {authError}
             </p>

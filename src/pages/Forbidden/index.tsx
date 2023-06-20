@@ -1,6 +1,6 @@
-import HeadingOne from "../../components/HeadingOne";
+import HeadingOne from "../../components/generic/HeadingOne";
 import { useLocation, useNavigate } from "react-router";
-import Button from "../../components/Button";
+import Button from "../../components/generic/Button";
 
 export default function Forbidden() {
   const location = useLocation();

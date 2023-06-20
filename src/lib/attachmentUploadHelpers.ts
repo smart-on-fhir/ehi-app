@@ -1,4 +1,4 @@
-import { request } from "./fetchHelpers";
+import { request } from ".";
 import { ExportJob } from "../types";
 
 export const MAX_FILE_SIZE = 1e7;

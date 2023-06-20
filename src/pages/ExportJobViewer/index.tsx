@@ -4,9 +4,9 @@ import { useCallback } from "react";
 import { ExportJob } from "../../types";
 import { useAsync } from "../../hooks/useAsync";
 import { canJobChangeStatus, getExportJob } from "../../lib/exportJobHelpers";
-import Loading from "../../components/Loading";
-import ErrorMessage from "../../components/ErrorMessage";
-import ExportJobDetailView from "../../components/ExportJobDetailView";
+import Loading from "../../components/generic/Loading";
+import ErrorMessage from "../../components/generic/ErrorMessage";
+import ExportJobDetailView from "../../components/exportJobs/ExportJobDetailView";
 import { usePolling } from "../../hooks/usePolling";
 
 export default function ExportJobViewer() {

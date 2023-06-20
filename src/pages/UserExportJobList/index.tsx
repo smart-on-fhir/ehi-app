@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import { useAsync } from "../../hooks/useAsync";
-import ExportJobListItemUser from "../../components/ExportJobListItemUser";
-import LinkButton from "../../components/LinkButton";
-import Loading from "../../components/Loading";
-import ErrorMessage from "../../components/ErrorMessage";
-import HeadingOne from "../../components/HeadingOne";
+import ExportJobListItemUser from "../../components/exportJobs/ExportJobListItemUser";
+import LinkButton from "../../components/generic/LinkButton";
+import Loading from "../../components/generic/Loading";
+import ErrorMessage from "../../components/generic/ErrorMessage";
+import HeadingOne from "../../components/generic/HeadingOne";
 import { ExportJobSummary } from "../../types";
 import { getExportJobs, canJobChangeStatus } from "../../lib/exportJobHelpers";
 import { Plus } from "react-feather";
