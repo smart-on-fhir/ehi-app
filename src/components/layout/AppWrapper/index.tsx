@@ -22,7 +22,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
           Admin Mode
         </div>
       )}
-      <div className="container mx-auto max-w-screen-lg flex-1 flex-shrink-0 px-4 py-8">
+      <div className="container mx-auto max-w-screen-lg flex-1 flex-shrink-0 px-4 pb-16 pt-8">
         {children}
       </div>
       <div className="relative mt-8 w-full bg-active py-4 pb-8 text-white">
