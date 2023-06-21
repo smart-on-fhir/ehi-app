@@ -37,7 +37,7 @@ export default function AdminExportJobList() {
       );
     } else if (jobs && jobs.length > 0) {
       return (
-        <ul className="min-h-[433px] space-y-4">
+        <ul className="space-y-4">
           {jobs.map((job, i) => (
             <ExportJobListItemAdmin key={job.id} job={job} />
           ))}
