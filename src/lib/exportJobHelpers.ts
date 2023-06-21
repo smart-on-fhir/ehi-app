@@ -1,36 +1,33 @@
-import { ExportJobSummary, ExportJob } from "../types";
-import { request } from "./fetchHelpers";
+import { request } from ".";
 import pkg from "../../package.json";
-
-export const EXPORT_ROUTE = `/api/jobs`;
 
 export function getExportJobLink(id: string) {
   // Needs the actual server URL since this is used in an <a> tag, not in the request library
-  // return `${process!.env!.REACT_APP_EHI_SERVER}${EXPORT_ROUTE}/${id}/download`;
+  // return `${process!.env!.REACT_APP_EHI_SERVER}/api/jobs/${id}/download`;
   if (process.env.NODE_ENV === "production") {
-    return `${EXPORT_ROUTE}/${id}/download`;
+    return `/api/jobs/${id}/download`;
   }
-  return `${pkg.proxy}${EXPORT_ROUTE}/${id}/download`;
+  return `${pkg.proxy}/api/jobs/${id}/download`;
 }
 
 export async function getExportJobs(
   signal?: AbortSignal
-): Promise<ExportJobSummary[]> {
-  return request<ExportJobSummary[]>(EXPORT_ROUTE, { signal });
+): Promise<EHIApp.ExportJobSummary[]> {
+  return request<EHIApp.ExportJobSummary[]>("/api/jobs", { signal });
 }
 
 export async function getExportJob(
   id: string,
   signal?: AbortSignal
-): Promise<ExportJob> {
-  return request<ExportJob>(`${EXPORT_ROUTE}/${id}`, { signal });
+): Promise<EHIApp.ExportJob> {
+  return request<EHIApp.ExportJob>(`/api/jobs/${id}`, { signal });
 }
 
 export async function updateExportStatus(
   id: string,
   newStatus: "approve" | "reject"
-): Promise<ExportJob> {
-  return request<ExportJob>(`${EXPORT_ROUTE}/${id}/${newStatus}`, {
+): Promise<EHIApp.ExportJob> {
+  return request<EHIApp.ExportJob>(`/api/jobs/${id}/${newStatus}`, {
     method: "post",
   });
 }
@@ -38,14 +35,16 @@ export async function updateExportStatus(
 export async function deleteExportJob(
   id: string,
   signal?: AbortSignal
-): Promise<ExportJob> {
-  return request<ExportJob>(`${EXPORT_ROUTE}/${id}`, {
+): Promise<EHIApp.ExportJob> {
+  return request<EHIApp.ExportJob>(`/api/jobs/${id}`, {
     method: "delete",
     signal,
   });
 }
 
-export function canJobChangeStatus(job: ExportJob | ExportJobSummary): boolean {
+export function canJobChangeStatus(
+  job: EHIApp.ExportJob | EHIApp.ExportJobSummary
+): boolean {
   return (
     job.status === "awaiting-input" ||
     job.status === "in-review" ||
