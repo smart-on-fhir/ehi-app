@@ -56,7 +56,17 @@ describe("formatBytes", () => {
   });
 });
 
-// describe("getAttachmentName", () => {
-//   test("throws an error if the attachment has no url property");
-//   test("it returns the last /-delimited value in the URL field");
-// });
+describe("getAttachmentName", () => {
+  test("throws an error if the attachment has no url property", () => {
+    const fakeAttachment = {} as fhir4.Attachment;
+    expect(() => getAttachmentName(fakeAttachment)).toThrowError(
+      "Attachment did not have a URL defined; cannot determine attachment name without one"
+    );
+  });
+  test("it returns the last /-delimited value in the URL field", () => {
+    const fakeAttachment = {
+      url: "url/jobs/:id/download/attachments/filename",
+    } as fhir4.Attachment;
+    expect(getAttachmentName(fakeAttachment)).toBe("filename");
+  });
+});

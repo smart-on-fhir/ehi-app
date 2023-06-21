@@ -37,7 +37,7 @@ export function getAttachmentName(attachment: fhir4.Attachment) {
   const urlSplit = attachment.url?.split("/");
   if (urlSplit === undefined) {
     throw Error(
-      "Attachment did not have a URL defined; cannot determine which attachment to delete without one"
+      "Attachment did not have a URL defined; cannot determine attachment name without one"
     );
   }
   // The file name is at the end of the url, split on '/'
