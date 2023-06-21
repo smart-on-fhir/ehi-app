@@ -28,7 +28,7 @@ export default function AttachmentSection({
         <AttachmentUpload jobId={jobId} refreshJob={refreshJob} />
       )}
       {job.attachments && job.attachments.length !== 0 && (
-        <ul className="max-h-[calc(100vh-510px)] min-h-[250px] w-full space-y-2 overflow-auto sm:max-h-[calc(100vh-470px)]">
+        <ul className="min-h-[250px] w-full space-y-2">
           {job.attachments.map((attachment) => {
             return (
               <AttachmentComponent

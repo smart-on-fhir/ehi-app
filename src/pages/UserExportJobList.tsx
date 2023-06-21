@@ -36,7 +36,7 @@ export default function UserExportJobList() {
       );
     } else if (jobs) {
       return (
-        <ul className="max-h-[calc(100vh-210px)] min-h-[375px] space-y-4 overflow-y-auto sm:max-h-[calc(100vh-170px)]">
+        <ul className="min-h-[375px] space-y-4">
           {jobs && jobs.length > 0 ? (
             jobs.map((job) => <ExportJobListItemUser key={job.id} job={job} />)
           ) : (
