@@ -8,7 +8,7 @@ export const MAX_FILE_NUM = 5;
  * @param file
  * @returns true if the file will be accepted by the server; false otherwise
  */
-function validFileFilter(file: File) {
+export function validFileFilter(file: File) {
   return file.size <= MAX_FILE_SIZE;
 }
 
