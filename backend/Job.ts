@@ -39,12 +39,6 @@ export default class Job {
     readonly statusUrl: string;
 
     /**
-     * This flag tells us that the jib is immutable. Only used for some
-     * pre-inserted jobs for demo purposes
-     */
-    protected readonly: boolean;
-
-    /**
      * The URL of the customization form (if any) fot this job
      */
     protected customizeUrl: string;
@@ -90,7 +84,6 @@ export default class Job {
         this.patientId = rec.patientId
         this.patientName = rec.patientName
         this.statusUrl = rec.statusUrl || ""
-        this.readonly = !!rec.readonly
         this.customizeUrl = rec.customizeUrl || ""
         this.manifest = JSON.parse(rec.manifest || "null")
         this.parameters = JSON.parse(rec.parameters || "null")
@@ -261,7 +254,6 @@ export default class Job {
         const params = {
             userId: this.userId,
             patientId: this.patientId,
-            readonly: this.readonly,
             statusUrl: this.statusUrl,
             customizeUrl: this.customizeUrl,
             manifest: this.manifest ? JSON.stringify(this.manifest) : null,
@@ -324,7 +316,6 @@ export default class Job {
             parameters: this.parameters || {},
             authorizations: this.authorizations || {},
             statusUrl: this.statusUrl,
-            readonly: this.readonly,
             customizeUrl: this.customizeUrl,
             manifest: this.getAugmentedManifest()
         }

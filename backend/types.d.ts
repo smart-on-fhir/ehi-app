@@ -133,7 +133,6 @@ declare namespace EHI {
         userId: number
         patientId: string | number
         statusUrl: string | null
-        readonly: boolean | 0 | 1
         customizeUrl: string | null
         manifest: string | null // JSON -> ExportManifest
         parameters: string | null // JSON -> ExportJobInformationParameters

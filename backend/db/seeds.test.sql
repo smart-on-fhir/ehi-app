@@ -17,7 +17,6 @@ INSERT INTO "jobs" (
     "userId",
     "patientId",
     "statusUrl",
-    "readonly",
     "customizeUrl",
     "manifest",
     "parameters",
@@ -41,9 +40,6 @@ INSERT INTO "jobs" (
     
     -- statusUrl
     'http://ehi-server.org/jobs/remote-job-1-id/status',
-    
-    -- readonly
-    1,
     
     -- customizeUrl
     'http://ehi-server.org/jobs/remote-job-1-id/customize?behavior=automatic&_patient=6c5d9ca9-54d7-42f5-bfae-a7c19cd217f2',
@@ -203,9 +199,6 @@ INSERT INTO "jobs" (
 
     -- statusUrl
     '',
-
-    -- readonly
-    1,
 
     -- customizeUrl
     '',

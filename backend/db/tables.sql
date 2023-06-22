@@ -26,7 +26,6 @@ CREATE TABLE "jobs"(
 	"userId"         Integer NOT NULL,
 	"patientId"      Text    NOT NULL,
 	"statusUrl"      Text,
-	"readonly"       Boolean DEFAULT 0,
 	"customizeUrl"   Text,
 	"manifest"       Text,
 	"parameters"     Text,
