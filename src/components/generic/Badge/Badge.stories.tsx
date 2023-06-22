@@ -13,14 +13,12 @@ type Story = StoryObj<typeof Badge>;
 
 export const SimpleBadge: Story = {
   args: {
-    //👇 The args you need here will depend on your component
     display: "Some text",
   },
 };
 
 export const DetailedBadge: Story = {
   args: {
-    //👇 The args you need here will depend on your component
     display: "Some text",
     detailedInformation:
       "This text provides more context for users that hover over the badge icon",
@@ -29,7 +27,6 @@ export const DetailedBadge: Story = {
 
 export const CustomizedBadge: Story = {
   args: {
-    //👇 The args you need here will depend on your component
     display: "Some text",
     detailedInformation:
       "This text provides more context for users that hover over the badge icon",

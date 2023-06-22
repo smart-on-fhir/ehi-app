@@ -10,6 +10,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm storybook`
+
+Launches the storybook workshop on http://localhost:6006, allowing review of many frontend components in isolation from the full web application.
+
 ### `npm start`
 
 Runs the app in the development mode.\

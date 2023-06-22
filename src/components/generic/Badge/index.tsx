@@ -4,7 +4,7 @@ interface BadgeProps {
    */
   display: string;
   /**
-   * An optional detailed description of what the badge means, used to fulfill the title attribute
+   * Optional detailed description of what the badge means, for example as a title attribute for hover-interactivity
    */
   detailedInformation?: string;
   /**
