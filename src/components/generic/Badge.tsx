@@ -9,7 +9,7 @@ export default function Badge({
 }) {
   return (
     <span
-      className={`rounded-xl border bg-active px-1 py-0.5 text-xs text-white ${
+      className={`rounded-xl border bg-active px-1.5 py-0.5 text-xs text-white ${
         className ? className : ""
       }`}
       title={detailedInformation || display}
