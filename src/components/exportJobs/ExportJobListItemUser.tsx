@@ -1,9 +1,10 @@
 import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
 import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
 import ExportJobAction from "./ExportJobAction";
+import Badge from "../generic/Badge";
 
 type ExportJobListItemUserProps = {
-  job: EHIApp.ExportJobSummary;
+  job: EHIApp.ExportJob;
 };
 
 export default function ExportJobListItemUser({
@@ -21,7 +22,10 @@ export default function ExportJobListItemUser({
         </div>
       </div>
       <div className="w-full ">
-        <p className="text-lg font-bold">{institutionName}</p>
+        <p className="mr-2 inline-flex items-center text-lg font-bold">
+          {institutionName}
+          {job.readonly && <Badge display="Read only" className="ml-2" />}
+        </p>
         <p className="text-sm ">
           {completedAt === 0
             ? `Created ${new Date(createdAt).toLocaleString()}`
