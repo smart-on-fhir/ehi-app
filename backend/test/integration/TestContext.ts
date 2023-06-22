@@ -4,7 +4,7 @@ import { AddressInfo, Server } from "net"
 import { join } from "path";
 import server from "../.."
 import config from "../../config"
-import db, { seed } from "../../db"
+import db from "../../db"
 
 
 
@@ -66,7 +66,7 @@ before(up);
 after(down);
 
 beforeEach(async () => {
-    await seed()
+    await db.init();
     await db.promise("run", "UPDATE users SET sid = 'USER_SID' WHERE role = 'user'");
     await db.promise("run", "UPDATE users SET sid = 'ADMIN_SID' WHERE role = 'admin'");
 })

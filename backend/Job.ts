@@ -293,7 +293,11 @@ export default class Job {
             await db.promise("run", "BEGIN")
             try {
                 await db.promise("run", "DELETE FROM jobs WHERE id=?", [this.id])
-                if (this.statusUrl) await this.request(true)(this.statusUrl, { method: "DELETE" })
+                if (this.statusUrl) {
+                    // Try to delete the remote job but ignore errors in case
+                    // the remote job is no longer available
+                    await this.request(true)(this.statusUrl, { method: "DELETE" }).catch(() => { })
+                }
                 rmSync(this.directory, { force: true, recursive: true })
             } catch (ex) {
                 console.error(ex)

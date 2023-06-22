@@ -9,7 +9,7 @@ import config from "./config"
 
 type Role = "user" | "admin"
 
-const debug = debuglog("auth")
+const debug = debuglog("app:auth")
 
 
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
