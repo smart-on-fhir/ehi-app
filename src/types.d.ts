@@ -92,7 +92,6 @@ declare namespace EHIApp {
 
     userId: number;
     statusUrl: string;
-    readonly: boolean;
     customizeUrl: string | null;
     manifest: any;
 
