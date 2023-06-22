@@ -58,7 +58,7 @@ export default function Login() {
             Remember Me
           </label>
           <button
-            className="w-full rounded border bg-active py-2 text-xl text-white disabled:bg-opacity-80"
+            className="h-12 w-full rounded border bg-active py-2 text-xl text-white disabled:bg-opacity-80"
             disabled={authLoading || !(Boolean(username) && Boolean(password))}
             type="submit"
           >

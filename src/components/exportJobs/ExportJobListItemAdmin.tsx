@@ -2,11 +2,12 @@ import LinkButton from "../generic/LinkButton";
 import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
 import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
 import ExportJobLink from "./ExportJobLink";
+import Badge from "../generic/Badge";
 
 export default function ExportJobListItemAdmin({
   job,
 }: {
-  job: EHIApp.ExportJobSummary;
+  job: EHIApp.ExportJob;
 }) {
   const { id, status, patient, createdAt, attachments } = job;
   return (
@@ -18,7 +19,10 @@ export default function ExportJobListItemAdmin({
         </div>
       </div>
       <div className="w-full">
-        <h1 className="mr-2 inline-block text-lg font-bold">Job #{id}</h1>
+        <h1 className="mr-2 inline-flex items-center text-lg font-bold">
+          Job #{id}{" "}
+          {job.readonly && <Badge display="Read only" className="ml-2" />}
+        </h1>
         {status === "approved" && <ExportJobLink jobId={id} />}
         <pre className="whitespace-pre-wrap text-xs italic opacity-50">
           {[

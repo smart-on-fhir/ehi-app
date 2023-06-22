@@ -5,7 +5,10 @@ import LinkButton from "../components/generic/LinkButton";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
-import { getExportJobs, canJobChangeStatus } from "../lib/exportJobHelpers";
+import {
+  getExportJobs,
+  useJobsPollingConditionCallback,
+} from "../lib/exportJobHelpers";
 import { Plus } from "react-feather";
 import { usePolling } from "../hooks/usePolling";
 
@@ -15,14 +18,10 @@ export default function UserExportJobList() {
     loading,
     result: jobs,
     error,
-  } = useAsync<EHIApp.ExportJobSummary[]>(useCallback(getExportJobs, []), true);
+  } = useAsync<EHIApp.ExportJob[]>(useCallback(getExportJobs, []), true);
 
   // Poll for job changes if we have any that can change status
-  const pollingCondition = useCallback(() => {
-    if (jobs === null) return false;
-    return jobs.some(canJobChangeStatus);
-  }, [jobs]);
-  usePolling(syncJobs, pollingCondition);
+  usePolling(syncJobs, useJobsPollingConditionCallback(jobs));
 
   function PageBody() {
     if (loading && jobs === null) {
@@ -36,7 +35,7 @@ export default function UserExportJobList() {
       );
     } else if (jobs) {
       return (
-        <ul className="min-h-[375px] space-y-4">
+        <ul className="space-y-4">
           {jobs && jobs.length > 0 ? (
             jobs.map((job) => <ExportJobListItemUser key={job.id} job={job} />)
           ) : (

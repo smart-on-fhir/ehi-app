@@ -1,7 +1,10 @@
 import { useCallback } from "react";
 import { useAsync } from "../hooks/useAsync";
 import ExportJobListItemAdmin from "../components/exportJobs/ExportJobListItemAdmin";
-import { canJobChangeStatus, getExportJobs } from "../lib/exportJobHelpers";
+import {
+  getExportJobs,
+  useJobsPollingConditionCallback,
+} from "../lib/exportJobHelpers";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
@@ -14,16 +17,12 @@ export default function AdminExportJobList() {
     loading,
     result: jobs,
     error,
-  } = useAsync<EHIApp.ExportJobSummary[]>(useCallback(getExportJobs, []), true);
+  } = useAsync<EHIApp.ExportJob[]>(useCallback(getExportJobs, []), true);
 
   // Always check for new jobs every minute
   usePolling(syncJobs, undefined, 60000);
-  // Do a regular poll if we have jobs that can change status
-  const pollingCondition = useCallback(() => {
-    if (jobs === null) return false;
-    return jobs.some(canJobChangeStatus);
-  }, [jobs]);
-  usePolling(syncJobs, pollingCondition);
+  // Poll for job changes if the current status is one that can change
+  usePolling(syncJobs, useJobsPollingConditionCallback(jobs));
 
   function PageBody() {
     if (loading && jobs === null) {
@@ -37,7 +36,7 @@ export default function AdminExportJobList() {
       );
     } else if (jobs && jobs.length > 0) {
       return (
-        <ul className="min-h-[433px] space-y-4">
+        <ul className="space-y-4">
           {jobs.map((job, i) => (
             <ExportJobListItemAdmin key={job.id} job={job} />
           ))}

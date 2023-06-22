@@ -135,6 +135,4 @@ declare namespace EHIApp {
      */
     authorizations?: ExportJobAuthorizations;
   }
-
-  export type ExportJobSummary = Omit<ExportJob, "manifest" | "readonly">;
 }
