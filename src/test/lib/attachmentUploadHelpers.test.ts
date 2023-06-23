@@ -35,7 +35,6 @@ describe("formatBytes", () => {
   });
   test("values >= 1KB but < 1MB are displayed in KB", () => {
     const kilobyte = 2 ** 10;
-    console.log(kilobyte);
     expect(formatBytes(kilobyte)).toBe(`1.0 KB`);
   });
   test("KB values are rounded to 1 decimal place", () => {
