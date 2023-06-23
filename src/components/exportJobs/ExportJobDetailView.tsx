@@ -5,6 +5,11 @@ import ExportApproveButton from "./ExportApproveButton";
 import ExportRejectButton from "./ExportRejectButton";
 import AttachmentSection from "../attachments/AttachmentSection";
 import ExportJobLink from "./ExportJobLink";
+import {
+  displayApprovedDate,
+  displayCreatedDate,
+  displayPatientInformation,
+} from "../../lib/exportJobHelpers";
 
 type ExportJobDetailViewProps = {
   job: EHIApp.ExportJob;
@@ -15,11 +20,11 @@ export default function ExportJobDetailView({
   job,
   refreshJob,
 }: ExportJobDetailViewProps) {
-  const { id, status, patient, createdAt, attachments } = job;
+  const { id, status, attachments } = job;
   return (
     <section className="space-y-4 rounded border bg-white p-4">
       <header className="flex items-center">
-        <div className="flex w-24 flex-col items-center pr-1 text-center">
+        <div className="flex w-24 flex-col items-center pr-2 text-center">
           <ExportJobStatusIndicator status={status} />
           <div className="text-sm opacity-80">
             <ExportJobStatusBlurb status={status} />
@@ -31,10 +36,8 @@ export default function ExportJobDetailView({
             {status === "approved" && <ExportJobLink jobId={id} />}
             <pre className="whitespace-pre-wrap text-xs italic opacity-50">
               {[
-                `Patient ${
-                  patient.name !== "" ? patient.name : "#" + patient.id
-                }`,
-                `Created ${new Date(createdAt).toLocaleString()}`,
+                displayPatientInformation(job),
+                displayCreatedDate(job),
                 `${attachments.length} Attachments`,
               ].join("\n")}
             </pre>

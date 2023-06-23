@@ -2,13 +2,17 @@ import LinkButton from "../generic/LinkButton";
 import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
 import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
 import ExportJobLink from "./ExportJobLink";
+import {
+  displayCreatedDate,
+  displayPatientInformation,
+} from "../../lib/exportJobHelpers";
 
 export default function ExportJobListItemAdmin({
   job,
 }: {
   job: EHIApp.ExportJob;
 }) {
-  const { id, status, patient, createdAt, attachments } = job;
+  const { id, status, attachments } = job;
   return (
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
       <div className="flex w-20 flex-shrink-0 flex-col items-center text-center">
@@ -24,8 +28,8 @@ export default function ExportJobListItemAdmin({
         {status === "approved" && <ExportJobLink jobId={id} />}
         <pre className="whitespace-pre-wrap text-xs italic opacity-50">
           {[
-            `Patient ${patient.name !== "" ? patient.name : "#" + patient.id}`,
-            `Created ${new Date(createdAt).toLocaleString()}`,
+            displayPatientInformation(job),
+            displayCreatedDate(job),
             `${attachments.length} Attachments`,
           ].join("\n")}
         </pre>
