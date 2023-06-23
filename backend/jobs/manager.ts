@@ -43,7 +43,7 @@ async function checkJobs() {
         }
     }
 
-    setTimeout(checkJobs, 1000).unref()
+    setTimeout(checkJobs, config.statusCheckInterval).unref()
 }
 
 // On startup
@@ -51,4 +51,4 @@ deleteUploads()
 removeJobs()
 setTimeout(checkJobs, 1000).unref()
 
-export = {}
+export default {}
