@@ -1,11 +1,36 @@
+type ButtonSize = "md" | "lg";
+type ButtonVariant = "primary" | "emphasized" | "danger";
+
 type ButtonProps = {
+  /**
+   * What happens when someone clicks on the button
+   * @param event a click event handler
+   */
   onClick(event: React.MouseEvent<HTMLButtonElement>): void;
+  /**
+   * The contents of the button (e.g. a Component, or another primitive render type like string, number, etc)
+   */
   children: React.ReactNode;
+  /**
+   * Optional classes
+   */
   className?: string;
+  /**
+   * Should the button autofocus
+   */
   autoFocus?: boolean;
+  /**
+   * Whether or not the button is disabled
+   */
   disabled?: boolean;
-  size?: "md" | "lg";
-  variant?: "primary" | "emphasized" | "danger";
+  /**
+   * Size of the button to render;
+   */
+  size?: ButtonSize;
+  /**
+   * Variant styling to use;
+   */
+  variant?: ButtonVariant;
 };
 
 export default function Button({
