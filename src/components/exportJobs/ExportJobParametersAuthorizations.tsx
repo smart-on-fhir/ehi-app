@@ -1,20 +1,18 @@
 import { formatDate } from "../../lib";
 
 /**
- * Formats authorization information into a newline-formatted string
+ * Formats authorization information to identify info that IS authorized for release
  * @param authorizations
  * @returns
  */
-function formatAuthorizations(
+function formatAuthorizedReleases(
   authorizations: EHIApp.ExportJobAuthorizations | undefined
 ) {
-  const emptyMessage =
-    "Authorizations have not been provided for any protected or privileged health information.";
   if (
     authorizations === undefined ||
     Object.keys(authorizations).length === 0
   ) {
-    return emptyMessage;
+    return null;
   }
   const activeAuthorizations = Object.values(authorizations)
     .map((authorization: EHIApp.ExportJobAuthorization) => {
@@ -24,34 +22,59 @@ function formatAuthorizations(
           // Optionally include authorization information represented as free-text
           (authorization.value !== true ? ` [${authorization.value}]` : "")
         );
-      } else {
-        return undefined;
-      }
+      } else return undefined;
     })
     .filter(Boolean)
     .join(", ");
-  if (activeAuthorizations.length === 0) {
-    return emptyMessage;
-  }
-  return (
-    "Authorizations were provided for the following privileged data: " +
-    activeAuthorizations +
-    "."
-  );
+  const activeAuthorizationsText = `Authorizations were provided to release the following: ${activeAuthorizations}.`;
+
+  if (activeAuthorizations.length === 0) return null;
+  return <p>{activeAuthorizationsText}</p>;
 }
 
 /**
- * Formats parameter information into a newline-formatted string
- * @param parameters
+ * Formats authorization information to identify info NOT authorized for release
+ * @param authorizations
  * @returns
+ */
+function formatUnauthorizedReleases(
+  authorizations: EHIApp.ExportJobAuthorizations | undefined
+) {
+  const emptyMessage = "No specific data was authorized for release.";
+
+  if (
+    authorizations === undefined ||
+    Object.keys(authorizations).length === 0
+  ) {
+    return <p>{emptyMessage}</p>;
+  }
+  const disabledAuthorizations = Object.values(authorizations)
+    .map((authorization: EHIApp.ExportJobAuthorization) => {
+      // Special case: ignore Others for disabled fields
+      if (authorization.name === "Other(s)") return undefined;
+      if (!authorization.value) {
+        return authorization.name;
+      } else return undefined;
+    })
+    .filter(Boolean)
+    .join(", ");
+  const disabledAuthorizationsText = `Authorizations were NOT provided to release the following: ${disabledAuthorizations}.`;
+
+  return <p>{disabledAuthorizationsText}</p>;
+}
+
+/**
+ * Translates job parameters into human-readable descriptions regarding specific record requests
+ * @param parameters
+ * @returns a paragraph explaining what kind of records the user did or did not request
  */
 function formatParameters(
   parameters: EHIApp.ExportJobInformationParameters | undefined
 ) {
-  const emptyMessage = "No specific attachments requested.";
+  const emptyMessage = "No specific records or documents were requested.";
 
   if (parameters === undefined) {
-    return emptyMessage;
+    return <p>{emptyMessage}</p>;
   }
   const activeParameters = Object.values(parameters)
     .map((param: EHIApp.ExportJobInformationParameter) => {
@@ -71,10 +94,17 @@ function formatParameters(
     })
     .filter(Boolean)
     .join(", ");
+
+  // Confirm there are parameters even after boolean filter
   if (activeParameters.length === 0) {
-    return emptyMessage;
+    return <p>{emptyMessage}</p>;
   }
-  return "Attachments requested for: " + activeParameters + ".";
+
+  return (
+    <p>
+      Before approving, consider additional attachments for: {activeParameters}.
+    </p>
+  );
 }
 
 export default function ExportJobParametersAuthorizations({
@@ -82,12 +112,12 @@ export default function ExportJobParametersAuthorizations({
 }: {
   job: EHIApp.ExportJob;
 }) {
-  const authorizations = job.authorizations;
-  const parameters = job.parameters;
+  const { authorizations, parameters } = job;
   return (
-    <section className="text-sm">
-      <p>{formatParameters(parameters)}</p>
-      <p>{formatAuthorizations(authorizations)}</p>
+    <section className="space-y-1 text-sm">
+      {formatAuthorizedReleases(authorizations)}
+      {formatUnauthorizedReleases(authorizations)}
+      {formatParameters(parameters)}
     </section>
   );
 }
