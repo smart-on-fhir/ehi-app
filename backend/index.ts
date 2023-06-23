@@ -8,13 +8,12 @@ import { HttpError } from "./errors"
 import { authenticate, login, logout } from "./auth"
 import institutionsRouter from "./institutions"
 import jobsRouter from "./jobs"
+import "./jobs/manager"
 
 
 const app = express()
-app.use(cookieParser())
 
-// app.use(urlencoded({ extended: false, limit: "64kb" }));
-// app.use(json());
+app.use(cookieParser())
 
 app.use("/api/institutions", institutionsRouter)
 

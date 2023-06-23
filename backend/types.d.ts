@@ -115,7 +115,7 @@ declare namespace EHI {
          * The JS timestamp showing when this job was completed, or `0` if it
          * hasn't been completed yet
          */
-        completedAt: number | null
+        approvedAt: number | null
 
         /**
          * Array of additional attachments which should be made available via
@@ -144,6 +144,7 @@ declare namespace EHI {
         tokenUri: string
         status: ExportJobStatus | null
         patientName: string | null
+        approvedAt: number | null,
     }
 
     interface ExportJobInformationParameter {

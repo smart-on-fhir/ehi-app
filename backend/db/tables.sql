@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS "users";
+
 CREATE TABLE "users"(
 	"id"        Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"username"  Text NOT NULL,
@@ -10,6 +11,7 @@ CREATE TABLE "users"(
 );
 
 DROP TABLE IF EXISTS "institutions";
+
 CREATE TABLE "institutions"(
 	"id"          Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"displayName" Text NOT NULL,
@@ -21,6 +23,7 @@ CREATE TABLE "institutions"(
 );
 
 DROP TABLE IF EXISTS "jobs";
+
 CREATE TABLE "jobs"(
 	"id"             Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"userId"         Integer NOT NULL,
@@ -32,6 +35,7 @@ CREATE TABLE "jobs"(
 	"authorizations" Text,
 	"attachments"    Text,
 	"createdAt"      DateTime DEFAULT CURRENT_TIMESTAMP,
+    "approvedAt"     DateTime,
 	"accessToken"    Text NOT NULL,
 	"refreshToken"   Text NOT NULL,
     "tokenUri"       Text NOT NULL,

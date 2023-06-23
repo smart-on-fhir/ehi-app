@@ -52,22 +52,13 @@ export async function dropDb() {
 
 async function up() {
     await SERVER.start()
-    // await db.promise("run", "UPDATE users SET sid = 'USER_SID' WHERE role = 'user'");
-    // await db.promise("run", "UPDATE users SET sid = 'ADMIN_SID' WHERE role = 'admin'");
 }
 
 async function down() {
     await SERVER.stop()
-    // await dropDb()
 }
 
 
 before(up);
 after(down);
-
-beforeEach(async () => {
-    await db.init();
-    await db.promise("run", "UPDATE users SET sid = 'USER_SID' WHERE role = 'user'");
-    await db.promise("run", "UPDATE users SET sid = 'ADMIN_SID' WHERE role = 'admin'");
-})
-
+beforeEach(db.init);

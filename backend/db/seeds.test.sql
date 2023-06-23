@@ -1,6 +1,6 @@
-INSERT INTO "users" ("id","username","password","role") VALUES 
-(1, 'admin'  , '$2a$10$ZyXp2reLAbPDwNIIqzurIujWmp4bayMnJbSno0ucqEaV1SXbdxZTa', 'admin'), -- Password: admin-password
-(2, 'patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'user' ); -- Password: patient-password
+INSERT INTO "users" ("id","username","password","role","sid") VALUES 
+(1, 'admin'  , '$2a$10$ZyXp2reLAbPDwNIIqzurIujWmp4bayMnJbSno0ucqEaV1SXbdxZTa', 'admin', 'ADMIN_SID'), -- Password: admin-password
+(2, 'patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'user', 'USER_SID'); -- Password: patient-password
 
 
 INSERT INTO "institutions" ("id","displayName","fhirUrl","location","disabled","clientId","scope") VALUES 
@@ -23,6 +23,7 @@ INSERT INTO "jobs" (
     "authorizations",
     "attachments",
     "createdAt",
+    "approvedAt",
     "accessToken",
     "refreshToken",
     "tokenUri",
@@ -171,6 +172,9 @@ INSERT INTO "jobs" (
 
     -- createdAt
     '2023-06-15 21:02:00',
+
+    -- approvedAt
+    '2023-05-10 21:02:00',
 
     -- accessToken
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6Im9mZmxpbmVfYWNjZXNzIHBhdGllbnQvJGVoaS1leHBvcnQiLCJpYXQiOjE2ODc0NTE0MzcsImV4cCI6MTY4NzQ1NTAzN30.xRFrJgOl7etW6dexg-LqKYBfmw57_r4uPWtaemZbYic',
@@ -330,6 +334,9 @@ INSERT INTO "jobs" (
 
     -- createdAt
     '2023-06-15 21:02:00',
+
+    -- approvedAt
+    '2023-05-10 21:02:00',
 
     -- accessToken
     '',
