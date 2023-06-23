@@ -113,10 +113,10 @@ declare namespace EHIApp {
     createdAt: number;
 
     /**
-     * The JS timestamp showing when this job was completed, or `0` if it
+     * The JS timestamp showing when this job was approved, or `null` if it
      * hasn't been completed yet
      */
-    completedAt: number;
+    approvedAt: number | null;
 
     /**
      * Array of additional attachments which should be made available via

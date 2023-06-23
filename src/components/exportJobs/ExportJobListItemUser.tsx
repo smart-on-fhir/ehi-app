@@ -11,7 +11,8 @@ export default function ExportJobListItemUser({
 }: ExportJobListItemUserProps) {
   // TODO: Get this information off of the job when supported on the job
   const institutionName = "New York Gerontology Hospital";
-  const { status, createdAt, completedAt } = job;
+  const { status, createdAt, approvedAt } = job;
+  console.log(job);
   return (
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
       <div className="flex w-20 flex-auto flex-shrink-0 flex-col items-center justify-center text-center">
@@ -25,9 +26,11 @@ export default function ExportJobListItemUser({
           {institutionName}
         </p>
         <p className="text-sm ">
-          {completedAt === 0
-            ? `Created ${new Date(createdAt).toLocaleString()}`
-            : `Completed ${new Date(completedAt).toLocaleString()}`}
+          {`Created ${new Date(createdAt).toLocaleString()}`}
+        </p>
+        <p className="text-sm ">
+          {approvedAt !== null &&
+            `Completed ${new Date(approvedAt).toLocaleString()}`}
         </p>
       </div>
       <ExportJobAction job={job} status={status} />

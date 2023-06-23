@@ -112,8 +112,8 @@ declare namespace EHI {
         createdAt: number
 
         /**
-         * The JS timestamp showing when this job was completed, or `0` if it
-         * hasn't been completed yet
+         * The JS timestamp showing when this job was reviewed, or `null` if it
+         * hasn't been reviewed yet
          */
         approvedAt: number | null
 
