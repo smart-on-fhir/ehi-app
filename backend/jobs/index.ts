@@ -130,3 +130,23 @@ router.get("/:id/download", asyncRouteWrap(async (req: Request, res: Response) =
     archive.finalize();
 }))
 
+router.get("/:id/download/:file", asyncRouteWrap(async (req: Request, res: Response) => {
+    const job = await Job.byId(+req.params.id)
+    requireAdminOrOwner(job, req)
+    const filePath = join(job.directory, req.params.file)
+    if (!statSync(filePath, { throwIfNoEntry: false })?.isFile()) {
+        throw new HttpError(`This job has no file "${req.params.file}"`).status(404)
+    }
+    res.sendFile(filePath)
+}));
+
+router.get("/:id/download/attachments/:file", asyncRouteWrap(async (req: Request, res: Response) => {
+    const job = await Job.byId(+req.params.id)
+    requireAdminOrOwner(job, req)
+    const filePath = join(job.directory, "attachments", req.params.file)
+    if (!statSync(filePath, { throwIfNoEntry: false })?.isFile()) {
+        throw new HttpError(`This job has no attachment "${req.params.file}"`).status(404)
+    }
+    res.sendFile(filePath)
+}));
+
