@@ -1,4 +1,4 @@
-import { request } from ".";
+import { formatDateTime, request } from ".";
 import pkg from "../../package.json";
 
 export function getExportJobLink(id: string) {
@@ -64,12 +64,12 @@ export function displayPatientInformation(job: EHIApp.ExportJob) {
 // Format when a job was created in a user-friendly way
 export function displayCreatedDate(job: EHIApp.ExportJob) {
   const { createdAt } = job;
-  return `Created ${new Date(createdAt).toLocaleString()}`;
+  return `Created ${formatDateTime(createdAt)}`;
 }
 
 // Format when a job was approved in a user-friendly way
 export function displayApprovedDate(job: EHIApp.ExportJob) {
   const { approvedAt } = job;
   if (approvedAt === null) return "";
-  return `Completed ${new Date(approvedAt).toLocaleString()}`;
+  return `Completed ${formatDateTime(approvedAt)}`;
 }
