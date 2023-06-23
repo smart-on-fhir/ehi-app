@@ -10,7 +10,7 @@ export default function AppHeader() {
         <img
           src={smartLogo}
           alt="SMART on FHIR logo"
-          className="mr-2 inline-block h-6"
+          className="mr-2 inline-block h-[36px]"
         />
         <h1 className="text-center text-2xl ">EHI Export</h1>
       </Link>
