@@ -1,7 +1,8 @@
 import { FormEvent, useState } from "react";
 import HeadingOne from "../components/generic/HeadingOne";
 import useAuthConsumer from "../context/authContext";
-import { AlertTriangle, Loader } from "react-feather";
+import { AlertTriangle } from "react-feather";
+import SpinningLoader from "../components/generic/SpinningLoader";
 
 export default function Login() {
   const [username, setUsername] = useState<string>("");
@@ -63,12 +64,7 @@ export default function Login() {
             type="submit"
           >
             {!authLoading && "Submit"}
-            {authLoading && (
-              <Loader
-                aria-label="Login request loading"
-                className="mx-auto animate-spin"
-              />
-            )}
+            {authLoading && <SpinningLoader label="Login request loading" />}
           </button>
           {authError && (
             <p className="flex w-full animate-fade-in items-center rounded border bg-red-100 p-4">
