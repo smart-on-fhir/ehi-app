@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 export function usePolling(
   fn: Function,
-  precondition: () => boolean = () => true,
-  frequency: number = 5000
+  frequency: number = 5000,
+  precondition: () => boolean = () => true
 ) {
   useEffect(() => {
     let interval: number;

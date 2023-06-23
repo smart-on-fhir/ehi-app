@@ -1,10 +1,7 @@
 import { useCallback } from "react";
 import { useAsync } from "../hooks/useAsync";
 import ExportJobListItemAdmin from "../components/exportJobs/ExportJobListItemAdmin";
-import {
-  getExportJobs,
-  useJobsPollingConditionCallback,
-} from "../lib/exportJobHelpers";
+import { getExportJobs } from "../lib/exportJobHelpers";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
@@ -19,10 +16,8 @@ export default function AdminExportJobList() {
     error,
   } = useAsync<EHIApp.ExportJob[]>(useCallback(getExportJobs, []), true);
 
-  // Always check for new jobs every minute
-  usePolling(syncJobs, undefined, 60000);
-  // Poll for job changes if the current status is one that can change
-  usePolling(syncJobs, useJobsPollingConditionCallback(jobs));
+  // Always check for new jobs every 5 seconds
+  usePolling(syncJobs, 5000);
 
   function PageBody() {
     if (loading && jobs === null) {

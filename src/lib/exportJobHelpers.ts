@@ -51,21 +51,3 @@ export function canJobChangeStatus(job: EHIApp.ExportJob): boolean {
     job.status === "requested"
   );
 }
-
-// Returns a useCallback-ified condition function for checking if, given these jobs, we should poll for changes to the `api/jobs` endpoint
-export function useJobsPollingConditionCallback(
-  jobs: EHIApp.ExportJob[] | null
-) {
-  return useCallback(() => {
-    if (jobs === null) return false;
-    return jobs.some(canJobChangeStatus);
-  }, [jobs]);
-}
-
-// Returns a useCallback-ified condition function for checking if, given this job, we should poll for changes to the `api/jobs` endpoint
-export function useJobPollingConditionCallback(job: EHIApp.ExportJob | null) {
-  return useCallback(() => {
-    if (job === null) return false;
-    return canJobChangeStatus(job);
-  }, [job]);
-}
