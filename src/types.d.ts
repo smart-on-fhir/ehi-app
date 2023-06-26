@@ -15,7 +15,7 @@ declare namespace EHIApp {
 
   export interface Institution {
     // The id of the institution, for use in routing and uniqueness
-    id: string;
+    id: number;
     // The name of the institution, for use in visual displays
     displayName: string;
     // Where the institution is located, represented as a one-line string

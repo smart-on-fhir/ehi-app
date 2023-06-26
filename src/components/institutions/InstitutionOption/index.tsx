@@ -9,8 +9,13 @@ export default function InstitutionOption({
   institution,
   setInstitution,
 }: InstitutionOptionProps) {
-  const { disabled: disabledNum, displayName, location } = institution;
-  const disabled = Boolean(disabledNum);
+  const LOCALHOST_INSTITUTION_ID = 2;
+  const { disabled: disabledNum, displayName, id, location } = institution;
+  // Special case: Disable if id corresponds to the localhost institution & env is prod
+  const disabled =
+    Boolean(disabledNum) ||
+    (LOCALHOST_INSTITUTION_ID === 2 && process.env.NODE_ENV === "production");
+  console.log(disabled);
   return (
     <li
       className={`flex h-16 items-center px-2 first:rounded-t last:rounded-b ${
