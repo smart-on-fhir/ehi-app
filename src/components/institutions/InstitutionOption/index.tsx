@@ -15,7 +15,6 @@ export default function InstitutionOption({
   const disabled =
     Boolean(disabledNum) ||
     (id === LOCALHOST_INSTITUTION_ID && process.env.NODE_ENV === "production");
-  console.log(disabled);
   return (
     <li
       className={`flex h-16 items-center px-2 first:rounded-t last:rounded-b ${

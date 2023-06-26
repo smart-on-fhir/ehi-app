@@ -35,8 +35,8 @@ export async function startAuthorization(req: Request, res: Response) {
     return smart(req, res, getStorage(req)).authorize({
         clientId: institution.clientId,
         scope: institution.scope,
-        redirectUri: `/api/institutions/${institution.id}/redirect`,
-        iss: institution.fhirUrl
+        redirectUri: `/api/institutions/${institution.id}/redirect?referer=${req.get('referer')}`,
+        iss: institution.fhirUrl,
     });
 }
 
@@ -72,7 +72,12 @@ export async function completeAuthorization(req: Request, res: Response) {
         tokenUri: client.state.tokenUri!
     })
 
-    const redirectUrl = getRequestBaseURL(req) + "/jobs"
+    // Parse off everything before the ? mark, get the referer param from that
+    // BUG: will lose everything after a potential second ? 
+    const referer = new URLSearchParams(req.originalUrl.split('?')[1]).get('referer')
+    // If we have a referer, use that; otherwise use req baseURL
+    const redirectUrl = (referer || getRequestBaseURL(req) + "/") + "jobs"
+    // const redirectUrl = getRequestBaseURL(req) + "/jobs"
 
     // let redirectUrl = "/jobs"
     // if (process.env.NODE_ENV !== "production") {

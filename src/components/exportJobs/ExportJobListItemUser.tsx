@@ -16,7 +16,6 @@ export default function ExportJobListItemUser({
   // TODO: Get this information off of the job when supported on the job
   const institutionName = "New York Gerontology Hospital";
   const { status, approvedAt } = job;
-  console.log(job);
   return (
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
       <div className="flex w-20 flex-auto flex-shrink-0 flex-col items-center justify-center text-center">
