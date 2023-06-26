@@ -1,5 +1,4 @@
-import { useCallback } from "react";
-import { request } from ".";
+import { formatDateTime, request } from ".";
 import pkg from "../../package.json";
 
 export function getExportJobLink(id: string) {
@@ -52,20 +51,25 @@ export function canJobChangeStatus(job: EHIApp.ExportJob): boolean {
   );
 }
 
-// Returns a useCallback-ified condition function for checking if, given these jobs, we should poll for changes to the `api/jobs` endpoint
-export function useJobsPollingConditionCallback(
-  jobs: EHIApp.ExportJob[] | null
-) {
-  return useCallback(() => {
-    if (jobs === null) return false;
-    return jobs.some(canJobChangeStatus);
-  }, [jobs]);
+// Format available patient information in a user-friendly way
+export function displayPatientInformation(job: EHIApp.ExportJob) {
+  const { patient } = job;
+  return `Patient ${
+    patient.name !== "" && patient.name !== null
+      ? patient.name
+      : "#" + patient.id
+  }`;
 }
 
-// Returns a useCallback-ified condition function for checking if, given this job, we should poll for changes to the `api/jobs` endpoint
-export function useJobPollingConditionCallback(job: EHIApp.ExportJob | null) {
-  return useCallback(() => {
-    if (job === null) return false;
-    return canJobChangeStatus(job);
-  }, [job]);
+// Format when a job was created in a user-friendly way
+export function displayCreatedDate(job: EHIApp.ExportJob) {
+  const { createdAt } = job;
+  return `Created ${formatDateTime(createdAt)}`;
+}
+
+// Format when a job was approved in a user-friendly way
+export function displayApprovedDate(job: EHIApp.ExportJob) {
+  const { approvedAt } = job;
+  if (approvedAt === null) return "";
+  return `Completed ${formatDateTime(approvedAt)}`;
 }

@@ -2,16 +2,8 @@ import { useState, useContext, createContext, ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router";
 import useSessionStorage from "../hooks/useSessionStorage";
 
-type UserRole = "admin" | "user" | null;
-
-type AuthUser = {
-  id: string;
-  username: string;
-  role: UserRole;
-};
-
-interface AuthContextInterface {
-  authUser: AuthUser | null;
+export interface AuthContextInterface {
+  authUser: EHIApp.AuthUser | null;
   authLoading: boolean;
   authError: string | null;
   login: (
@@ -24,10 +16,31 @@ interface AuthContextInterface {
 
 const authContext = createContext<AuthContextInterface>(null!);
 
+/**
+ * Create a payload for logging to the ehi-app's backend
+ * @param username
+ * @param password
+ * @param remember should the account credentials persist for a long time?
+ * @returns
+ */
+function buildLoginPayload(
+  username: string,
+  password: string,
+  remember: boolean
+) {
+  const payload = new URLSearchParams();
+  payload.set("username", username);
+  payload.set("password", password);
+  if (remember) {
+    payload.set("remember", String(remember));
+  }
+  return payload;
+}
+
 function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [authUser, setAuthUser] = useSessionStorage<AuthUser | null>(
+  const [authUser, setAuthUser] = useSessionStorage<EHIApp.AuthUser | null>(
     "user",
     null
   );
@@ -45,12 +58,7 @@ function useAuth() {
     ): Promise<void> {
       setAuthLoading(true);
       setAuthError(null);
-      const payload = new URLSearchParams();
-      payload.set("username", username);
-      payload.set("password", password);
-      if (remember) {
-        payload.set("remember", String(remember));
-      }
+      const payload = buildLoginPayload(username, password, remember);
 
       const response = await fetch("/api/login", {
         method: "POST",
@@ -85,11 +93,28 @@ function useAuth() {
       }
     },
     async logout() {
-      await fetch("/api/logout", {
+      setAuthLoading(true);
+      const response = await fetch("/api/logout", {
         headers: { accept: "application/json" },
         credentials: "include",
       });
+      // Always log out and
+      setAuthLoading(false);
       setAuthUser(null);
+      if (!response.ok) {
+        let errorMessage = "";
+        if (
+          response.headers.get("Content-Type") &&
+          response.headers.get("Content-Type")?.indexOf("application/json") !==
+            -1
+        ) {
+          const errorJson = await response.json();
+          errorMessage = errorJson.error;
+        } else {
+          errorMessage = await response.text();
+        }
+        console.error(errorMessage);
+      }
       navigate("/");
     },
   };

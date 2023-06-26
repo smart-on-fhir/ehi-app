@@ -1,9 +1,10 @@
 import Button from "../components/generic/Button";
 import HeadingOne from "../components/generic/HeadingOne";
+import SpinningLoader from "../components/generic/SpinningLoader";
 import useAuthConsumer from "../context/authContext";
 
 export default function AccountDetails() {
-  const { authUser, logout } = useAuthConsumer();
+  const { authLoading, authUser, logout } = useAuthConsumer();
   if (!authUser) {
     return null;
   }
@@ -21,8 +22,10 @@ export default function AccountDetails() {
         size="lg"
         variant="emphasized"
         onClick={logout}
+        disabled={authLoading}
       >
-        Log Out
+        {!authLoading && "Log Out"}
+        {authLoading && <SpinningLoader label="Login request loading" />}
       </Button>
     </main>
   );

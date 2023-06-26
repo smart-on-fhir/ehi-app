@@ -5,10 +5,7 @@ import LinkButton from "../components/generic/LinkButton";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
-import {
-  getExportJobs,
-  useJobsPollingConditionCallback,
-} from "../lib/exportJobHelpers";
+import { getExportJobs } from "../lib/exportJobHelpers";
 import { Plus } from "react-feather";
 import { usePolling } from "../hooks/usePolling";
 
@@ -20,8 +17,8 @@ export default function UserExportJobList() {
     error,
   } = useAsync<EHIApp.ExportJob[]>(useCallback(getExportJobs, []), true);
 
-  // Poll for job changes if we have any that can change status
-  usePolling(syncJobs, useJobsPollingConditionCallback(jobs));
+  // Always check for new jobs every 5 seconds
+  usePolling(syncJobs, 5000);
 
   function PageBody() {
     if (loading && jobs === null) {

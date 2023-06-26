@@ -6,10 +6,7 @@ import ErrorMessage from "../components/generic/ErrorMessage";
 import ExportJobDetailView from "../components/exportJobs/ExportJobDetailView";
 import { useAsync } from "../hooks/useAsync";
 import { usePolling } from "../hooks/usePolling";
-import {
-  getExportJob,
-  useJobPollingConditionCallback,
-} from "../lib/exportJobHelpers";
+import { getExportJob } from "../lib/exportJobHelpers";
 
 export default function ExportJobViewer() {
   const { id } = useParams();
@@ -25,8 +22,8 @@ export default function ExportJobViewer() {
     error,
   } = useAsync<EHIApp.ExportJob>(useCallback(getExportJobWithId, [id]), true);
 
-  // Poll for job changes if the current status is one that can change
-  usePolling(refreshJob, useJobPollingConditionCallback(job));
+  // Always check for job updates every 5 seconds
+  usePolling(refreshJob, 5000);
 
   function BackLink() {
     return (

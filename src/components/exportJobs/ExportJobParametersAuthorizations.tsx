@@ -1,61 +1,110 @@
-function formatAuthorizations(
+import { formatDate } from "../../lib";
+
+/**
+ * Formats authorization information to identify info that IS authorized for release
+ * @param authorizations
+ * @returns
+ */
+function formatAuthorizedReleases(
   authorizations: EHIApp.ExportJobAuthorizations | undefined
 ) {
-  const emptyMessage =
-    "Authorizations have not been provided for any protected or privileged health information";
   if (
     authorizations === undefined ||
     Object.keys(authorizations).length === 0
   ) {
-    return emptyMessage;
+    return null;
   }
-  const activeParameters = Object.entries(authorizations)
-    .map(([paramKey, paramValue]: [string, EHIApp.ExportJobAuthorization]) => {
-      if (paramValue.value) {
-        return paramKey;
+  const activeAuthorizations = Object.values(authorizations)
+    .map((authorization: EHIApp.ExportJobAuthorization) => {
+      if (authorization.value) {
+        return (
+          authorization.name +
+          // Optionally include authorization information represented as free-text
+          (authorization.value !== true ? ` [${authorization.value}]` : "")
+        );
+      } else return undefined;
+    })
+    .filter(Boolean)
+    .join(", ");
+  const activeAuthorizationsText = `Authorizations were provided to release the following: ${activeAuthorizations}.`;
+
+  if (activeAuthorizations.length === 0) return null;
+  return <p>{activeAuthorizationsText}</p>;
+}
+
+/**
+ * Formats authorization information to identify info NOT authorized for release
+ * @param authorizations
+ * @returns
+ */
+function formatUnauthorizedReleases(
+  authorizations: EHIApp.ExportJobAuthorizations | undefined
+) {
+  const emptyMessage = "No specific data was authorized for release.";
+
+  if (
+    authorizations === undefined ||
+    Object.keys(authorizations).length === 0
+  ) {
+    return <p>{emptyMessage}</p>;
+  }
+  const disabledAuthorizations = Object.values(authorizations)
+    .map((authorization: EHIApp.ExportJobAuthorization) => {
+      // Special case: ignore Others for disabled fields
+      if (authorization.name === "Other(s)") return undefined;
+      if (!authorization.value) {
+        return authorization.name;
+      } else return undefined;
+    })
+    .filter(Boolean)
+    .join(", ");
+  const disabledAuthorizationsText = `Authorizations were NOT provided to release the following: ${disabledAuthorizations}.`;
+
+  return <p>{disabledAuthorizationsText}</p>;
+}
+
+/**
+ * Translates job parameters into human-readable descriptions regarding specific record requests
+ * @param parameters
+ * @returns a paragraph explaining what kind of records the user did or did not request
+ */
+function formatParameters(
+  parameters: EHIApp.ExportJobInformationParameters | undefined
+) {
+  const emptyMessage = "No specific records or documents were requested.";
+
+  if (parameters === undefined) {
+    return <p>{emptyMessage}</p>;
+  }
+  const activeParameters = Object.values(parameters)
+    .map((param: EHIApp.ExportJobInformationParameter) => {
+      if (param.enabled) {
+        return (
+          param.name +
+          // Provide from-date information if possible
+          (param.from ? ` from ${formatDate(param.from)}` : "") +
+          // Provide to-date information if possible
+          (param.to ? ` until ${formatDate(param.to)}` : "") +
+          // Include notes as an aside if if possible
+          (param.notes !== "" ? ` [${param.notes}]` : "")
+        );
       } else {
         return undefined;
       }
     })
-    .filter((x) => !!x)
+    .filter(Boolean)
     .join(", ");
+
+  // Confirm there are parameters even after boolean filter
   if (activeParameters.length === 0) {
-    return emptyMessage;
+    return <p>{emptyMessage}</p>;
   }
+
   return (
-    "Authorizations provided for the following privileged data: " +
-    activeParameters +
-    "."
+    <p>
+      Before approving, consider additional attachments for: {activeParameters}.
+    </p>
   );
-}
-
-function formatParameters(
-  parameters: EHIApp.ExportJobInformationParameters | undefined
-) {
-  const emptyMessage = "No attachments requested";
-
-  if (parameters === undefined) {
-    return emptyMessage;
-  }
-  const activeParameters = Object.entries(parameters)
-    .map(
-      ([paramKey, paramValue]: [
-        string,
-        EHIApp.ExportJobInformationParameter
-      ]) => {
-        if (paramValue.enabled) {
-          return paramKey;
-        } else {
-          return undefined;
-        }
-      }
-    )
-    .filter((x) => !!x)
-    .join(", ");
-  if (activeParameters.length === 0) {
-    return emptyMessage;
-  }
-  return "Attachments requested for: " + activeParameters + ".";
 }
 
 export default function ExportJobParametersAuthorizations({
@@ -63,12 +112,12 @@ export default function ExportJobParametersAuthorizations({
 }: {
   job: EHIApp.ExportJob;
 }) {
-  const authorizations = job.authorizations;
-  const parameters = job.parameters;
+  const { authorizations, parameters } = job;
   return (
-    <section className="text-sm">
-      <p>{formatParameters(parameters)}</p>
-      <p>{formatAuthorizations(authorizations)}</p>
+    <section className="space-y-1 text-sm">
+      {formatAuthorizedReleases(authorizations)}
+      {formatUnauthorizedReleases(authorizations)}
+      {formatParameters(parameters)}
     </section>
   );
 }

@@ -46,3 +46,12 @@ export async function request<T>(
 
   return body as T;
 }
+
+// Unified formatter for date-time stings
+export function formatDateTime(date: number) {
+  return new Date(date).toLocaleString();
+}
+
+export function formatDate(date: number | string) {
+  return new Date(date).toDateString();
+}
