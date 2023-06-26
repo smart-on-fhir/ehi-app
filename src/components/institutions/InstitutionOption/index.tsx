@@ -14,7 +14,7 @@ export default function InstitutionOption({
   // Special case: Disable if id corresponds to the localhost institution & env is prod
   const disabled =
     Boolean(disabledNum) ||
-    (LOCALHOST_INSTITUTION_ID === 2 && process.env.NODE_ENV === "production");
+    (id === LOCALHOST_INSTITUTION_ID && process.env.NODE_ENV === "production");
   console.log(disabled);
   return (
     <li
