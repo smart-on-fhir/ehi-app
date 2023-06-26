@@ -43,7 +43,7 @@ INSERT INTO "jobs" (
     'http://ehi-server.org/jobs/remote-job-1-id/status',
     
     -- customizeUrl
-    'http://ehi-server.org/jobs/remote-job-1-id/customize?behavior=automatic&_patient=6c5d9ca9-54d7-42f5-bfae-a7c19cd217f2',
+    'http://ehi-server.org/jobs/remote-job-1-id/customize?_patient=6c5d9ca9-54d7-42f5-bfae-a7c19cd217f2',
 
     -- manifest
     '{
