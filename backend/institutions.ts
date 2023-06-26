@@ -3,7 +3,7 @@ import express, { Request, Response } from "express"
 import Job from "./jobs/Job"
 import db from "./db"
 import { HttpError } from "./errors"
-import { asyncRouteWrap, getStorage } from "./lib"
+import { asyncRouteWrap, getRequestBaseURL, getStorage } from "./lib"
 import { authenticate, requireAuth } from "./auth"
 import { EHI } from "./types"
 
@@ -72,10 +72,12 @@ export async function completeAuthorization(req: Request, res: Response) {
         tokenUri: client.state.tokenUri!
     })
 
-    let redirectUrl = "/jobs"
-    if (process.env.NODE_ENV !== "production") {
-        redirectUrl = "http://127.0.0.1:3000/jobs"
-    }
+    const redirectUrl = getRequestBaseURL(req) + "/jobs"
+
+    // let redirectUrl = "/jobs"
+    // if (process.env.NODE_ENV !== "production") {
+    //     redirectUrl = "http://127.0.0.1:3000/jobs"
+    // }
 
     job.sync() // START POOLING!!!
 
