@@ -99,8 +99,9 @@ router.post("/:id/add-files", upload.array("attachments", 10), requireAuth("admi
 router.post("/:id/remove-files", express.json(), requireAuth("admin"), asyncRouteWrap(async (req: Request, res: Response) => {
     const job = await Job.byId(+req.params.id)
     const files = req.body.params || []
+    const baseUrl = getRequestBaseURL(req)
     for (const file of files) {
-        await job.removeAttachment(file)
+        await job.removeAttachment(file, baseUrl)
     }
     res.json(job)
 }))

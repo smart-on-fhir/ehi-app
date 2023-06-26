@@ -1,4 +1,4 @@
-import { appendFileSync, rmSync } from "fs"
+import { rmSync, statSync, writeFileSync } from "fs"
 import { copyFile, mkdir, unlink } from "fs/promises"
 import { basename, join } from "path"
 import config from "../config"
@@ -323,7 +323,7 @@ export default class Job {
             authorizations: this.authorizations || {},
             statusUrl: this.statusUrl,
             customizeUrl: this.customizeUrl,
-            manifest: this.getAugmentedManifest()
+            manifest: this.manifest
         }
     }
 
@@ -339,45 +339,42 @@ export default class Job {
         return this
     }
 
-    protected getAugmentedManifest() {
+    protected getAugmentedManifest(): EHI.ExportManifest | null {
+
         if (!this.attachments.length) {
             return this.manifest
         }
+
+        const baseUrl = this.attachments[0].url!.replace(/\/jobs\/.*/, "")
 
         const result = {
             ...this.manifest,
             output: [...this.manifest!.output]
         }
 
-        const docRef: fhir4.DocumentReference = {
-            resourceType: "DocumentReference",
-            status: "current",
-            subject: { reference: "Patient/" + this.patientId },
-            content: this.attachments.map(x => ({ attachment: x })),
-            meta: {
-                tag: [{
-                    code: "ehi-export",
-                    display: "generated as part of an ehi-export request"
-                }]
-            }
-        }
+        const url = `${baseUrl}/jobs/${this.id}/download/attachments.DocumentReference.ndjson`
 
-        const destination = join(this.directory, "DocumentReference.ndjson")
-        appendFileSync(destination, JSON.stringify(docRef) + "\n")
+        result.output = result.output.filter(x => x.url !== url)
 
-        let fileEntry = result.output.find(x => x.type === "DocumentReference")
-        if (!fileEntry) {
-            const baseUrl = this.attachments[0].url!.replace(/\/jobs\/.*/, "")
-            result.output.push({
-                type: "DocumentReference",
-                url: `${baseUrl}/jobs/${this.id}/download/DocumentReference`,
-                count: this.attachments.length
+        result.output.push({ type: "DocumentReference", url, count: this.attachments.length })
+
+        writeFileSync(
+            join(this.directory, "attachments.DocumentReference.ndjson"),
+            JSON.stringify({
+                resourceType: "DocumentReference",
+                status: "current",
+                subject: { reference: "Patient/" + this.patientId },
+                content: this.attachments.map(x => ({ attachment: x })),
+                meta: {
+                    tag: [{
+                        code: "ehi-export",
+                        display: "generated as part of an ehi-export request"
+                    }]
+                }
             })
-        } else {
-            fileEntry.count = (fileEntry.count || 1) + this.attachments.length
-        }
+        )
 
-        return result
+        return result as EHI.ExportManifest
     }
 
     /**
@@ -398,12 +395,19 @@ export default class Job {
             url: `${baseUrl}/jobs/${this.id}/download/attachments/${filename}`
         }
         this.attachments.push(entry);
+        this.manifest = this.getAugmentedManifest()
         await this.save()
         await unlink(src)
     }
 
-    public async removeAttachment(fileName: string) {
-        this.attachments = this.attachments.filter(x => !x.url!.endsWith(`/${this.id}/download/attachments/${fileName}`))
-        await this.save()
+    public async removeAttachment(fileName: string, baseUrl: string) {
+        const dst = join(this.directory, "attachments", fileName)
+        const url = `${baseUrl}/jobs/${this.id}/download/attachments/${fileName}`
+        if (this.attachments.find(x => x.url === url) && statSync(dst, { throwIfNoEntry: false })?.isFile()) {
+            await unlink(dst)
+            this.attachments = this.attachments.filter(x => x.url !== url)
+            this.manifest = this.getAugmentedManifest()
+            await this.save()
+        }
     }
 }

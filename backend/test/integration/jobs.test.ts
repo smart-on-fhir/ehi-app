@@ -188,7 +188,7 @@ describe("POST /api/jobs/:id/add-files", () => {
                 expect(output.length).to.equal(5)
                 const entry = output.find((x: any) => x.type === "DocumentReference")
                 expect(entry).to.exist
-                expect(entry.url).to.match(/DocumentReference$/)
+                expect(entry.url).to.match(/\bDocumentReference\b/)
                 expect(entry.count).to.equal(2)
             })
     });
@@ -273,11 +273,11 @@ describe("POST /api/jobs/:id/remove-files", () => {
             .expect(200)
             .expect(res => {
                 const { output } = res.body.manifest
-                expect(output).to.be.instanceOf(Array)
-                expect(output.length).to.equal(5)
+                expect(output, "manifest.output must be an array").to.be.instanceOf(Array)
+                expect(output.length, "manifest.output must include 5 entries").to.equal(5)
                 const entry = output.find((x: any) => x.type === "DocumentReference")
                 expect(entry).to.exist
-                expect(entry.url).to.match(/DocumentReference$/)
+                expect(entry.url).to.match(/\battachments\.DocumentReference\.ndjson$/)
                 expect(entry.count).to.equal(2)
             })
 
@@ -292,7 +292,7 @@ describe("POST /api/jobs/:id/remove-files", () => {
                 expect(output.length).to.equal(5)
                 const entry = output.find((x: any) => x.type === "DocumentReference")
                 expect(entry).to.exist
-                expect(entry.url).to.match(/DocumentReference$/)
+                expect(entry.url).to.match(/\bDocumentReference\b/)
                 expect(entry.count).to.equal(1)
             })
     });
