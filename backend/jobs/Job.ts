@@ -130,8 +130,8 @@ export default class Job {
     }) {
         const { lastID } = await db.promise(
             "run",
-            `INSERT INTO "jobs" (userId, patientId, statusUrl, customizeUrl, accessToken, refreshToken, tokenUri, approvedAt) values (?,?,?,?,?,?,?,?)`,
-            [userId, patientId, statusUrl, customizeUrl, accessToken, refreshToken, tokenUri, approvedAt]
+            `INSERT INTO "jobs" (userId, patientId, statusUrl, customizeUrl, accessToken, refreshToken, tokenUri, approvedAt, createdAt) values (?,?,?,?,?,?,?,?,?)`,
+            [userId, patientId, statusUrl, customizeUrl, accessToken, refreshToken, tokenUri, approvedAt, Date.now()]
         )
         return Job.byId(lastID)
     }
