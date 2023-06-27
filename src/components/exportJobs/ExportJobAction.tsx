@@ -20,7 +20,11 @@ export default function ExportJobAction({ job, status }: ExportJobActionProps) {
       );
 
     case "approved":
-      return <LinkButton to={getExportJobLink(job.id)}>Download</LinkButton>;
+      return (
+        <LinkButton download target="_blank" to={getExportJobLink(job.id)}>
+          Download
+        </LinkButton>
+      );
 
     case "requested":
     case "in-review":

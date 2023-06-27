@@ -3,6 +3,8 @@ import { Link, To } from "react-router-dom";
 type LinkButtonProps = {
   to: To;
   children: React.ReactNode;
+  target?: string;
+  download?: boolean;
   className?: string;
   size?: "md" | "lg";
   variant?: "primary" | "emphasized";
@@ -12,6 +14,8 @@ export default function LinkButton({
   to,
   children,
   className,
+  download = false,
+  target = "",
   size = "md",
   variant = "primary",
 }: LinkButtonProps) {
@@ -31,7 +35,12 @@ export default function LinkButton({
       buttonStyles += " h-12 w-44 text-xl";
   }
   return (
-    <Link to={to} className={`${buttonStyles} ${className ? className : ""}`}>
+    <Link
+      download={download}
+      target={target}
+      to={to}
+      className={`${buttonStyles} ${className ? className : ""}`}
+    >
       {children}
     </Link>
   );
