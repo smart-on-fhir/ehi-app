@@ -35,7 +35,7 @@ export default function ExportJobListItemAdmin({
         </pre>
       </div>
       <LinkButton className="w-24" to={`/admin/jobs/${id}`}>
-        Details
+        {status === "in-review" ? "Review" : "Details"}
       </LinkButton>
     </li>
   );
