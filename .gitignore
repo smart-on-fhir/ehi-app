@@ -129,3 +129,4 @@ backend/jobs/test-data/*
 !backend/jobs/test-data/.gitkeep
 uploads/*
 backend/db/*.db
+notes.txt
