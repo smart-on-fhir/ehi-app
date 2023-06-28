@@ -17,6 +17,7 @@ declare namespace EHI {
         password: string
         lastLogin: number | null
         sid: string | null
+        session: string | null
     }
 
     interface ExportManifest {
@@ -24,6 +25,7 @@ declare namespace EHI {
         requiresAccessToken: boolean
         output: ExportManifestFileEntry[]
         error: any[]
+        extension?: Record<string, string>
     }
 
     interface ExportManifestFileEntry {
@@ -62,11 +64,12 @@ declare namespace EHI {
      * - `rejected`       - Expire immediately
      */
     type ExportJobStatus = "awaiting-input" |
-        "in-review" |
         "requested" |
-        "retrieved" |
+        "in-review" |
+        "approved" |
         "aborted" |
         "rejected";
+
 
     /**
      * The JSON representation of an export job
@@ -109,10 +112,10 @@ declare namespace EHI {
         createdAt: number
 
         /**
-         * The JS timestamp showing when this job was completed, or `0` if it
-         * hasn't been completed yet
+         * The JS timestamp showing when this job was reviewed, or `null` if it
+         * hasn't been reviewed yet
          */
-        completedAt: number | null
+        approvedAt: number | null
 
         /**
          * Array of additional attachments which should be made available via
@@ -127,11 +130,21 @@ declare namespace EHI {
 
     interface ExportJobDbRecord {
         id: number
-        json: string
         userId: number
-        readonly: boolean | 0 | 1
-        statusUrl: string
+        patientId: string | number
+        statusUrl: string | null
         customizeUrl: string | null
+        manifest: string | null // JSON -> ExportManifest
+        parameters: string | null // JSON -> ExportJobInformationParameters
+        authorizations: string | null // JSON -> ExportJobAuthorizations
+        attachments: string | null // JSON -> Attachment[]
+        createdAt: number
+        accessToken: string
+        refreshToken: string
+        tokenUri: string
+        status: ExportJobStatus | null
+        patientName: string | null
+        approvedAt: number | null,
     }
 
     interface ExportJobInformationParameter {

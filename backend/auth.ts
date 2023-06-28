@@ -1,11 +1,15 @@
 import { NextFunction, Request, Response } from "express"
 import Crypto from "crypto"
 import Bcrypt from "bcryptjs"
+import { debuglog } from "node:util"
 import db from "./db"
 import { wait } from "./lib"
 import { EHI } from "./types"
+import config from "./config"
 
 type Role = "user" | "admin"
+
+const debug = debuglog("app:auth")
 
 
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
@@ -15,7 +19,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
             const user = await db.promise("get", "SELECT * FROM users WHERE sid=?", sid);
             (req as EHI.UserRequest).user = user || null
         } catch (ex) {
-            console.error(ex);
+            debug(ex + "");
         }
     }
 
@@ -28,11 +32,11 @@ export function requireAuth(...roles: Role[]) {
         const user = req.user
 
         if (!user) {
-            return res.status(401).end("Authorization required");
+            return res.status(401).type("text").end("Authorization required");
         }
 
         if (roles.length && !roles.includes(user.role)) {
-            return res.status(403).end("Permission denied");
+            return res.status(403).type("text").end("Permission denied");
         }
 
         next();
@@ -42,10 +46,15 @@ export function requireAuth(...roles: Role[]) {
 export async function login(req: Request, res: Response) {
 
     // 1 second artificial delay to protect from automated brute-force attacks
-    await wait(1000);
+    await wait(config.authDelay);
 
     try {
         const { username, password, remember } = req.body;
+
+        // No such username (Do NOT specify what is wrong in the error message!)
+        if (!username || !password) {
+            return res.status(401).json({ error: "Invalid username or password" })
+        }
 
         const user = await db.promise("get", "SELECT * FROM users WHERE username=?", username);
 
@@ -56,7 +65,7 @@ export async function login(req: Request, res: Response) {
 
         // Wrong password (Do NOT specify what is wrong in the error message!)
         if (!Bcrypt.compareSync(password, user.password)) {
-            console.warn("Failed login attempt due to invalid password")
+            debug("Failed login attempt due to invalid password");
             return res.status(401).json({ error: "Invalid username or password" })
         }
 
@@ -79,13 +88,13 @@ export async function login(req: Request, res: Response) {
         res.json({ id: user.id, username: user.username, role: user.role });
 
     } catch (ex) {
-        console.error(ex)
-        res.status(401).end("Login failed");
+        debug(ex + "");
+        res.status(401).json({ error: "Login failed" });
     }
 }
 
 export async function logout(req: EHI.UserRequest, res: Response) {
-    await wait(1000);
+    await wait(config.authDelay);
     const user = req.user
     if (user) {
         try {
@@ -93,7 +102,7 @@ export async function logout(req: EHI.UserRequest, res: Response) {
             res.clearCookie("sid")
             return res.end("Logout successful");
         } catch (ex) {
-            console.error(ex);
+            debug(ex + "");
         }
     }
 

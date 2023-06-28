@@ -1,5 +1,4 @@
-import { request } from "./fetchHelpers";
-import { ExportJob } from "../types";
+import { request } from ".";
 
 export const MAX_FILE_SIZE = 1e7;
 export const MAX_FILE_NUM = 5;
@@ -9,7 +8,7 @@ export const MAX_FILE_NUM = 5;
  * @param file
  * @returns true if the file will be accepted by the server; false otherwise
  */
-function validFileFilter(file: File) {
+export function validFileFilter(file: File) {
   return file.size <= MAX_FILE_SIZE;
 }
 
@@ -38,7 +37,7 @@ export function getAttachmentName(attachment: fhir4.Attachment) {
   const urlSplit = attachment.url?.split("/");
   if (urlSplit === undefined) {
     throw Error(
-      "Attachment did not have a URL defined; cannot determine which attachment to delete without one"
+      "Attachment did not have a URL defined; cannot determine attachment name without one"
     );
   }
   // The file name is at the end of the url, split on '/'
@@ -52,7 +51,7 @@ export function getAttachmentName(attachment: fhir4.Attachment) {
  * @returns Promise corresponding to the upload request,  resulting in a new attachments
  */
 export async function uploadAttachments(
-  jobId: ExportJob["id"],
+  jobId: EHIApp.ExportJob["id"],
   attachments: FileList
 ): Promise<void> {
   // attachments is a FileList, must convert into an iterable for filtering
@@ -69,7 +68,7 @@ export async function uploadAttachments(
     formData.append("attachments", file, file.name);
   });
   formData.append("action", "addAttachments");
-  return request(`/jobs/${jobId}`, {
+  return request(`/api/jobs/${jobId}/add-files`, {
     method: "post",
     body: formData,
   });
@@ -82,10 +81,10 @@ export async function uploadAttachments(
  * @returns nothing, but should remove the attachment from the job
  */
 export async function deleteAttachment(
-  jobId: ExportJob["id"],
+  jobId: EHIApp.ExportJob["id"],
   attachmentName: string
 ): Promise<void> {
-  return await request(`/jobs/${jobId}`, {
+  return await request(`/api/jobs/${jobId}/remove-files`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",

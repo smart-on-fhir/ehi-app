@@ -123,4 +123,10 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-db.sqlite3
+backend/jobs/data/*
+!backend/jobs/data/.gitkeep
+backend/jobs/test-data/*
+!backend/jobs/test-data/.gitkeep
+uploads/*
+backend/db/*.db
+notes.txt

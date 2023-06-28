@@ -1,6 +1,6 @@
 # ehi-app
 
-EHI Export App Reference Implementation for [Argonaut's EHI Export Implementation Guide](https://build.fhir.org/ig/argonautproject/ehi-api/), used in conjunction with the [EHI Export Server Reference Implementation](https://github.com/smart-on-fhir/ehi-server). Once running locally, visit [localhost:3000/](localhost:3000/) to get started.
+EHI Export App Reference Implementation for [Argonaut's EHI Export Implementation Guide](https://build.fhir.org/ig/argonautproject/ehi-api/), used in conjunction with the [EHI Export Server Reference Implementation](https://github.com/smart-on-fhir/ehi-server). Once running locally, visit [127.0.0.1:3000/](127.0.0.1:3000/) to get started.
 
 # Getting Started with Create React App
 
@@ -10,10 +10,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm storybook`
+
+Launches the storybook workshop on http://localhost:6006, allowing review of many frontend components in isolation from the full web application.
+
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.

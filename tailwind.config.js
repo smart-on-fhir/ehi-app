@@ -65,6 +65,19 @@ const primary = {
   800: "#2e2918",
   900: "#17140c",
 };
+// Status Indicator Colors
+// awaiting-input`
+const awaitingInput = yellow[200];
+// requested`
+const requested = yellow[200];
+// in-review`
+const inReview = "#abc1e4";
+// approved`
+const approved = green[400];
+// aborted`
+const aborted = "#e4aa86";
+// rejected`
+const rejected = red[400];
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -81,7 +94,8 @@ module.exports = {
         },
       },
       animation: {
-        fadeIn: "fadeIn 500ms ease-in-out",
+        "fade-in": "fadeIn 500ms ease-in-out",
+        "spin-slow": "spin 2s linear infinite",
       },
       colors: {
         // Palettes
@@ -95,6 +109,12 @@ module.exports = {
         "active-dark": primary["600"],
         alert: red["500"],
         "alert-dark": red["600"],
+        "awaiting-input": awaitingInput,
+        requested,
+        "in-review": inReview,
+        approved,
+        aborted,
+        rejected,
       },
       borderColor: {
         DEFAULT: colors.stone[500],
