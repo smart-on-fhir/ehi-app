@@ -350,7 +350,7 @@ export default class Job {
      * Aborts a running export
      */
     public async abort() {
-        if (this.status === "awaiting-input" || this.status === "requested") {
+        if (this.status === "awaiting-input" || this.status === 'in-review' || this.status === "requested") {
             await this.request(true)(this.statusUrl, { method: "DELETE" })
             this.status = "aborted"
             await this.save()
