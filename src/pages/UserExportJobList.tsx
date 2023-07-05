@@ -34,7 +34,13 @@ export default function UserExportJobList() {
       return (
         <ul className="space-y-4">
           {jobs && jobs.length > 0 ? (
-            jobs.map((job) => <ExportJobListItemUser key={job.id} job={job} />)
+            jobs.map((job) => (
+              <ExportJobListItemUser
+                key={job.id}
+                job={job}
+                syncJobs={syncJobs}
+              />
+            ))
           ) : (
             <>
               <p>No exports were found on the server.</p>

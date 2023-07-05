@@ -25,10 +25,22 @@ export async function getExportJob(
 
 export async function updateExportStatus(
   id: string,
-  newStatus: "approve" | "reject"
+  newStatus: "approve" | "reject",
+  signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
   return request<EHIApp.ExportJob>(`/api/jobs/${id}/${newStatus}`, {
     method: "post",
+    signal,
+  });
+}
+
+export async function abortExportJob(
+  id: string,
+  signal?: AbortSignal
+): Promise<EHIApp.ExportJob> {
+  return request<EHIApp.ExportJob>(`/api/jobs/${id}/abort`, {
+    method: "post",
+    signal,
   });
 }
 

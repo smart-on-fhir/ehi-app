@@ -1,12 +1,18 @@
 import LinkButton from "../generic/LinkButton";
-import { getExportJobLink } from "../../lib/exportJobHelpers";
+import { getExportJobLink, abortExportJob } from "../../lib/exportJobHelpers";
+import Button from "../generic/Button";
 
 type ExportJobActionProps = {
   job: EHIApp.ExportJob;
   status: EHIApp.ExportJobStatus;
+  syncJobs: Function;
 };
 
-export default function ExportJobAction({ job, status }: ExportJobActionProps) {
+export default function ExportJobAction({
+  job,
+  status,
+  syncJobs,
+}: ExportJobActionProps) {
   const link = `${job.customizeUrl}&redirect=${
     window.location.origin + window.location.pathname
   }`;
@@ -21,13 +27,28 @@ export default function ExportJobAction({ job, status }: ExportJobActionProps) {
 
     case "approved":
       return (
-        <LinkButton download target="_blank" to={getExportJobLink(job.id)}>
+        <LinkButton
+          className="min-w-fit"
+          download
+          target="_blank"
+          to={getExportJobLink(job.id)}
+        >
           Download
         </LinkButton>
       );
 
-    case "requested":
     case "in-review":
+      return (
+        <Button
+          onClick={async () => {
+            await abortExportJob(job.id);
+            syncJobs();
+          }}
+        >
+          Abort
+        </Button>
+      );
+    case "requested":
     case "aborted":
     case "rejected":
       return null;
