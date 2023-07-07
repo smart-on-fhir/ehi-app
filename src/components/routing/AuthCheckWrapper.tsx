@@ -20,7 +20,7 @@ export default function AuthCheckWrapper({
     );
   }
 
-  if (needsAdmin && authUser.role !== "admin") {
+  if (needsAdmin && process.env.REACT_APP_ROLE !== "admin") {
     return (
       <Navigate to="/forbidden" replace state={{ from: location.pathname }} />
     );

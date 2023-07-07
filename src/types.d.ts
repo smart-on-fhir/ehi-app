@@ -1,16 +1,10 @@
 declare namespace EHIApp {
   /**
-   * The types of roles available to different accounts
-   */
-  export type UserRole = "admin" | "user" | null;
-
-  /**
    * Information associated with an authenticated user
    */
   export type AuthUser = {
     id: string;
     username: string;
-    role: UserRole;
   };
 
   export interface Institution {

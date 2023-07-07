@@ -5,7 +5,7 @@ export default function ExportsNavLink() {
   const { authUser } = useAuthConsumer();
   if (!authUser) {
     return null;
-  } else if (authUser && authUser.role === "admin") {
+  } else if (authUser && process.env.REACT_APP_ROLE === "admin") {
     return (
       <NavLink
         className={({ isActive }) => (isActive ? "font-bold" : "")}

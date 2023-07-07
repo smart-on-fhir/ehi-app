@@ -13,7 +13,7 @@ export default function AccountNavLink() {
         Login
       </NavLink>
     );
-  } else if (authUser && authUser.role === "admin") {
+  } else if (authUser && process.env.REACT_APP_ROLE === "admin") {
     return (
       <NavLink
         to="/account"

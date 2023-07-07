@@ -85,7 +85,7 @@ function useAuth() {
         const user = await response.json();
         setAuthLoading(false);
         setAuthUser(user);
-        if (user.role === "admin") {
+        if (process.env.REACT_APP_ROLE === "admin") {
           navigate("/admin");
         } else {
           navigate(location.state?.redirect || "/jobs");

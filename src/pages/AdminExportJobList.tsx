@@ -16,8 +16,8 @@ export default function AdminExportJobList() {
     error,
   } = useAsync<EHIApp.ExportJob[]>(useCallback(getExportJobs, []), true);
 
-  // Always check for new jobs every 5 seconds
-  usePolling(syncJobs, 5000);
+  // Always check for new jobs regularly
+  usePolling(syncJobs);
 
   function PageBody() {
     if (loading && jobs === null) {
