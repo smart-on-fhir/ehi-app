@@ -60,7 +60,11 @@ function useAuth() {
       setAuthError(null);
       const payload = buildLoginPayload(username, password, remember);
 
-      const response = await fetch("/api/login", {
+      const loginEndpoint =
+        process.env.REACT_APP_ROLE === "admin"
+          ? `${process.env.REACT_APP_EHI_SERVER}/admin/login`
+          : "/api/login";
+      const response = await fetch(loginEndpoint, {
         method: "POST",
         headers: { accept: "application/json" },
         body: payload,
@@ -94,11 +98,15 @@ function useAuth() {
     },
     async logout() {
       setAuthLoading(true);
-      const response = await fetch("/api/logout", {
+      const logoutEndpoint =
+        process.env.REACT_APP_ROLE === "admin"
+          ? `${process.env.REACT_APP_EHI_SERVER}/admin/logout`
+          : "/api/logout";
+      const response = await fetch(logoutEndpoint, {
         headers: { accept: "application/json" },
         credentials: "include",
       });
-      // Always log out and
+      // Always log out
       setAuthLoading(false);
       setAuthUser(null);
       if (!response.ok) {

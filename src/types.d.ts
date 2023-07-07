@@ -43,7 +43,7 @@ declare namespace EHIApp {
     | "awaiting-input"
     | "in-review"
     | "requested"
-    | "approved"
+    | "retrieved"
     | "aborted"
     | "rejected";
 

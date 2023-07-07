@@ -1,5 +1,5 @@
 import LinkButton from "../generic/LinkButton";
-import { getExportJobLink, abortExportJob } from "../../lib/exportJobHelpers";
+import { getExportJobLink, abortExportJob } from "../../lib/adminJobHelpers";
 import Button from "../generic/Button";
 
 type ExportJobActionProps = {
@@ -25,7 +25,7 @@ export default function ExportJobAction({
         </LinkButton>
       );
 
-    case "approved":
+    case "retrieved":
       return (
         <LinkButton
           className="min-w-fit"

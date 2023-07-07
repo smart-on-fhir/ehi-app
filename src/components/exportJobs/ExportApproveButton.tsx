@@ -1,5 +1,5 @@
 import Button from "../generic/Button";
-import { updateExportStatus } from "../../lib/exportJobHelpers";
+import { updateExportStatus } from "../../lib/adminJobHelpers";
 
 type ApproveButtonProps = {
   job: EHIApp.ExportJob;
@@ -24,7 +24,7 @@ export default function ApproveButton({ job, refreshJob }: ApproveButtonProps) {
 
       case "awaiting-input":
       case "requested":
-      case "approved":
+      case "retrieved":
       case "aborted":
       case "rejected":
         return null;

@@ -9,7 +9,7 @@ import {
   displayApprovedDate,
   displayCreatedDate,
   displayPatientInformation,
-} from "../../lib/exportJobHelpers";
+} from "../../lib/adminJobHelpers";
 
 type ExportJobDetailViewProps = {
   job: EHIApp.ExportJob;
@@ -33,7 +33,7 @@ export default function ExportJobDetailView({
         <div className="flex w-full items-center justify-between">
           <div>
             <h1 className="mr-2 inline-block text-lg font-bold">Job #{id}</h1>
-            {status === "approved" && <ExportJobLink jobId={id} />}
+            {status === "retrieved" && <ExportJobLink jobId={id} />}
             <pre className="whitespace-pre-wrap text-xs italic opacity-50">
               {[
                 displayPatientInformation(job),

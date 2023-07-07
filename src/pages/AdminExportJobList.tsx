@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useAsync } from "../hooks/useAsync";
 import ExportJobListItemAdmin from "../components/exportJobs/ExportJobListItemAdmin";
-import { getExportJobs } from "../lib/exportJobHelpers";
+import { getExportJobs } from "../lib/adminJobHelpers";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";

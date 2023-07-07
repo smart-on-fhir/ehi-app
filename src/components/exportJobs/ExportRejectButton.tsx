@@ -1,8 +1,5 @@
 import Button from "../generic/Button";
-import {
-  updateExportStatus,
-  deleteExportJob,
-} from "../../lib/exportJobHelpers";
+import { updateExportStatus, deleteExportJob } from "../../lib/adminJobHelpers";
 import { useNavigate } from "react-router";
 
 type RejectButtonProps = {
@@ -40,7 +37,7 @@ export default function RejectButton({ job, refreshJob }: RejectButtonProps) {
             Delete Now
           </Button>
         );
-      case "approved":
+      case "retrieved":
       case "aborted":
       case "rejected":
         return (

@@ -1,18 +1,18 @@
 import { formatDateTime, request } from ".";
 import pkg from "../../package.json";
 
+const baseUrl = process.env.REACT_APP_EHI_SERVER;
+
 export function getExportJobLink(id: string) {
-  if (process.env.NODE_ENV === "production") {
-    return `/api/jobs/${id}/download`;
-  }
-  return `${pkg.proxy}/api/jobs/${id}/download`;
+  return `${baseUrl}/admin/jobs/${id}/download`;
 }
 
 export async function getExportJobs(
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob[]> {
-  return request<EHIApp.ExportJob[]>("/api/jobs", {
+  return request<EHIApp.ExportJob[]>(`${baseUrl}/admin/jobs`, {
     signal,
+    credentials: "include",
   });
 }
 
@@ -20,7 +20,10 @@ export async function getExportJob(
   id: string,
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
-  return request<EHIApp.ExportJob>(`/api/jobs/${id}`, { signal });
+  return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}`, {
+    signal,
+    credentials: "include",
+  });
 }
 
 export async function updateExportStatus(
@@ -28,9 +31,10 @@ export async function updateExportStatus(
   newStatus: "approve" | "reject",
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
-  return request<EHIApp.ExportJob>(`/api/jobs/${id}/${newStatus}`, {
+  return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}/${newStatus}`, {
     method: "post",
     signal,
+    credentials: "include",
   });
 }
 
@@ -38,8 +42,9 @@ export async function abortExportJob(
   id: string,
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
-  return request<EHIApp.ExportJob>(`/api/jobs/${id}/abort`, {
+  return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}/abort`, {
     method: "post",
+    credentials: "include",
     signal,
   });
 }
@@ -48,8 +53,9 @@ export async function deleteExportJob(
   id: string,
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
-  return request<EHIApp.ExportJob>(`/api/jobs/${id}`, {
+  return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}`, {
     method: "delete",
+    credentials: "include",
     signal,
   });
 }

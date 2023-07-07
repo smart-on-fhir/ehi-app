@@ -52,7 +52,7 @@ export default function ExportJobStatusIndicator({
           <Search className="m-2 " size={size} />
         </div>
       );
-    case "approved":
+    case "retrieved":
       return (
         <div
           className="rounded-full bg-green-400 text-white text-opacity-90 "

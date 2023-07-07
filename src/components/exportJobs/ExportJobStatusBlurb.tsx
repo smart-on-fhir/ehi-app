@@ -13,7 +13,7 @@ export default function ExportJobBlurb({ status }: ExportJobBlurbProps) {
     case "requested":
       return <p>Processing</p>;
 
-    case "approved":
+    case "retrieved":
       return <p>Complete</p>;
 
     case "aborted":

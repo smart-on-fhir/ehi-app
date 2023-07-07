@@ -1,4 +1,4 @@
-import { canJobChangeStatus } from "../../lib/exportJobHelpers";
+import { canJobChangeStatus } from "../../lib/adminJobHelpers";
 
 describe("canJobChangeStatus", () => {
   test("True for jobs with status `in-review`", () => {
@@ -16,7 +16,7 @@ describe("canJobChangeStatus", () => {
   test("False for other job statuses", () => {
     const abortedJob = { status: "aborted" } as EHIApp.ExportJob;
     expect(canJobChangeStatus(abortedJob)).toBe(false);
-    const approvedJob = { status: "approved" } as EHIApp.ExportJob;
+    const approvedJob = { status: "retrieved" } as EHIApp.ExportJob;
     expect(canJobChangeStatus(approvedJob)).toBe(false);
     const rejectedJob = { status: "rejected" } as EHIApp.ExportJob;
     expect(canJobChangeStatus(rejectedJob)).toBe(false);

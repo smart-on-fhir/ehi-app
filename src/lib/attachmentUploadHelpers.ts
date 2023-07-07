@@ -68,10 +68,14 @@ export async function uploadAttachments(
     formData.append("attachments", file, file.name);
   });
   formData.append("action", "addAttachments");
-  return request(`/api/jobs/${jobId}/add-files`, {
-    method: "post",
-    body: formData,
-  });
+  return request(
+    `${process.env.REACT_APP_EHI_SERVER}/admin/jobs/${jobId}/add-files`,
+    {
+      method: "post",
+      body: formData,
+      credentials: "include",
+    }
+  );
 }
 
 /**
@@ -84,14 +88,18 @@ export async function deleteAttachment(
   jobId: EHIApp.ExportJob["id"],
   attachmentName: string
 ): Promise<void> {
-  return await request(`/api/jobs/${jobId}/remove-files`, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      action: "removeAttachments",
-      params: [attachmentName],
-    }),
-  });
+  return await request(
+    `${process.env.REACT_APP_EHI_SERVER}/admin/jobs/${jobId}/remove-files`,
+    {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        action: "removeAttachments",
+        params: [attachmentName],
+      }),
+    }
+  );
 }
