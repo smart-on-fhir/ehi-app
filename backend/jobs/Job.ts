@@ -169,7 +169,6 @@ export default class Job {
 
     // Recursive function for polling for updates to EHI-server's export jobs
     private async waitForExport(): Promise<Job> {
-
         let res = await this.request(true)(this.statusUrl)
 
         // Base Case 1: The export is complete, we can save and finish
@@ -177,12 +176,6 @@ export default class Job {
             this.manifest = await res.json()
             return this.save()
         }
-
-        // // Base Case 2: The export job was likely aborted, we should stop polling for updates
-        // if (res.status === 404) {
-        //     // TODO: Update _this_ instance of this job with new information
-        //     return this
-        // }
 
         // Export job is in progress, check again later
         if (res.status === 202) {
@@ -231,15 +224,6 @@ export default class Job {
             this.status = "requested"
             await this.save()
             await this.waitForExport()
-            // TODO: If we want to abort requested jobs, we need to exit this loop gracefully
-            // when the job is aborted. Depending on the timeout, the job might not exist on the EHI-server;
-            // Even if it does, _this_ job isn't updated with the new status and needs to have some way 
-            // of receiving the new updates (maybe a call to byID in the waitForExport if-404 block that 
-            // uses object.assign to update `this`? 
-            // // If the job was aborted, short-circuit the sync loop
-            // console.log('in sync with status: ', this.status)
-            // if(this.status === "aborted") return this
-            // // Else, it was exported; finish local data tracking
             await this.fetchJobMetadata()
             await this.fetchExportedFiles()
             this.status = "in-review"
