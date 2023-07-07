@@ -22,8 +22,8 @@ export default function ExportJobViewer() {
     error,
   } = useAsync<EHIApp.ExportJob>(useCallback(getExportJobWithId, [id]), true);
 
-  // Always check for job updates every 5 seconds
-  usePolling(refreshJob, 5000);
+  // Always check for job updates regularly
+  usePolling(refreshJob);
 
   function BackLink() {
     return (

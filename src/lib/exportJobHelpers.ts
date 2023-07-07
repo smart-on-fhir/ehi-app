@@ -85,3 +85,15 @@ export function displayApprovedDate(job: EHIApp.ExportJob) {
   if (approvedAt === null) return "";
   return `Completed ${formatDateTime(approvedAt)}`;
 }
+
+/**
+ * Get the downloadable information off of a job's manifest
+ * @param job Export job
+ * @returns list of ManifestFileEntries
+ */
+export function getDownloadables(
+  job: EHIApp.ExportJob
+): EHIApp.ExportManifestFileEntry[] {
+  if (!job.manifest) return [];
+  return job.manifest.output;
+}

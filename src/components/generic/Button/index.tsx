@@ -31,6 +31,10 @@ type ButtonProps = {
    * Variant styling to use;
    */
   variant?: ButtonVariant;
+  /**
+   * Optional onBlur handler
+   */
+  onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
 };
 
 export default function Button({
@@ -39,6 +43,7 @@ export default function Button({
   className,
   autoFocus,
   disabled,
+  onBlur,
   size = "md",
   variant = "primary",
 }: ButtonProps) {
@@ -72,6 +77,7 @@ export default function Button({
       disabled={disabled}
       className={`${className ? className : ""} ${buttonStyles} `}
       onClick={onClick}
+      onBlur={onBlur}
       autoFocus={autoFocus}
     >
       {children}

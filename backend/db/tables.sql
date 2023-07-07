@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS "users";
+-- DROP TABLE IF EXISTS "users";
 
-CREATE TABLE "users"(
-	"id"        Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-	"username"  Text NOT NULL,
-	"password"  Text NOT NULL,
-	"role"      Text NOT NULL,
-	"lastLogin" DateTime,
-	"sid"       Text,
-	"session"   Text
-);
+-- CREATE TABLE "users"(
+-- 	"id"        Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+-- 	"username"  Text NOT NULL,
+-- 	"password"  Text NOT NULL,
+-- 	"role"      Text NOT NULL,
+-- 	"lastLogin" DateTime,
+-- 	"sid"       Text,
+-- 	"session"   Text
+-- );
 
 DROP TABLE IF EXISTS "institutions";
 

@@ -1,6 +1,6 @@
-INSERT INTO "users" ("id","username","password","role") VALUES 
-(1, 'admin'  , '$2a$10$ZyXp2reLAbPDwNIIqzurIujWmp4bayMnJbSno0ucqEaV1SXbdxZTa', 'admin'), -- Password: admin-password
-(2, 'patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'user' ); -- Password: patient-password
+-- INSERT INTO "users" ("id","username","password","role") VALUES 
+-- (1, 'admin'  , '$2a$10$ZyXp2reLAbPDwNIIqzurIujWmp4bayMnJbSno0ucqEaV1SXbdxZTa', 'admin'), -- Password: admin-password
+-- (2, 'patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'user' ); -- Password: patient-password
 
 
 INSERT INTO "institutions" ("displayName","fhirUrl","location","disabled","clientId","scope") VALUES 

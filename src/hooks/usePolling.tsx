@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+import config from "../config";
 
 export function usePolling(
   fn: Function,
-  frequency: number = 5000,
+  frequency: number = config.statusCheckInterval,
   precondition: () => boolean = () => true
 ) {
   useEffect(() => {

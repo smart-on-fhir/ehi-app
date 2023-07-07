@@ -1,6 +1,12 @@
 import LinkButton from "../generic/LinkButton";
-import { getExportJobLink, abortExportJob } from "../../lib/exportJobHelpers";
+import {
+  // getExportJobLink,
+  abortExportJob,
+  getDownloadables,
+} from "../../lib/exportJobHelpers";
+import DownloadableLink from "./DownloadableLink";
 import Button from "../generic/Button";
+import { useState } from "react";
 
 type ExportJobActionProps = {
   job: EHIApp.ExportJob;
@@ -16,6 +22,9 @@ export default function ExportJobAction({
   const link = `${job.customizeUrl}&redirect=${
     window.location.origin + window.location.pathname
   }`;
+  const downloads = getDownloadables(job);
+
+  const [showDownload, setShowDownload] = useState(false);
 
   switch (status) {
     case "awaiting-input":
@@ -27,14 +36,31 @@ export default function ExportJobAction({
 
     case "approved":
       return (
-        <LinkButton
-          className="min-w-fit"
-          download
-          target="_blank"
-          to={getExportJobLink(job.id)}
-        >
-          Download
-        </LinkButton>
+        <>
+          <Button
+            className="relative min-w-fit"
+            onClick={() => {
+              setShowDownload(!showDownload);
+            }}
+            onBlur={() => {
+              // setShowDownload(false);
+            }}
+          >
+            Download
+            {showDownload && (
+              <div className="absolute right-0 top-full m-1 flex max-w-md flex-auto flex-wrap rounded border bg-primary-50">
+                {downloads.map((d) => (
+                  <div
+                    className="basis-28 p-1 text-sm text-active underline"
+                    key={d.url}
+                  >
+                    <DownloadableLink downloadable={d} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </Button>
+        </>
       );
 
     case "in-review":

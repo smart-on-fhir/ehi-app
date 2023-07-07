@@ -98,16 +98,44 @@ declare namespace EHIApp {
     genetic?: ExportJobAuthorization;
     other?: ExportJobAuthorization;
   }
+
+  interface ExportManifestFileEntry {
+    type: string;
+    url: string;
+    count?: number;
+  }
+  interface ExportManifest {
+    transactionTime: string;
+    requiresAccessToken: boolean;
+    output: ExportManifestFileEntry[];
+    error: any[];
+    extension?: Record<string, string>;
+  }
+
   export interface ExportJob {
     /**
      * Random 8 char hex job ID
      */
     id: string;
 
-    userId: number;
+    // Deprecated and removed
+    // userId: number;
+
+    /**
+     * An EHI-server-provided URL for polling for the status of this job
+     */
     statusUrl: string;
+
+    /**
+     * An EHI-server-provided URL for customizing this export request
+     */
     customizeUrl: string | null;
-    manifest: any;
+
+    /**
+     * The bulk data export manifest if available. This will be null until
+     * the export is approved and started (until it enters "requested" state)
+     */
+    manifest: ExportManifest;
 
     /**
      * The ID and humanized name of the patient
