@@ -167,20 +167,23 @@ export default class Job {
         }
     }
 
+    // Recursive function for polling for updates to EHI-server's export jobs
     private async waitForExport(): Promise<Job> {
-
         let res = await this.request(true)(this.statusUrl)
 
-        if (res.status == 200) {
+        // Base Case 1: The export is complete, we can save and finish
+        if (res.status === 200) {
             this.manifest = await res.json()
             return this.save()
         }
 
-        if (res.status == 202) {
+        // Export job is in progress, check again later
+        if (res.status === 202) {
             await wait(config.statusCheckInterval)
             return this.waitForExport()
         }
 
+        // Handle all other errors gracefully
         throw new HttpError(`Unexpected bulk status response ${res.status} ${res.statusText}`)
     }
 
@@ -331,7 +334,7 @@ export default class Job {
      * Aborts a running export
      */
     public async abort() {
-        if (this.status === "awaiting-input" || this.status === "requested") {
+        if (this.status === "awaiting-input" || this.status === 'in-review' || this.status === "requested") {
             await this.request(true)(this.statusUrl, { method: "DELETE" })
             this.status = "aborted"
             await this.save()

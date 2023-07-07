@@ -8,10 +8,12 @@ import {
 
 type ExportJobListItemUserProps = {
   job: EHIApp.ExportJob;
+  syncJobs: Function;
 };
 
 export default function ExportJobListItemUser({
   job,
+  syncJobs,
 }: ExportJobListItemUserProps) {
   // TODO: Get this information off of the job when supported on the job
   const institutionName = "New York Gerontology Hospital";
@@ -33,7 +35,7 @@ export default function ExportJobListItemUser({
           <p className="text-sm ">{displayApprovedDate(job)}</p>
         )}
       </div>
-      <ExportJobAction job={job} status={status} />
+      <ExportJobAction job={job} status={status} syncJobs={syncJobs} />
     </li>
   );
 }
