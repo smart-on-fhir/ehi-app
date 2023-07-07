@@ -52,16 +52,6 @@ export default class Job {
   public manifest: EHI.ExportManifest | null;
 
   /**
-   * Customization parameters (if any)
-   */
-  protected parameters: EHI.ExportJobInformationParameters | null;
-
-  /**
-   * Authorizations given (if any)
-   */
-  protected authorizations: EHI.ExportJobAuthorizations | null;
-
-  /**
    * Custom attachments (if any)
    */
   protected attachments: fhir4.Attachment[];
@@ -91,8 +81,6 @@ export default class Job {
     this.statusUrl = rec.statusUrl || "";
     this.customizeUrl = rec.customizeUrl || "";
     this.manifest = JSON.parse(rec.manifest || "null");
-    this.parameters = JSON.parse(rec.parameters || "null");
-    this.authorizations = JSON.parse(rec.authorizations || "null");
     this.attachments = JSON.parse(rec.attachments || "[]");
     this.createdAt = +new Date(rec.createdAt);
     this.accessToken = rec.accessToken;
@@ -190,6 +178,7 @@ export default class Job {
     // Base Case 1: The export is complete, we can save and finish
     if (res.status === 200) {
       this.manifest = await res.json();
+      this.status = "approved";
       return this.save();
     }
 
@@ -223,34 +212,12 @@ export default class Job {
     return this;
   }
 
-  private async fetchJobMetadata(): Promise<Job> {
-    const url = this.manifest?.extension?.metadata;
-    console.log(url);
-    if (url) {
-      const remoteJobResponse = await this.request(true)(url);
-
-      if (!remoteJobResponse.ok) {
-        throw new HttpError("Failed fetching job metadata");
-      }
-
-      const remoteJob = await remoteJobResponse.json();
-
-      this.parameters = remoteJob.parameters;
-      this.authorizations = remoteJob.authorizations;
-      this.patientName = remoteJob.patient.name;
-      await this.save();
-    }
-    return this;
-  }
-
   public async sync(): Promise<Job> {
     if (!this.status) {
       this.status = "requested";
       await this.save();
       await this.waitForExport();
-      await this.fetchJobMetadata();
       await this.fetchExportedFiles();
-      this.status = "in-review";
       await this.save();
     }
 
@@ -291,10 +258,6 @@ export default class Job {
       statusUrl: this.statusUrl,
       customizeUrl: this.customizeUrl,
       manifest: this.manifest ? JSON.stringify(this.manifest) : null,
-      parameters: this.parameters ? JSON.stringify(this.parameters) : null,
-      authorizations: this.authorizations
-        ? JSON.stringify(this.authorizations)
-        : null,
       attachments: this.attachments ? JSON.stringify(this.attachments) : null,
       status: this.status,
       patientName: this.patientName,
@@ -356,8 +319,6 @@ export default class Job {
       createdAt: this.createdAt,
       approvedAt: this.approvedAt,
       attachments: this.attachments,
-      parameters: this.parameters || {},
-      authorizations: this.authorizations || {},
       statusUrl: this.statusUrl,
       customizeUrl: this.customizeUrl,
       manifest: this.manifest,
@@ -368,11 +329,7 @@ export default class Job {
    * Aborts a running export
    */
   public async abort() {
-    if (
-      this.status === "awaiting-input" ||
-      this.status === "in-review" ||
-      this.status === "requested"
-    ) {
+    if (this.status === "requested") {
       await this.request(true)(this.statusUrl, { method: "DELETE" });
       this.status = "aborted";
       await this.save();

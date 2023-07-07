@@ -1,6 +1,6 @@
 import smart from "fhirclient";
 import express, { Request, Response } from "express";
-import Job from "./jobs/Job";
+import Job from "./jobs/JobPatient";
 import db from "./db";
 import { HttpError } from "./errors";
 import { asyncRouteWrap, getRequestBaseURL, getStorage } from "./lib";

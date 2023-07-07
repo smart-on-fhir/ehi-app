@@ -3,7 +3,7 @@ import archiver from "archiver";
 import { join } from "path";
 import { statSync } from "fs";
 import { readdir } from "fs/promises";
-import Job from "./Job";
+import Job from "./JobPatient";
 import db from "../db";
 import { HttpError } from "../errors";
 import { asyncRouteWrap } from "../lib";
