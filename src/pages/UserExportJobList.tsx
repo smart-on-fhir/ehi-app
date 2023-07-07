@@ -5,7 +5,7 @@ import LinkButton from "../components/generic/LinkButton";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
-import { getExportJobs } from "../lib/exportJobHelpers";
+import { getExportJobs } from "../lib/patientJobHelpers";
 import { Plus } from "react-feather";
 import { usePolling } from "../hooks/usePolling";
 

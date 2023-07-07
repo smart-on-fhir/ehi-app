@@ -4,7 +4,7 @@ import ExportJobAction from "./ExportJobAction";
 import {
   displayApprovedDate,
   displayCreatedDate,
-} from "../../lib/exportJobHelpers";
+} from "../../lib/patientJobHelpers";
 
 type ExportJobListItemUserProps = {
   job: EHIApp.ExportJob;
