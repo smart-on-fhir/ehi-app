@@ -2,11 +2,14 @@ import { Link, NavLink } from "react-router-dom";
 import smartLogo from "./smart-logo.svg";
 import AccountNavLink from "../AccountNavLink";
 import ExportsNavLink from "../ExportsNavLink";
+import useAuthConsumer from "../../../context/authContext";
 
 export default function AppHeader() {
+  const { isAdminRoute } = useAuthConsumer();
+  const baseUrl = isAdminRoute ? "/admin" : "";
   return (
     <header className="flex w-full flex-wrap items-center justify-between py-6">
-      <Link to="/" className="flex items-center">
+      <Link to={`${baseUrl}/`} className="flex items-center">
         <img
           src={smartLogo}
           alt="SMART on FHIR logo"
@@ -17,7 +20,7 @@ export default function AppHeader() {
       <nav className="mt-4 flex basis-full space-x-4 sm:mt-0 sm:basis-auto">
         <NavLink
           className={({ isActive }) => (isActive ? "font-bold" : "")}
-          to="/"
+          to={`${baseUrl}/`}
         >
           About
         </NavLink>

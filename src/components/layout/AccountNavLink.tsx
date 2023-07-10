@@ -3,42 +3,37 @@ import { Shield, User } from "react-feather";
 import useAuthConsumer from "../../context/authContext";
 
 export default function AccountNavLink() {
-  const { authUser } = useAuthConsumer();
+  const { authUser, isAdminRoute } = useAuthConsumer();
+  const baseUrl = isAdminRoute ? "/admin" : "";
   if (!authUser) {
     return (
       <NavLink
-        to="/login"
+        to={`${baseUrl}/login`}
         className={({ isActive }) => (isActive ? "flex font-bold" : "flex")}
       >
         Login
       </NavLink>
     );
-  } else if (authUser && process.env.REACT_APP_ROLE === "admin") {
-    return (
-      <NavLink
-        to="/account"
-        className={({ isActive }) => (isActive ? "flex font-bold" : "flex")}
-      >
-        Admin
-        <Shield
-          aria-hidden
-          className="ml-1 inline stroke-2 text-active"
-          name="admin"
-        />
-      </NavLink>
-    );
   } else {
     return (
       <NavLink
-        to="/account"
+        to={`${baseUrl}/account`}
         className={({ isActive }) => (isActive ? "flex font-bold" : "flex")}
       >
         {authUser.username}
-        <User
-          aria-hidden
-          className="ml-1 inline stroke-2 text-active"
-          name="admin"
-        />
+        {authUser && isAdminRoute ? (
+          <User
+            aria-hidden
+            className="ml-1 inline stroke-2 text-active"
+            name="admin"
+          />
+        ) : (
+          <Shield
+            aria-hidden
+            className="ml-1 inline stroke-2 text-active"
+            name="admin"
+          />
+        )}
       </NavLink>
     );
   }

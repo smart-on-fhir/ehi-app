@@ -6,6 +6,7 @@ export interface AuthContextInterface {
   authUser: EHIApp.AuthUser | null;
   authLoading: boolean;
   authError: string | null;
+  isAdminRoute: boolean;
   login: (
     username: string,
     password: string,
@@ -46,11 +47,14 @@ function useAuth() {
   );
   const [authLoading, setAuthLoading] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  // Track if we are displaying the admin version of pages or not
+  const isAdminRoute = location.pathname.indexOf("/admin") !== -1;
 
   return {
     authUser,
     authLoading,
     authError,
+    isAdminRoute,
     async login(
       username: string,
       password: string,
@@ -60,10 +64,9 @@ function useAuth() {
       setAuthError(null);
       const payload = buildLoginPayload(username, password, remember);
 
-      const loginEndpoint =
-        process.env.REACT_APP_ROLE === "admin"
-          ? `${process.env.REACT_APP_EHI_SERVER}/admin/login`
-          : "/api/login";
+      const loginEndpoint = isAdminRoute
+        ? `${process.env.REACT_APP_EHI_SERVER}/admin/login`
+        : "/api/login";
       const response = await fetch(loginEndpoint, {
         method: "POST",
         headers: { accept: "application/json" },
@@ -89,8 +92,8 @@ function useAuth() {
         const user = await response.json();
         setAuthLoading(false);
         setAuthUser(user);
-        if (process.env.REACT_APP_ROLE === "admin") {
-          navigate("/admin");
+        if (isAdminRoute) {
+          navigate("/admin/jobs");
         } else {
           navigate(location.state?.redirect || "/jobs");
         }
@@ -98,10 +101,9 @@ function useAuth() {
     },
     async logout() {
       setAuthLoading(true);
-      const logoutEndpoint =
-        process.env.REACT_APP_ROLE === "admin"
-          ? `${process.env.REACT_APP_EHI_SERVER}/admin/logout`
-          : "/api/logout";
+      const logoutEndpoint = isAdminRoute
+        ? `${process.env.REACT_APP_EHI_SERVER}/admin/logout`
+        : "/api/logout";
       const response = await fetch(logoutEndpoint, {
         headers: { accept: "application/json" },
         credentials: "include",

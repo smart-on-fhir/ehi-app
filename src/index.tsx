@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Route, BrowserRouter } from "react-router-dom";
-import { Navigate, Routes } from "react-router";
+import { Routes } from "react-router";
 import AppWrapper from "./components/layout/AppWrapper";
 import UserExportJobList from "./pages/UserExportJobList";
 import Login from "./pages/Login";
@@ -29,6 +29,53 @@ root.render(
       <NotificationProvider>
         <AppWrapper>
           <Routes>
+            {/* Admin paths */}
+            <Route path="/admin">
+              <Route index element={<HomePage />} />
+              <Route
+                path="login"
+                // If we're already logged in, bring us to another page
+                element={
+                  <AlreadyAuthedAccountRedirect>
+                    <Login />
+                  </AlreadyAuthedAccountRedirect>
+                }
+              />
+              <Route
+                path="account"
+                element={
+                  <AuthCheckWrapper>
+                    <AccountDetails />
+                  </AuthCheckWrapper>
+                }
+              />
+              <Route path="jobs">
+                <Route
+                  index
+                  element={
+                    <AuthCheckWrapper needsAdmin>
+                      <AdminExportJobList />
+                    </AuthCheckWrapper>
+                  }
+                />
+                <Route
+                  path=":id"
+                  element={
+                    <AuthCheckWrapper needsAdmin>
+                      <ExportJobViewer />
+                    </AuthCheckWrapper>
+                  }
+                />
+              </Route>
+              <Route
+                path="institutionSelection"
+                element={
+                  <AuthCheckWrapper>
+                    <InstitutionSelection />
+                  </AuthCheckWrapper>
+                }
+              />
+            </Route>
             <Route path="/">
               <Route index element={<HomePage />} />
               <Route
@@ -56,27 +103,6 @@ root.render(
                   </AuthCheckWrapper>
                 }
               />
-              <Route path="admin">
-                <Route index element={<Navigate to="/admin/jobs" replace />} />
-                <Route path="jobs">
-                  <Route
-                    index
-                    element={
-                      <AuthCheckWrapper needsAdmin>
-                        <AdminExportJobList />
-                      </AuthCheckWrapper>
-                    }
-                  />
-                  <Route
-                    path=":id"
-                    element={
-                      <AuthCheckWrapper needsAdmin>
-                        <ExportJobViewer />
-                      </AuthCheckWrapper>
-                    }
-                  />
-                </Route>
-              </Route>
               <Route
                 path="institutionSelection"
                 element={
