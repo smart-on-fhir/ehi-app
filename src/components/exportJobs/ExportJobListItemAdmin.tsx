@@ -1,6 +1,6 @@
 import LinkButton from "../generic/LinkButton";
-import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
-import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
+import ExportJobStatusIndicatorAdmin from "./ExportJobStatusIndicatorAdmin";
+import ExportJobStatusBlurbAdmin from "./ExportJobStatusBlurbAdmin";
 import ExportJobLink from "./ExportJobLink";
 import {
   displayCreatedDate,
@@ -16,9 +16,9 @@ export default function ExportJobListItemAdmin({
   return (
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
       <div className="flex w-20 flex-shrink-0 flex-col items-center text-center">
-        <ExportJobStatusIndicator status={status} />
+        <ExportJobStatusIndicatorAdmin status={status} />
         <div className="text-sm opacity-80">
-          <ExportJobStatusBlurb status={status} />
+          <ExportJobStatusBlurbAdmin status={status} />
         </div>
       </div>
       <div className="w-full">
@@ -35,7 +35,7 @@ export default function ExportJobListItemAdmin({
         </pre>
       </div>
       <LinkButton className="w-24" to={`/admin/jobs/${id}`}>
-        {status === "in-review" ? "Review" : "Details"}
+        {status === "retrieved" ? "Review" : "Details"}
       </LinkButton>
     </li>
   );

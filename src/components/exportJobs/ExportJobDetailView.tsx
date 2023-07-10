@@ -1,5 +1,5 @@
-import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
-import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
+import ExportJobStatusIndicatorAdmin from "./ExportJobStatusIndicatorAdmin";
+import ExportJobStatusBlurbAdmin from "./ExportJobStatusBlurbAdmin";
 import ExportJobParametersAuthorizations from "./ExportJobParametersAuthorizations";
 import ExportApproveButton from "./ExportApproveButton";
 import ExportRejectButton from "./ExportRejectButton";
@@ -24,9 +24,9 @@ export default function ExportJobDetailView({
     <section className="space-y-4 rounded border bg-white p-4">
       <header className="flex items-center">
         <div className="flex w-24 flex-col items-center pr-2 text-center">
-          <ExportJobStatusIndicator status={status} />
+          <ExportJobStatusIndicatorAdmin status={status} />
           <div className="text-sm opacity-80">
-            <ExportJobStatusBlurb status={status} />
+            <ExportJobStatusBlurbAdmin status={status} />
           </div>
         </div>
         <div className="flex w-full items-center justify-between">

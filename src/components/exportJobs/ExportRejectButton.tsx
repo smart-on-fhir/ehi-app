@@ -26,21 +26,21 @@ export default function RejectButton({ job, refreshJob }: RejectButtonProps) {
   }
   function statusBasedButton() {
     switch (status) {
-      case "awaiting-input":
-      case "in-review":
+      case "retrieved":
         return <Button onClick={rejectJob}>Reject</Button>;
+      case "awaiting-input":
       case "requested":
         return (
           <Button
             variant="danger"
             className="w-28"
             disabled
-            onClick={deleteJob}
+            onClick={rejectJob}
           >
-            Delete Now
+            Reject
           </Button>
         );
-      case "retrieved":
+      case "approved":
       case "aborted":
       case "rejected":
         return (

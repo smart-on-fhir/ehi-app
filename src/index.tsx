@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Route, BrowserRouter } from "react-router-dom";
 import { Routes } from "react-router";
 import AppWrapper from "./components/layout/AppWrapper";
-import UserExportJobList from "./pages/UserExportJobList";
+import PatientExportJobList from "./pages/PatientExportJobList";
 import Login from "./pages/Login";
 import AccountDetails from "./pages/AccountDetails";
 import HomePage from "./pages/HomePage";
@@ -99,7 +99,7 @@ root.render(
                 path="jobs"
                 element={
                   <AuthCheckWrapper>
-                    <UserExportJobList />
+                    <PatientExportJobList />
                   </AuthCheckWrapper>
                 }
               />

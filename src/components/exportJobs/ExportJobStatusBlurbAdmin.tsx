@@ -1,19 +1,21 @@
-type ExportJobBlurbProps = {
+type ExportJobStatusBlurbAdminProps = {
   status: EHIApp.ExportJobStatus;
 };
 
-export default function ExportJobBlurb({ status }: ExportJobBlurbProps) {
+export default function ExportJobStatusBlurbAdmin({
+  status,
+}: ExportJobStatusBlurbAdminProps) {
   switch (status) {
     case "awaiting-input":
       return <p>Information Needed</p>;
 
-    case "in-review":
+    case "retrieved":
       return <p>In Review</p>;
 
     case "requested":
       return <p>Processing</p>;
 
-    case "retrieved":
+    case "approved":
       return <p>Complete</p>;
 
     case "aborted":

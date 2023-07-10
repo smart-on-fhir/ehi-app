@@ -1,8 +1,8 @@
 import { canJobChangeStatus } from "../../lib/jobHelpers";
 
 describe("canJobChangeStatus", () => {
-  test("True for jobs with status `in-review`", () => {
-    const exampleJob = { status: "in-review" } as EHIApp.ExportJob;
+  test("True for jobs with status `retrieved`", () => {
+    const exampleJob = { status: "retrieved" } as EHIApp.ExportJob;
     expect(canJobChangeStatus(exampleJob)).toBe(true);
   });
   test("True for jobs with status `awaiting-input`", () => {

@@ -18,7 +18,7 @@ export default function AttachmentSection({
     return null;
   }
 
-  const jobEditable = job.status === "in-review";
+  const jobEditable = job.status === "retrieved";
   return (
     <section
       id="attachmentsContainer"

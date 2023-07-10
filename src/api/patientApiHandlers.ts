@@ -10,8 +10,8 @@ export function getExportJobLink(id: string) {
 
 export async function getExportJobs(
   signal?: AbortSignal
-): Promise<EHIApp.ExportJob[]> {
-  return request<EHIApp.ExportJob[]>("/api/patientJobs", {
+): Promise<EHIApp.PatientExportJob[]> {
+  return request<EHIApp.PatientExportJob[]>("/api/patientJobs", {
     signal,
   });
 }
@@ -19,15 +19,15 @@ export async function getExportJobs(
 export async function getExportJob(
   id: string,
   signal?: AbortSignal
-): Promise<EHIApp.ExportJob> {
-  return request<EHIApp.ExportJob>(`/api/patientJobs/${id}`, { signal });
+): Promise<EHIApp.PatientExportJob> {
+  return request<EHIApp.PatientExportJob>(`/api/patientJobs/${id}`, { signal });
 }
 
 export async function abortExportJob(
   id: string,
   signal?: AbortSignal
-): Promise<EHIApp.ExportJob> {
-  return request<EHIApp.ExportJob>(`/api/patientJobs/${id}/abort`, {
+): Promise<EHIApp.PatientExportJob> {
+  return request<EHIApp.PatientExportJob>(`/api/patientJobs/${id}/abort`, {
     method: "post",
     signal,
   });

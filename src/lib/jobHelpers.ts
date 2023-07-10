@@ -27,7 +27,7 @@ export function displayApprovedDate(job: EHIApp.ExportJob) {
 export function canJobChangeStatus(job: EHIApp.ExportJob): boolean {
   return (
     job.status === "awaiting-input" ||
-    job.status === "in-review" ||
+    job.status === "retrieved" ||
     job.status === "requested"
   );
 }

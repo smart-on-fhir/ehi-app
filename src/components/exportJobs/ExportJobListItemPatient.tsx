@@ -1,26 +1,26 @@
-import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
-import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
+import ExportJobStatusIndicatorPatient from "./ExportJobStatusIndicatorPatient";
+import ExportJobStatusBlurbAdmin from "./ExportJobStatusBlurbAdmin";
 import ExportJobAction from "./ExportJobAction";
 import { displayApprovedDate, displayCreatedDate } from "../../lib/jobHelpers";
 
-type ExportJobListItemUserProps = {
-  job: EHIApp.ExportJob;
+type ExportJobListItemPatientProps = {
+  job: EHIApp.PatientExportJob;
   syncJobs: Function;
 };
 
-export default function ExportJobListItemUser({
+export default function ExportJobListItemPatient({
   job,
   syncJobs,
-}: ExportJobListItemUserProps) {
+}: ExportJobListItemPatientProps) {
   // TODO: Get this information off of the job when supported on the job
   const institutionName = "New York Gerontology Hospital";
   const { status, approvedAt } = job;
   return (
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
       <div className="flex w-20 flex-auto flex-shrink-0 flex-col items-center justify-center text-center">
-        <ExportJobStatusIndicator status={status} />
+        <ExportJobStatusIndicatorPatient status={status} />
         <div className="text-sm opacity-80">
-          <ExportJobStatusBlurb status={status} />
+          <ExportJobStatusBlurbAdmin status={status} />
         </div>
       </div>
       <div className="w-full ">

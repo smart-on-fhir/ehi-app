@@ -15,7 +15,7 @@ export default function ApproveButton({ job, refreshJob }: ApproveButtonProps) {
   }
   function statusBasedButton() {
     switch (status) {
-      case "in-review":
+      case "retrieved":
         return (
           <Button onClick={approveJob} variant="emphasized">
             Approve
@@ -24,7 +24,7 @@ export default function ApproveButton({ job, refreshJob }: ApproveButtonProps) {
 
       case "awaiting-input":
       case "requested":
-      case "retrieved":
+      case "approved":
       case "aborted":
       case "rejected":
         return null;

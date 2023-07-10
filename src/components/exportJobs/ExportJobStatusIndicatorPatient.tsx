@@ -1,14 +1,8 @@
 import {
   // awaiting-input`
-  Edit,
-  // requested`
   Loader,
-  // in-review`
-  Search,
-  // retrieved`
+  // approved`
   CheckCircle,
-  // aborted`
-  XOctagon,
   // rejected`
   Slash,
 } from "react-feather";
@@ -17,24 +11,16 @@ function displayStatus(status: EHIApp.ExportJobStatus) {
   return status.split("-").join(" ");
 }
 
-export default function ExportJobStatusIndicator({
+export default function ExportJobStatusIndicatorPatient({
   status,
   size,
 }: {
-  status: EHIApp.ExportJobStatus;
+  status: EHIApp.PatientExportJobStatus;
   size?: string | number;
 }) {
   switch (status) {
+    // Still waiting for actions on the patient-end
     case "awaiting-input":
-      return (
-        <div
-          className="rounded-full bg-awaiting-input "
-          title={displayStatus(status)}
-        >
-          <Edit className="m-2" size={size} />
-        </div>
-      );
-    case "requested":
       return (
         <div
           className="animate-spin-slow rounded-full bg-requested "
@@ -43,28 +29,13 @@ export default function ExportJobStatusIndicator({
           <Loader className="m-2" size={size} />
         </div>
       );
-    case "in-review":
-      return (
-        <div
-          className="rounded-full bg-in-review "
-          title={displayStatus(status)}
-        >
-          <Search className="m-2 " size={size} />
-        </div>
-      );
-    case "retrieved":
+    case "approved":
       return (
         <div
           className="rounded-full bg-green-400 text-white text-opacity-90 "
           title={displayStatus(status)}
         >
           <CheckCircle className="m-2" size={size} />
-        </div>
-      );
-    case "aborted":
-      return (
-        <div className="rounded-full bg-aborted " title={displayStatus(status)}>
-          <XOctagon className="m-2" size={size} />
         </div>
       );
     case "rejected":

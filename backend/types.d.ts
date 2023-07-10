@@ -189,25 +189,17 @@ declare namespace EHI {
     "requested" | "retrieved" | "aborted" | "rejected"
   >;
 
-  type PatientExportJob = Omit<ExportJob, "parameters" | "authorizations">;
+  // Note: Not using simple Omit because we need status to change from type ExportJobStatus to PatientExportJobStatus
+  type PatientExportJob = Omit<
+    ExportJob,
+    "parameters" | "authorizations" | "status"
+  > & { status: PatientExportJobStatus };
 
   // Note: Not using simple Omit because we need status to change from type ExportJobStatus to PatientExportJobStatus
-  type PatientExportJobDbRecord = {
-    id: number;
-    userId: number;
-    patientId: string | number;
-    statusUrl: string | null;
-    customizeUrl: string | null;
-    manifest: string | null; // JSON -> ExportManifest
-    attachments: string | null; // JSON -> Attachment[]
-    createdAt: number;
-    accessToken: string;
-    refreshToken: string;
-    tokenUri: string;
-    status: PatientExportJobStatus | null;
-    patientName: string | null;
-    approvedAt: number | null;
-  };
+  type PatientExportJobDbRecord = Omit<
+    ExportJobDbRecord,
+    "parameters" | "authorizations" | "status"
+  > & { status: PatientExportJobStatus };
 
   ///////////
   // Unused TODO: DELETE?
