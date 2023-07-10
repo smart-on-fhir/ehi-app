@@ -2,7 +2,7 @@ import { useState } from "react";
 import { formatBytes, MAX_FILE_SIZE } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
 import NotificationModal from "../generic/NotificationModal";
-import { MAX_FILE_NUM, uploadAttachments } from "../../lib/adminApiHandlers";
+import { MAX_FILE_NUM, uploadAttachments } from "../../api/adminApiHandlers";
 
 const SUPPORTED_FILES = [
   // Data Files

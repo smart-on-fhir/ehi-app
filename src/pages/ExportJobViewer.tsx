@@ -6,7 +6,7 @@ import ErrorMessage from "../components/generic/ErrorMessage";
 import ExportJobDetailView from "../components/exportJobs/ExportJobDetailView";
 import { useAsync } from "../hooks/useAsync";
 import { usePolling } from "../hooks/usePolling";
-import { getExportJob } from "../lib/adminApiHandlers";
+import { getExportJob } from "../api/adminApiHandlers";
 
 export default function ExportJobViewer() {
   const { id } = useParams();

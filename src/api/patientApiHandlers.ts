@@ -1,4 +1,4 @@
-import { request } from ".";
+import { request } from "../lib";
 import pkg from "../../package.json";
 
 export function getExportJobLink(id: string) {

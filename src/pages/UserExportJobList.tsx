@@ -7,7 +7,7 @@ import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
 import { Plus } from "react-feather";
 import { usePolling } from "../hooks/usePolling";
-import { getExportJobs } from "../lib/patientApiHandlers";
+import { getExportJobs } from "../api/patientApiHandlers";
 
 export default function UserExportJobList() {
   const {

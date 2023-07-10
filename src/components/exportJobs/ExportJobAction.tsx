@@ -1,5 +1,6 @@
 import LinkButton from "../generic/LinkButton";
-import { getExportJobLink, abortExportJob } from "../../lib/adminApiHandlers";
+import { getExportJobLink, abortExportJob } from "../../api/adminApiHandlers";
+import { getExportJobLink as patientGetExportJobLink } from "../../api/patientApiHandlers";
 import Button from "../generic/Button";
 
 type ExportJobActionProps = {
@@ -31,7 +32,7 @@ export default function ExportJobAction({
           className="min-w-fit"
           download
           target="_blank"
-          to={getExportJobLink(job.id)}
+          to={patientGetExportJobLink(job.id)}
         >
           Download
         </LinkButton>

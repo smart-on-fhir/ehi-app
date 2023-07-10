@@ -2,7 +2,7 @@ import Button from "../generic/Button";
 import {
   updateExportStatus,
   deleteExportJob,
-} from "../../lib/adminApiHandlers";
+} from "../../api/adminApiHandlers";
 import { useNavigate } from "react-router";
 
 type RejectButtonProps = {

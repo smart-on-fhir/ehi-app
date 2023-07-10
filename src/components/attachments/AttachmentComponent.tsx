@@ -5,7 +5,7 @@ import {
   getAttachmentName,
 } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
-import { deleteAttachment } from "../../lib/adminApiHandlers";
+import { deleteAttachment } from "../../api/adminApiHandlers";
 import NotificationModal from "../generic/NotificationModal";
 
 type AttachmentComponentProps = {

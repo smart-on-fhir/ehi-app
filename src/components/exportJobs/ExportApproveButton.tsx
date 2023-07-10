@@ -1,5 +1,5 @@
 import Button from "../generic/Button";
-import { updateExportStatus } from "../../lib/adminApiHandlers";
+import { updateExportStatus } from "../../api/adminApiHandlers";
 
 type ApproveButtonProps = {
   job: EHIApp.ExportJob;

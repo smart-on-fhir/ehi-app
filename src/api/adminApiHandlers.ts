@@ -1,5 +1,5 @@
-import { request } from ".";
-import { validFileFilter } from "./attachmentUploadHelpers";
+import { request } from "../lib";
+import { validFileFilter } from "../lib/attachmentUploadHelpers";
 
 const baseUrl = process.env.REACT_APP_EHI_SERVER;
 

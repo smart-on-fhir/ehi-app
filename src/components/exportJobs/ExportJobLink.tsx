@@ -1,4 +1,4 @@
-import { getExportJobLink } from "../../lib/adminApiHandlers";
+import { getExportJobLink } from "../../api/adminApiHandlers";
 
 type ExportJobLinkProps = {
   jobId: EHIApp.ExportJob["id"];
