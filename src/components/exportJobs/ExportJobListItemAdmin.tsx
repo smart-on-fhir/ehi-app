@@ -5,18 +5,14 @@ import ExportJobLink from "./ExportJobLink";
 import {
   displayCreatedDate,
   displayPatientInformation,
-} from "../../lib/adminJobHelpers";
+} from "../../lib/jobHelpers";
 
 export default function ExportJobListItemAdmin({
   job,
 }: {
   job: EHIApp.ExportJob;
 }) {
-  const {
-    id,
-    status,
-    // attachments
-  } = job;
+  const { id, status, attachments } = job;
   return (
     <li className="flex items-center space-x-4 rounded border bg-white p-4">
       <div className="flex w-20 flex-shrink-0 flex-col items-center text-center">
@@ -30,13 +26,13 @@ export default function ExportJobListItemAdmin({
           Job #{id}{" "}
         </h1>
         {status === "retrieved" && <ExportJobLink jobId={id} />}
-        {/* <pre className="whitespace-pre-wrap text-xs italic opacity-50">
+        <pre className="whitespace-pre-wrap text-xs italic opacity-50">
           {[
             displayPatientInformation(job),
             displayCreatedDate(job),
             `${attachments.length} Attachments`,
           ].join("\n")}
-        </pre> */}
+        </pre>
       </div>
       <LinkButton className="w-24" to={`/admin/jobs/${id}`}>
         {status === "in-review" ? "Review" : "Details"}

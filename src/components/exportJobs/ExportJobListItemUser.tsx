@@ -1,10 +1,7 @@
 import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
 import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
 import ExportJobAction from "./ExportJobAction";
-import {
-  displayApprovedDate,
-  displayCreatedDate,
-} from "../../lib/patientJobHelpers";
+import { displayApprovedDate, displayCreatedDate } from "../../lib/jobHelpers";
 
 type ExportJobListItemUserProps = {
   job: EHIApp.ExportJob;

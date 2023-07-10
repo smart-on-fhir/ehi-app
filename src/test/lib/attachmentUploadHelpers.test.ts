@@ -2,11 +2,8 @@ import {
   validFileFilter,
   formatBytes,
   getAttachmentName,
-  MAX_FILE_NUM,
   MAX_FILE_SIZE,
 } from "../../lib/attachmentUploadHelpers";
-
-const TEST_URL = "https://example.com";
 
 describe("validFileFilter", () => {
   test("true for files whose size is less than MAX_FILE_SIZE", () => {

@@ -1,5 +1,5 @@
 import LinkButton from "../generic/LinkButton";
-import { getExportJobLink, abortExportJob } from "../../lib/adminJobHelpers";
+import { getExportJobLink, abortExportJob } from "../../lib/adminApiHandlers";
 import Button from "../generic/Button";
 
 type ExportJobActionProps = {

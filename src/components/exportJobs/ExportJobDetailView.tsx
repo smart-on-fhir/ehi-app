@@ -6,10 +6,9 @@ import ExportRejectButton from "./ExportRejectButton";
 import AttachmentSection from "../attachments/AttachmentSection";
 import ExportJobLink from "./ExportJobLink";
 import {
-  displayApprovedDate,
   displayCreatedDate,
   displayPatientInformation,
-} from "../../lib/adminJobHelpers";
+} from "../../lib/jobHelpers";
 
 type ExportJobDetailViewProps = {
   job: EHIApp.ExportJob;

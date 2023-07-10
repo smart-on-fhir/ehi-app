@@ -5,7 +5,7 @@ import {
   Loader,
   // in-review`
   Search,
-  // approved`
+  // retrieved`
   CheckCircle,
   // aborted`
   XOctagon,

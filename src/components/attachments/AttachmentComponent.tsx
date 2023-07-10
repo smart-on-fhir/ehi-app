@@ -2,10 +2,10 @@ import AttachmentIcon from "./AttachmentIcon";
 import AttachmentDeleteButton from "./AttachmentDeleteButton";
 import {
   formatBytes,
-  deleteAttachment,
   getAttachmentName,
 } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
+import { deleteAttachment } from "../../lib/adminApiHandlers";
 import NotificationModal from "../generic/NotificationModal";
 
 type AttachmentComponentProps = {

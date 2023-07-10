@@ -72,8 +72,8 @@ const awaitingInput = yellow[200];
 const requested = yellow[200];
 // in-review`
 const inReview = "#abc1e4";
-// approved`
-const approved = green[400];
+// retrieved`
+const retrieved = green[400];
 // aborted`
 const aborted = "#e4aa86";
 // rejected`
@@ -112,7 +112,7 @@ module.exports = {
         "awaiting-input": awaitingInput,
         requested,
         "in-review": inReview,
-        approved,
+        retrieved,
         aborted,
         rejected,
       },

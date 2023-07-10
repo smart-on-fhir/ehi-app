@@ -61,7 +61,7 @@ export default class Job {
    */
   protected createdAt: number;
 
-  public status: EHI.ExportJobStatus | null;
+  public status: EHI.PatientExportJobStatus | null;
 
   protected accessToken: string;
 
@@ -73,7 +73,7 @@ export default class Job {
 
   public approvedAt: number | null = null;
 
-  constructor(rec: EHI.ExportJobDbRecord) {
+  constructor(rec: EHI.PatientExportJobDbRecord) {
     this.id = rec.id;
     this.userId = rec.userId;
     this.patientId = rec.patientId;
@@ -178,7 +178,8 @@ export default class Job {
     // Base Case 1: The export is complete, we can save and finish
     if (res.status === 200) {
       this.manifest = await res.json();
-      this.status = "approved";
+      this.status = "retrieved";
+      this.approvedAt = Date.now();
       return this.save();
     }
 

@@ -1,5 +1,7 @@
 import { Request } from "express-serve-static-core";
 
+// export as namespace EHI
+
 declare namespace EHI {
   interface UserRequest extends Request {
     user?: User;
@@ -35,10 +37,16 @@ declare namespace EHI {
   /**
    * Can be:
    *
+   * - `awaiting-input` - The user needs to fill in the form.
+   *
+   * - `in-review` - After the form is submitted successfully no more actions
+   *   are required by the user. Then the job switches to "in-review" status,
+   *   meaning that it is waiting for the admin to approve or reject the export.
+   *
    * - `requested` - After the export is approved by the admin and while the
    *   data is being exported.
    *
-   * - `approved` - All the data transmitted to its destination.
+   * - `retrieved` - All the data transmitted to its destination.
    *
    * - `aborted` - The admin or the patient aborted/canceled this export.
    *
@@ -48,16 +56,20 @@ declare namespace EHI {
    * **Note** that jobs have certain lifetime. Once they expire they will be
    * deleted within the next `config.jobCleanupMinutes` minutes:
    *
+   * - `awaiting-input` - Does not expire
+   * - `in-review`      - Expire after `config.jobMaxLifetimeMinutes`
    * - `requested`      - Expire after `config.jobMaxLifetimeMinutes`
-   * - `approved`      - Expire after `config.jobMaxLifetimeMinutes`
+   * - `retrieved`      - Expire after `config.jobMaxLifetimeMinutes`
    * - `aborted`        - Expire immediately
    * - `rejected`       - Expire immediately
    */
-  type ExportJobStatus = "requested" | "approved" | "aborted" | "rejected";
-
-  /**
-   * The JSON representation of an export job
-   */
+  type ExportJobStatus =
+    | "awaiting-input"
+    | "requested"
+    | "in-review"
+    | "retrieved"
+    | "aborted"
+    | "rejected";
   interface ExportJob {
     /**
      * Random 8 char hex job ID
@@ -105,9 +117,82 @@ declare namespace EHI {
      * DocumentReference
      */
     attachments: fhir4.Attachment[];
+
+    parameters?: ExportJobInformationParameters;
+
+    authorizations?: ExportJobAuthorizations;
+  }
+
+  interface ExportJobInformationParameter {
+    name: string;
+    enabled: boolean;
+    notes?: string;
+    from?: string | false;
+    to?: string | false;
+    group?: number;
+  }
+
+  interface ExportJobInformationParameters {
+    medicalRecord?: ExportJobInformationParameter;
+    visits?: ExportJobInformationParameter;
+    dischargeSummary?: ExportJobInformationParameter;
+    labs?: ExportJobInformationParameter;
+    operative?: ExportJobInformationParameter;
+    pathology?: ExportJobInformationParameter;
+    radiation?: ExportJobInformationParameter;
+    radiology?: ExportJobInformationParameter;
+    photographs?: ExportJobInformationParameter;
+    billing?: ExportJobInformationParameter;
+    other?: ExportJobInformationParameter;
+  }
+
+  interface ExportJobAuthorization {
+    name: string;
+    value: boolean | string;
+  }
+
+  interface ExportJobAuthorizations {
+    hiv?: ExportJobAuthorization;
+    alcoholAndDrug?: ExportJobAuthorization;
+    mentalHealth?: ExportJobAuthorization;
+    confidential?: ExportJobAuthorization;
+    domesticViolence?: ExportJobAuthorization;
+    sexualAssault?: ExportJobAuthorization;
+    genetic?: ExportJobAuthorization;
+    other?: ExportJobAuthorization;
   }
 
   interface ExportJobDbRecord {
+    id: number;
+    userId: number;
+    patientId: string | number;
+    statusUrl: string | null;
+    customizeUrl: string | null;
+    manifest: string | null; // JSON -> ExportManifest
+    parameters: string | null; // JSON -> ExportJobInformationParameters
+    authorizations: string | null; // JSON -> ExportJobAuthorizations
+    attachments: string | null; // JSON -> Attachment[]
+    createdAt: number;
+    accessToken: string;
+    refreshToken: string;
+    tokenUri: string;
+    status: ExportJobStatus | null;
+    patientName: string | null;
+    approvedAt: number | null;
+  }
+
+  ////////////////////////////
+  // Patient Specific Interfaces
+
+  type PatientExportJobStatus = Extract<
+    ExportJobStatus,
+    "requested" | "retrieved" | "aborted" | "rejected"
+  >;
+
+  type PatientExportJob = Omit<ExportJob, "parameters" | "authorizations">;
+
+  // Note: Not using simple Omit because we need status to change from type ExportJobStatus to PatientExportJobStatus
+  type PatientExportJobDbRecord = {
     id: number;
     userId: number;
     patientId: string | number;
@@ -119,11 +204,13 @@ declare namespace EHI {
     accessToken: string;
     refreshToken: string;
     tokenUri: string;
-    status: ExportJobStatus | null;
+    status: PatientExportJobStatus | null;
     patientName: string | null;
     approvedAt: number | null;
-  }
+  };
 
+  ///////////
+  // Unused TODO: DELETE?
   interface Attachment {
     /**
      * Mime type of the content, with charset etc.
@@ -146,5 +233,3 @@ declare namespace EHI {
     size: number;
   }
 }
-
-// export as namespace EHI
