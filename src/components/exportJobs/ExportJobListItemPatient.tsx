@@ -1,5 +1,5 @@
 import ExportJobStatusIndicatorPatient from "./ExportJobStatusIndicatorPatient";
-import ExportJobStatusBlurbAdmin from "./ExportJobStatusBlurbAdmin";
+import ExportJobStatusBlurbPatient from "./ExportJobStatusBlurbPatient";
 import ExportJobAction from "./ExportJobAction";
 import { displayApprovedDate, displayCreatedDate } from "../../lib/jobHelpers";
 
@@ -20,7 +20,7 @@ export default function ExportJobListItemPatient({
       <div className="flex w-20 flex-auto flex-shrink-0 flex-col items-center justify-center text-center">
         <ExportJobStatusIndicatorPatient status={status} />
         <div className="text-sm opacity-80">
-          <ExportJobStatusBlurbAdmin status={status} />
+          <ExportJobStatusBlurbPatient status={status} />
         </div>
       </div>
       <div className="w-full ">

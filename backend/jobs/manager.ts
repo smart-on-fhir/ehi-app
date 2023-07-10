@@ -35,7 +35,6 @@ async function checkJobs() {
   );
 
   for (const job of jobs) {
-    console.log(job);
     if (
       job.status === "aborted" ||
       job.status === "rejected" ||

@@ -26,7 +26,7 @@ export default function ExportJobAction({
   // }`;
 
   switch (status) {
-    case "awaiting-input":
+    case "requested":
       return (
         <Button
           onClick={async () => {

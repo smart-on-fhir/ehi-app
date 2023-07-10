@@ -1,5 +1,5 @@
 import {
-  // awaiting-input`
+  // requested`
   Loader,
   // approved`
   CheckCircle,
@@ -20,7 +20,7 @@ export default function ExportJobStatusIndicatorPatient({
 }) {
   switch (status) {
     // Still waiting for actions on the patient-end
-    case "awaiting-input":
+    case "requested":
       return (
         <div
           className="animate-spin-slow rounded-full bg-requested "

@@ -178,7 +178,7 @@ export default class Job {
     // Base Case 1: The export is complete, we can save and finish
     if (res.status === 200) {
       this.manifest = await res.json();
-      this.status = "retrieved";
+      this.status = "approved";
       this.approvedAt = Date.now();
       return this.save();
     }

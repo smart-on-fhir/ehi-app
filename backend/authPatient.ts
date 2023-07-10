@@ -22,7 +22,6 @@ export async function authenticate(
         "SELECT * FROM users WHERE sid=?",
         sid
       );
-      console.log(user);
       (req as EHI.UserRequest).user = user || null;
     } catch (ex) {
       debug(ex + "");
