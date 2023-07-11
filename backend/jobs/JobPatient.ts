@@ -6,6 +6,7 @@ import db from "../db";
 import { HttpError } from "../errors";
 import {
   downloadFile,
+  getJobCustomizationUrl,
   getPrefixedFilePath,
   mkdirSyncRecursive,
   wait,
@@ -174,8 +175,15 @@ export default class Job {
   // Recursive function for polling for updates to EHI-server's export jobs
   private async waitForExport(): Promise<Job> {
     let res = await this.request(true)(this.statusUrl);
+    // Before we check for status codes
+    // Check against headers to determine if we need to complete the form still
+    const customizeUrl = getJobCustomizationUrl(res);
+    if (customizeUrl !== "") {
+      await wait(config.statusCheckInterval);
+      return this.waitForExport();
+    }
 
-    // Base Case 1: The export is complete, we can save and finish
+    // Base Case: The export is complete, we can save and finish
     if (res.status === 200) {
       this.manifest = await res.json();
       this.status = "approved";
@@ -185,9 +193,17 @@ export default class Job {
 
     // Export job is in progress, check again later
     if (res.status === 202) {
+      console.log(this.status);
+      // We might have been in an awaiting-input stage; if we aren't requested already, change status
+      if (this.status !== "requested") {
+        this.status = "requested";
+        this.save();
+      }
       await wait(config.statusCheckInterval);
       return this.waitForExport();
     }
+
+    // TODO: Need to handle 4XX and 5XX
 
     // Handle all other errors gracefully
     throw new HttpError(
@@ -210,12 +226,13 @@ export default class Job {
         },
       });
     }
+    // TODO: Need a step for downloading every attachment
     return this;
   }
 
   public async sync(): Promise<Job> {
     if (!this.status) {
-      this.status = "requested";
+      this.status = "awaiting-input";
       await this.save();
       await this.waitForExport();
       await this.fetchExportedFiles();
@@ -285,29 +302,6 @@ export default class Job {
     return this;
   }
 
-  public async destroy() {
-    if (this.id) {
-      await db.promise("run", "BEGIN");
-      try {
-        await db.promise("run", "DELETE FROM jobs WHERE id=?", [this.id]);
-        if (this.statusUrl) {
-          // Try to delete the remote job but ignore errors in case
-          // the remote job is no longer available
-          await this.request(true)(this.statusUrl, { method: "DELETE" }).catch(
-            () => {}
-          );
-        }
-        rmSync(this.directory, { force: true, recursive: true });
-      } catch (ex) {
-        console.error(ex);
-        await db.promise("run", "ROLLBACK");
-        throw new Error(`Unable to delete  job with id jobs/${this.id}/`);
-      }
-      await db.promise("run", "COMMIT");
-    }
-    return this;
-  }
-
   public toJSON() {
     return {
       id: this.id,
@@ -330,6 +324,7 @@ export default class Job {
    * Aborts a running export
    */
   public async abort() {
+    // TODO: Re-enable abort
     if (this.status === "requested") {
       await this.request(true)(this.statusUrl, { method: "DELETE" });
       this.status = "aborted";

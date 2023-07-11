@@ -67,8 +67,8 @@ declare namespace EHI {
     | "awaiting-input"
     | "requested"
     | "retrieved"
-    | "approved"
     | "aborted"
+    | "approved"
     | "rejected";
   interface ExportJob {
     /**
@@ -186,7 +186,7 @@ declare namespace EHI {
 
   type PatientExportJobStatus = Extract<
     ExportJobStatus,
-    "requested" | "approved" | "aborted" | "rejected"
+    "awaiting-input" | "requested" | "approved" | "aborted" | "rejected"
   >;
 
   // Note: Not using simple Omit because we need status to change from type ExportJobStatus to PatientExportJobStatus

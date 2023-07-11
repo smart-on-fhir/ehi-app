@@ -18,6 +18,23 @@ export function getRequestBaseURL(req: Request) {
 }
 
 /**
+ * Given an ehi-export response, return a link to customization form if one exists,
+ * Otherwise, return empty string
+ */
+export function getJobCustomizationUrl(response): string { 
+    const linkUrl = response.headers.get("Link");
+
+    if (linkUrl) {
+      // If there is a patient-interaction link, get it so we can redirect the user there
+      const [href, rel] = linkUrl.split(/\s*;\s*/);
+      if (href && rel === 'rel="patient-interaction"') {
+        return href;
+      }
+    }
+    return ''
+}
+
+/**
  * Creates and returns a route-wrapper function that allows for using an async
  * route handlers without try/catch.
  */

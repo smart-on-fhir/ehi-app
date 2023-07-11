@@ -1,10 +1,14 @@
 import {
+  // awaiting-input`
+  Edit,
   // requested`
   Loader,
   // approved`
   CheckCircle,
   // rejected`
   Slash,
+  // aborted`
+  XOctagon,
 } from "react-feather";
 
 function displayStatus(status: EHIApp.ExportJobStatus) {
@@ -19,7 +23,16 @@ export default function ExportJobStatusIndicatorPatient({
   size?: string | number;
 }) {
   switch (status) {
-    // Still waiting for actions on the patient-end
+    // Waiting on form completion by the patient
+    case "awaiting-input":
+      return (
+        <div
+          className="rounded-full bg-awaiting-input "
+          title={displayStatus(status)}
+        >
+          <Edit className="m-2" size={size} />
+        </div>
+      );
     case "requested":
       return (
         <div
@@ -29,6 +42,14 @@ export default function ExportJobStatusIndicatorPatient({
           <Loader className="m-2" size={size} />
         </div>
       );
+    // Aborted an in-progress job
+    case "aborted":
+      return (
+        <div className="rounded-full bg-aborted " title={displayStatus(status)}>
+          <XOctagon className="m-2" size={size} />
+        </div>
+      );
+    // Job is completed
     case "approved":
       return (
         <div
@@ -38,6 +59,7 @@ export default function ExportJobStatusIndicatorPatient({
           <CheckCircle className="m-2" size={size} />
         </div>
       );
+    // Job was rejected
     case "rejected":
       return (
         <div

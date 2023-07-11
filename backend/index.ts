@@ -6,7 +6,6 @@ import config from "./config";
 import { asyncRouteWrap } from "./lib";
 import { HttpError } from "./errors";
 import { authenticate, login, logout } from "./authPatient";
-import adminJobsRouter from "./jobs";
 import institutionsRouter from "./institutionsPatient";
 import patientJobsRouter from "./jobs/patient";
 import "./jobs/manager";
@@ -18,8 +17,6 @@ app.use(cookieParser());
 app.use("/api/institutions", institutionsRouter);
 
 app.use("/api/patientJobs", patientJobsRouter);
-
-app.use("/api/jobs", adminJobsRouter);
 
 app.post("/api/login", urlencoded({ extended: false }), asyncRouteWrap(login));
 

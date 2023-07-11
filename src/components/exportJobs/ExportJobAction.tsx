@@ -1,6 +1,7 @@
 import LinkButton from "../generic/LinkButton";
 import { getExportJobLink, abortExportJob } from "../../api/patientApiHandlers";
 import Button from "../generic/Button";
+import { getCustomizeUrl } from "../../lib/jobHelpers";
 
 type ExportJobActionProps = {
   job: EHIApp.PatientExportJob;
@@ -26,6 +27,13 @@ export default function ExportJobAction({
   // }`;
 
   switch (status) {
+    case "awaiting-input":
+      return (
+        <LinkButton className="min-w-fit" to={getCustomizeUrl(job)}>
+          Complete Form
+        </LinkButton>
+      );
+
     case "requested":
       return (
         <Button
@@ -51,6 +59,7 @@ export default function ExportJobAction({
       );
 
     case "rejected":
+    case "aborted":
       return null;
   }
 }

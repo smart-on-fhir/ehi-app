@@ -31,3 +31,11 @@ export function canJobChangeStatus(job: EHIApp.ExportJob): boolean {
     job.status === "requested"
   );
 }
+
+export function getCustomizeUrl(job: EHIApp.ExportJob) {
+  return job.customizeUrl
+    ? `${job.customizeUrl}&redirect=${
+        window.location.origin + window.location.pathname
+      }`
+    : "";
+}

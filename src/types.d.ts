@@ -147,7 +147,7 @@ declare namespace EHIApp {
 
   type PatientExportJobStatus = Extract<
     ExportJobStatus,
-    "requested" | "approved" | "rejected"
+    "awaiting-input" | "requested" | "approved" | "rejected" | "aborted"
   >;
 
   type PatientExportJob = Omit<
