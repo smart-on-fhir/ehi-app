@@ -5,9 +5,9 @@ import cookieParser from "cookie-parser";
 import config from "./config";
 import { asyncRouteWrap } from "./lib";
 import { HttpError } from "./errors";
-import { authenticate, login, logout } from "./authPatient";
-import institutionsRouter from "./institutionsPatient";
-import patientJobsRouter from "./jobs/patient";
+import { authenticate, login, logout } from "./auth";
+import institutionsRouter from "./institutions";
+import jobsRouter from "./jobs";
 import "./jobs/manager";
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 app.use("/api/institutions", institutionsRouter);
 
-app.use("/api/patientJobs", patientJobsRouter);
+app.use("/api/jobs", jobsRouter);
 
 app.post("/api/login", urlencoded({ extended: false }), asyncRouteWrap(login));
 

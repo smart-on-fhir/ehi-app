@@ -3,11 +3,11 @@ import archiver from "archiver";
 import { join } from "path";
 import { statSync } from "fs";
 import { readdir } from "fs/promises";
-import Job from "./JobPatient";
+import Job from "./Job";
 import db from "../db";
 import { HttpError } from "../errors";
 import { asyncRouteWrap } from "../lib";
-import { authenticate, requireAuth } from "../authPatient";
+import { authenticate, requireAuth } from "../auth";
 import { EHI } from "../types";
 
 const router = express.Router({ mergeParams: true });

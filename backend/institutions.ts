@@ -1,10 +1,10 @@
 import smart from "fhirclient";
 import express, { Request, Response } from "express";
-import Job from "./jobs/JobPatient";
+import Job from "./jobs/Job";
 import db from "./db";
 import { HttpError } from "./errors";
 import { asyncRouteWrap, getRequestBaseURL, getStorage } from "./lib";
-import { authenticate, requireAuth } from "./authPatient";
+import { authenticate, requireAuth } from "./auth";
 import { EHI } from "./types";
 
 const router = express.Router({ mergeParams: true });

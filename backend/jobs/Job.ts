@@ -1,4 +1,4 @@
-import { rmSync, statSync, writeFileSync } from "fs";
+import { statSync, writeFileSync } from "fs";
 import { copyFile, mkdir, unlink } from "fs/promises";
 import { basename, join } from "path";
 import config from "../config";
