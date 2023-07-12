@@ -11,14 +11,14 @@ import NotificationModal from "../generic/NotificationModal";
 type AttachmentComponentProps = {
   jobId: EHIApp.ExportJob["id"];
   jobEditable: boolean;
-  refreshJob: () => Promise<void>;
+  updateJob: (newJob: EHIApp.ExportJob) => void;
   attachment: fhir4.Attachment;
 };
 
 export default function AttachmentComponent({
   jobId,
   jobEditable,
-  refreshJob,
+  updateJob,
   attachment,
 }: AttachmentComponentProps) {
   const { setNotification } = useNotificationContext();
@@ -27,7 +27,7 @@ export default function AttachmentComponent({
 
   const deleteThis = () => {
     deleteAttachment(jobId, attachmentFileName)
-      .then(() => refreshJob())
+      .then((newJob) => updateJob(newJob))
       .catch((err) => {
         setNotification({
           id: attachmentFileName,

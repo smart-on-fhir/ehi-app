@@ -3,14 +3,14 @@ import { updateExportStatus } from "../../api/adminApiHandlers";
 
 type ApproveButtonProps = {
   job: EHIApp.ExportJob;
-  refreshJob: () => Promise<void>;
+  updateJob: (newJob: EHIApp.ExportJob) => void;
 };
 
-export default function ApproveButton({ job, refreshJob }: ApproveButtonProps) {
+export default function ApproveButton({ job, updateJob }: ApproveButtonProps) {
   const status = job.status;
   function approveJob() {
     updateExportStatus(job.id, "approve")
-      .then(() => refreshJob())
+      .then((newJob) => updateJob(newJob))
       .catch((err) => alert(err.message));
   }
   function statusBasedButton() {

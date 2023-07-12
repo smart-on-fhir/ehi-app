@@ -12,12 +12,12 @@ import {
 
 type ExportJobDetailViewProps = {
   job: EHIApp.ExportJob;
-  refreshJob: () => Promise<void>;
+  updateJob: (newJob: EHIApp.ExportJob) => void;
 };
 
 export default function ExportJobDetailView({
   job,
-  refreshJob,
+  updateJob,
 }: ExportJobDetailViewProps) {
   const { id, status, attachments } = job;
   return (
@@ -43,12 +43,12 @@ export default function ExportJobDetailView({
           </div>
         </div>
         <div className="flex flex-1 flex-wrap justify-end space-x-0 space-y-2 sm:flex-nowrap sm:justify-normal sm:space-x-2 sm:space-y-0">
-          <ExportRejectButton job={job} refreshJob={refreshJob} />
-          <ExportApproveButton job={job} refreshJob={refreshJob} />
+          <ExportRejectButton job={job} updateJob={updateJob} />
+          <ExportApproveButton job={job} updateJob={updateJob} />
         </div>
       </header>
       <ExportJobParametersAuthorizations job={job} />
-      <AttachmentSection job={job} refreshJob={refreshJob} />
+      <AttachmentSection job={job} updateJob={updateJob} />
     </section>
   );
 }

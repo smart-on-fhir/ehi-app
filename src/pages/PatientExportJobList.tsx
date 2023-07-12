@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-import { useAsync } from "../hooks/useAsync";
 import ExportJobListItemPatient from "../components/exportJobs/ExportJobListItemPatient";
 import LinkButton from "../components/generic/LinkButton";
 import Loading from "../components/generic/Loading";
@@ -8,17 +6,14 @@ import HeadingOne from "../components/generic/HeadingOne";
 import { Plus } from "react-feather";
 import { usePolling } from "../hooks/usePolling";
 import { getExportJobs } from "../api/patientApiHandlers";
+import useAsyncJobs from "../hooks/useAsyncJobs";
 
 export default function PatientExportJobList() {
-  const {
-    execute: syncJobs,
-    loading,
-    result: jobs,
-    error,
-  } = useAsync<EHIApp.PatientExportJob[]>(useCallback(getExportJobs, []), true);
+  const { refreshJobs, loading, jobs, error } =
+    useAsyncJobs<EHIApp.PatientExportJob[]>(getExportJobs);
 
   // Always check for new jobs regularly
-  usePolling(syncJobs);
+  usePolling(refreshJobs);
 
   function PageBody() {
     if (loading && jobs === null) {
@@ -38,7 +33,7 @@ export default function PatientExportJobList() {
               <ExportJobListItemPatient
                 key={job.id}
                 job={job}
-                syncJobs={syncJobs}
+                refreshJobs={refreshJobs}
               />
             ))
           ) : (

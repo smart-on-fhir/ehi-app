@@ -3,12 +3,12 @@ import AttachmentComponent from "./AttachmentComponent";
 
 type AttachmentSectionProps = {
   job: EHIApp.ExportJob;
-  refreshJob: () => Promise<void>;
+  updateJob: (newJob: EHIApp.ExportJob) => void;
 };
 
 export default function AttachmentSection({
   job,
-  refreshJob,
+  updateJob,
 }: AttachmentSectionProps) {
   const jobId = job.id;
   const jobAttachable = job.status !== "awaiting-input";
@@ -24,9 +24,7 @@ export default function AttachmentSection({
       id="attachmentsContainer"
       className="flex flex-col items-center justify-between"
     >
-      {jobEditable && (
-        <AttachmentUpload jobId={jobId} refreshJob={refreshJob} />
-      )}
+      {jobEditable && <AttachmentUpload jobId={jobId} updateJob={updateJob} />}
       {job.attachments && job.attachments.length !== 0 && (
         <ul className="w-full space-y-2">
           {job.attachments.map((attachment) => {
@@ -36,7 +34,7 @@ export default function AttachmentSection({
                 key={attachment.url}
                 jobId={jobId}
                 attachment={attachment}
-                refreshJob={refreshJob}
+                updateJob={updateJob}
               />
             );
           })}

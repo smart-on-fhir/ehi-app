@@ -125,7 +125,7 @@ function useAuth() {
         }
         console.error(errorMessage);
       }
-      navigate("/");
+      navigate(isAdminRoute ? "/admin" : "/");
     },
   };
 }

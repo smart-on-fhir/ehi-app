@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-import { useAsync } from "../hooks/useAsync";
 import ExportJobListItemAdmin from "../components/exportJobs/ExportJobListItemAdmin";
 import { getExportJobs } from "../api/adminApiHandlers";
 import Loading from "../components/generic/Loading";
@@ -7,17 +5,13 @@ import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
 import { Link } from "react-router-dom";
 import { usePolling } from "../hooks/usePolling";
+import useAsyncJobs from "../hooks/useAsyncJobs";
 
 export default function AdminExportJobList() {
-  const {
-    execute: syncJobs,
-    loading,
-    result: jobs,
-    error,
-  } = useAsync<EHIApp.ExportJob[]>(useCallback(getExportJobs, []), true);
+  const { refreshJobs, loading, jobs, error } = useAsyncJobs(getExportJobs);
 
   // Always check for new jobs regularly
-  usePolling(syncJobs);
+  usePolling(refreshJobs);
 
   function PageBody() {
     if (loading && jobs === null) {

@@ -29,12 +29,12 @@ const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document
 
 type AttachmentUploadProps = {
   jobId: EHIApp.ExportJob["id"];
-  refreshJob: () => Promise<void>;
+  updateJob: (newJob: EHIApp.ExportJob) => void;
 };
 
 export default function AttachmentUpload({
   jobId,
-  refreshJob,
+  updateJob,
 }: AttachmentUploadProps) {
   const { setNotification } = useNotificationContext();
   const [dragActive, setDragActive] = useState(false);
@@ -42,7 +42,7 @@ export default function AttachmentUpload({
 
   function handleAttachments(attachmentList: FileList) {
     uploadAttachments(jobId, attachmentList)
-      .then(() => refreshJob())
+      .then((job) => updateJob(job))
       .catch((err) => {
         setNotification({
           id: notificationId,

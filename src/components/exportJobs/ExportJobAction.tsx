@@ -6,13 +6,13 @@ import { getCustomizeUrl } from "../../lib/jobHelpers";
 type ExportJobActionProps = {
   job: EHIApp.PatientExportJob;
   status: EHIApp.PatientExportJobStatus;
-  syncJobs: Function;
+  refreshJobs: (signal?: AbortSignal | undefined) => Promise<void>;
 };
 
 export default function ExportJobAction({
   job,
   status,
-  syncJobs,
+  refreshJobs,
 }: ExportJobActionProps) {
   /**
    * TODO: Figure out when if at all we should show this form? The IG implies we should be able to determine this case
@@ -39,7 +39,7 @@ export default function ExportJobAction({
         <Button
           onClick={async () => {
             await abortExportJob(job.id);
-            syncJobs();
+            refreshJobs();
           }}
         >
           Abort

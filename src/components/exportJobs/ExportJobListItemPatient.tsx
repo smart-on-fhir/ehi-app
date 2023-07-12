@@ -5,12 +5,12 @@ import { displayApprovedDate, displayCreatedDate } from "../../lib/jobHelpers";
 
 type ExportJobListItemPatientProps = {
   job: EHIApp.PatientExportJob;
-  syncJobs: Function;
+  refreshJobs: (signal?: AbortSignal | undefined) => Promise<void>;
 };
 
 export default function ExportJobListItemPatient({
   job,
-  syncJobs,
+  refreshJobs,
 }: ExportJobListItemPatientProps) {
   // TODO: Get this information off of the job when supported on the job
   const institutionName = "New York Gerontology Hospital";
@@ -32,7 +32,7 @@ export default function ExportJobListItemPatient({
           <p className="text-sm ">{displayApprovedDate(job)}</p>
         )}
       </div>
-      <ExportJobAction job={job} status={status} syncJobs={syncJobs} />
+      <ExportJobAction job={job} status={status} refreshJobs={refreshJobs} />
     </li>
   );
 }

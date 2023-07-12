@@ -7,15 +7,15 @@ import { useNavigate } from "react-router";
 
 type RejectButtonProps = {
   job: EHIApp.ExportJob;
-  refreshJob: () => Promise<void>;
+  updateJob: (newJob: EHIApp.ExportJob) => void;
 };
 
-export default function RejectButton({ job, refreshJob }: RejectButtonProps) {
+export default function RejectButton({ job, updateJob }: RejectButtonProps) {
   const navigate = useNavigate();
   const status = job.status;
   function rejectJob() {
     updateExportStatus(job.id, "reject")
-      .then(() => refreshJob())
+      .then((job) => updateJob(job))
       .catch((err) => alert(err.message));
   }
   function deleteJob() {

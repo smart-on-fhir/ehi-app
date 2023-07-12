@@ -193,7 +193,6 @@ export default class Job {
 
     // Export job is in progress, check again later
     if (res.status === 202) {
-      console.log(this.status);
       // We might have been in an awaiting-input stage; if we aren't requested already, change status
       if (this.status !== "requested") {
         this.status = "requested";
@@ -204,6 +203,19 @@ export default class Job {
     }
 
     // TODO: Need to handle 4XX and 5XX
+    if (res.status === 404) {
+      // FIX: This can't be the best way to do this
+      // Check to see if we've aborted the job in another thread
+      const mostRecentJob = await Job.byId(this.id);
+      if (mostRecentJob.status === "aborted") {
+        this.status = "aborted";
+        return this;
+      } else {
+        // Else, we have a 404; the job was deleted
+        this.status = "rejected";
+        return this.save();
+      }
+    }
 
     // Handle all other errors gracefully
     throw new HttpError(
@@ -213,7 +225,7 @@ export default class Job {
 
   private async fetchExportedFiles(): Promise<Job> {
     for (const file of this.manifest!.output) {
-      // console.log(`Downloading ${file.type} file from ${file.url}`)
+      // console.log(`Downloading ${file.type} file from ${file.url}`);
       const dst = getPrefixedFilePath(
         this.directory,
         basename(file.url.replace(/(\.ndjson)?$/, ".ndjson"))
@@ -234,9 +246,13 @@ export default class Job {
     if (!this.status) {
       this.status = "awaiting-input";
       await this.save();
+      // Side-effect: should change status
       await this.waitForExport();
-      await this.fetchExportedFiles();
-      await this.save();
+      // @ts-ignore
+      if (this.status === "approved") {
+        await this.fetchExportedFiles();
+        await this.save();
+      }
     }
 
     return this;

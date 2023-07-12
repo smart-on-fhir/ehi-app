@@ -76,7 +76,7 @@ export const MAX_FILE_NUM = 5;
 export async function uploadAttachments(
   jobId: EHIApp.ExportJob["id"],
   attachments: FileList
-): Promise<void> {
+): Promise<EHIApp.ExportJob> {
   // attachments is a FileList, must convert into an iterable for filtering
   let filesArray = Array.from(attachments);
   if (filesArray.length > MAX_FILE_NUM) {
@@ -107,7 +107,7 @@ export async function uploadAttachments(
 export async function deleteAttachment(
   jobId: EHIApp.ExportJob["id"],
   attachmentName: string
-): Promise<void> {
+): Promise<EHIApp.ExportJob> {
   return await request(`${baseUrl}/admin/jobs/${jobId}/remove-files`, {
     method: "post",
     headers: {
