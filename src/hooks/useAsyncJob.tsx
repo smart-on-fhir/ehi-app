@@ -26,7 +26,6 @@ export function useAsyncJob<T extends EitherExport>(
   // A helper function to update one job from another network call's response
   function updateJob(newJob: T) {
     if (job === null) return;
-    // find current job in jobs list
     dispatch({ result: newJob });
   }
 
