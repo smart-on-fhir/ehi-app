@@ -266,7 +266,8 @@ export default class Job {
         if (
           documentReference?.meta?.tag?.some((t) => t.code === "ehi-export")
         ) {
-          this.downloadAttachments(documentReference);
+          console.log("is an ehi-export doc ref; should download attachments");
+          // this.downloadAttachments(documentReference);
         }
       }
     }
