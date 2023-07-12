@@ -1,5 +1,5 @@
-import { statSync, writeFileSync } from "fs";
-import { copyFile, mkdir, unlink } from "fs/promises";
+import { readFileSync, writeFileSync } from "fs";
+// import { copyFile, mkdir, unlink } from "fs/promises";
 import { basename, join } from "path";
 import config from "../config";
 import db from "../db";
@@ -212,7 +212,7 @@ export default class Job {
         return this;
       } else {
         // Else, we have a 404; the job was deleted
-        this.status = "rejected";
+        this.status = "deleted";
         return this.save();
       }
     }
@@ -221,6 +221,27 @@ export default class Job {
     throw new HttpError(
       `Unexpected bulk status response ${res.status} ${res.statusText}`
     );
+  }
+
+  private async downloadAttachments(
+    documentReference: fhir4.DocumentReference
+  ): Promise<void> {
+    // Create attachments directory
+    const attachmentDir = join(this.directory, "attachments");
+    mkdirSyncRecursive(attachmentDir);
+    // Get attachments off that docref
+    const attachments = documentReference.content.map((c) => c!.attachment);
+    for (const attachment of attachments) {
+      // Download each attachment to a new location
+      const dst = getPrefixedFilePath(attachmentDir, attachment.title!);
+      await downloadFile(attachment.url!, dst, {
+        headers: {
+          authorization: this.manifest!.requiresAccessToken
+            ? "Bearer " + this.accessToken
+            : undefined,
+        },
+      });
+    }
   }
 
   private async fetchExportedFiles(): Promise<Job> {
@@ -237,8 +258,18 @@ export default class Job {
             : undefined,
         },
       });
+      // Check DocumentReference files to see if they contain ehi-export attachments to download
+      if (file.type === "DocumentReference") {
+        const downloadedFile = readFileSync(dst, "utf8");
+        const documentReference: fhir4.DocumentReference =
+          JSON.parse(downloadedFile);
+        if (
+          documentReference?.meta?.tag?.some((t) => t.code === "ehi-export")
+        ) {
+          this.downloadAttachments(documentReference);
+        }
+      }
     }
-    // TODO: Need a step for downloading every attachment
     return this;
   }
 
@@ -390,42 +421,5 @@ export default class Job {
     );
 
     return result as EHI.ExportManifest;
-  }
-
-  /**
-   * Add results to a task (e.g., dragging a CSV file into the browser to
-   * simulate the manual gathering of data from different underlying systems)
-   */
-  public async addAttachment(attachment: Express.Multer.File, baseUrl: string) {
-    const src = join(__dirname, "../..", attachment.path);
-    const dst = join(this.directory, "attachments");
-    const path = getPrefixedFilePath(dst, attachment.originalname);
-    const filename = basename(path);
-    await mkdir(dst, { recursive: true });
-    await copyFile(src, path);
-    const entry = {
-      title: filename,
-      contentType: attachment.mimetype,
-      size: attachment.size,
-      url: `${baseUrl}/jobs/${this.id}/download/attachments/${filename}`,
-    };
-    this.attachments.push(entry);
-    this.manifest = this.getAugmentedManifest();
-    await this.save();
-    await unlink(src);
-  }
-
-  public async removeAttachment(fileName: string, baseUrl: string) {
-    const dst = join(this.directory, "attachments", fileName);
-    const url = `${baseUrl}/jobs/${this.id}/download/attachments/${fileName}`;
-    if (
-      this.attachments.find((x) => x.url === url) &&
-      statSync(dst, { throwIfNoEntry: false })?.isFile()
-    ) {
-      await unlink(dst);
-      this.attachments = this.attachments.filter((x) => x.url !== url);
-      this.manifest = this.getAugmentedManifest();
-      await this.save();
-    }
   }
 }

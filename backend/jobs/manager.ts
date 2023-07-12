@@ -37,7 +37,7 @@ async function checkJobs() {
   for (const job of jobs) {
     if (
       job.status === "aborted" ||
-      job.status === "rejected" ||
+      job.status === "deleted" ||
       (job.status === "retrieved" &&
         Date.now() - +(job.approvedAt || 0) >
           config.approvedJobMaxLifetimeMinutes * 60000)

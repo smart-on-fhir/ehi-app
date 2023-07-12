@@ -5,13 +5,13 @@ import {
   Loader,
   // approved`
   CheckCircle,
-  // rejected`
+  // deleted`
   Slash,
   // aborted`
   XOctagon,
 } from "react-feather";
 
-function displayStatus(status: EHIApp.ExportJobStatus) {
+function displayStatus(status: EHIApp.PatientExportJobStatus) {
   return status.split("-").join(" ");
 }
 
@@ -59,8 +59,8 @@ export default function ExportJobStatusIndicatorPatient({
           <CheckCircle className="m-2" size={size} />
         </div>
       );
-    // Job was rejected
-    case "rejected":
+    // Job was deleted
+    case "deleted":
       return (
         <div
           className="rounded-full bg-rejected text-white text-opacity-90 "

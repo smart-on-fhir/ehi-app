@@ -15,7 +15,7 @@ export default function ExportJobStatusBlurbPatient({
     case "approved":
       return <p>Complete</p>;
 
-    case "rejected":
+    case "deleted":
       return <p>Deleted</p>;
 
     case "aborted":

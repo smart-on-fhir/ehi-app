@@ -11,13 +11,17 @@ export function displayPatientInformation(job: EHIApp.ExportJob) {
 }
 
 // Format when a job was created in a user-friendly way
-export function displayCreatedDate(job: EHIApp.ExportJob) {
+export function displayCreatedDate(
+  job: EHIApp.ExportJob | EHIApp.PatientExportJob
+) {
   const { createdAt } = job;
   return `Created ${formatDateTime(createdAt)}`;
 }
 
 // Format when a job was approved in a user-friendly way
-export function displayApprovedDate(job: EHIApp.ExportJob) {
+export function displayApprovedDate(
+  job: EHIApp.ExportJob | EHIApp.PatientExportJob
+) {
   const { approvedAt } = job;
   if (approvedAt === null) return "";
   return `Completed ${formatDateTime(approvedAt)}`;
@@ -32,7 +36,9 @@ export function canJobChangeStatus(job: EHIApp.ExportJob): boolean {
   );
 }
 
-export function getCustomizeUrl(job: EHIApp.ExportJob) {
+export function getCustomizeUrl(
+  job: EHIApp.ExportJob | EHIApp.PatientExportJob
+) {
   return job.customizeUrl
     ? `${job.customizeUrl}&redirect=${
         window.location.origin + window.location.pathname

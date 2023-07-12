@@ -58,7 +58,7 @@ export default function ExportJobAction({
         </LinkButton>
       );
 
-    case "rejected":
+    case "deleted":
     case "aborted":
       return null;
   }
