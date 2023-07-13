@@ -17,7 +17,7 @@ declare namespace EHIApp {
     // A URL pointing to this institution's FHIR server
     fhirUrl: string;
     // Whether or not this institution should be displayed in the UI
-    disabled: boolean;
+    disabled: number;
   }
 
   /**

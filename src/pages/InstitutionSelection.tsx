@@ -4,7 +4,7 @@ import InstitutionList from "../components/institutions/InstitutionList";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import { request } from "../lib";
-import pkg from "../../package.json"
+import pkg from "../../package.json";
 
 const BASE = process.env.NODE_ENV === "production" ? "" : pkg.proxy;
 
@@ -32,7 +32,7 @@ export default function InstitutionSelection() {
     return (
       <InstitutionList
         institutions={institutions}
-        setInstitution={(selectedInstitution) => {
+        setInstitution={(selectedInstitution: EHIApp.Institution) => {
           window.location.assign(
             // `http://127.0.0.1:5005/api/institutions/${selectedInstitution.id}/launch`
             `${BASE}/api/institutions/${selectedInstitution.id}/launch`

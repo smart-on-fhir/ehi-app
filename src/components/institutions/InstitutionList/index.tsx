@@ -1,5 +1,5 @@
-import InstitutionOption from "./InstitutionOption";
-import HeadingOne from "../generic/HeadingOne";
+import InstitutionOption from "../InstitutionOption";
+import HeadingOne from "../../generic/HeadingOne";
 
 type InstitutionListProps = {
   institutions: EHIApp.Institution[];
