@@ -4,7 +4,6 @@ import ExportJobParametersAuthorizations from "./ExportJobParametersAuthorizatio
 import ExportApproveButton from "./ExportApproveButton";
 import ExportRejectButton from "./ExportRejectButton";
 import AttachmentSection from "../attachments/AttachmentSection";
-import ExportJobLink from "./ExportJobLink";
 import {
   displayCreatedDate,
   displayPatientInformation,
@@ -32,7 +31,6 @@ export default function ExportJobDetailView({
         <div className="flex w-full items-center justify-between">
           <div>
             <h1 className="mr-2 inline-block text-lg font-bold">Job #{id}</h1>
-            {status === "retrieved" && <ExportJobLink jobId={id} />}
             <pre className="whitespace-pre-wrap text-xs italic opacity-50">
               {[
                 displayPatientInformation(job),
