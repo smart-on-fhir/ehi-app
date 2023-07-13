@@ -1,13 +1,14 @@
 import { formatDateTime } from ".";
 
-// Format available patient information in a user-friendly way
-export function displayPatientInformation(job: EHIApp.ExportJob) {
-  const { patient } = job;
-  return `Patient ${
-    patient.name !== "" && patient.name !== null
-      ? patient.name
-      : "#" + patient.id
-  }`;
+// Prepare a link to the customizeUrl accompanied by redirect information
+export function getCustomizeUrl(
+  job: EHIApp.ExportJob | EHIApp.PatientExportJob
+) {
+  return job.customizeUrl
+    ? `${job.customizeUrl}&redirect=${
+        window.location.origin + window.location.pathname
+      }`
+    : "";
 }
 
 // Format when a job was created in a user-friendly way
@@ -27,6 +28,9 @@ export function displayApprovedDate(
   return `Completed ${formatDateTime(approvedAt)}`;
 }
 
+///////////////////
+// Admin only
+
 // Determines if a job can change given its status, useful for determining if we should check for changes to this job
 export function canJobChangeStatus(job: EHIApp.ExportJob): boolean {
   return (
@@ -36,12 +40,12 @@ export function canJobChangeStatus(job: EHIApp.ExportJob): boolean {
   );
 }
 
-export function getCustomizeUrl(
-  job: EHIApp.ExportJob | EHIApp.PatientExportJob
-) {
-  return job.customizeUrl
-    ? `${job.customizeUrl}&redirect=${
-        window.location.origin + window.location.pathname
-      }`
-    : "";
+// Format available patient information in a user-friendly way
+export function displayPatientInformation(job: EHIApp.ExportJob) {
+  const { patient } = job;
+  return `Patient ${
+    patient.name !== "" && patient.name !== null
+      ? patient.name
+      : "#" + patient.id
+  }`;
 }

@@ -267,7 +267,7 @@ export default class Job {
         ) {
           console.log("is an ehi-export doc ref; should download attachments");
           // TODO TEST THIS
-          // this.downloadAttachments(documentReference);
+          this.downloadAttachments(documentReference);
         }
       }
     }
@@ -378,48 +378,5 @@ export default class Job {
       await this.save();
     }
     return this;
-  }
-
-  protected getAugmentedManifest(): EHI.ExportManifest | null {
-    if (!this.attachments.length) {
-      return this.manifest;
-    }
-
-    const baseUrl = this.attachments[0].url!.replace(/\/jobs\/.*/, "");
-
-    const result = {
-      ...this.manifest,
-      output: [...this.manifest!.output],
-    };
-
-    const url = `${baseUrl}/jobs/${this.id}/download/attachments.DocumentReference.ndjson`;
-
-    result.output = result.output.filter((x) => x.url !== url);
-
-    result.output.push({
-      type: "DocumentReference",
-      url,
-      count: this.attachments.length,
-    });
-
-    writeFileSync(
-      join(this.directory, "attachments.DocumentReference.ndjson"),
-      JSON.stringify({
-        resourceType: "DocumentReference",
-        status: "current",
-        subject: { reference: "Patient/" + this.patientId },
-        content: this.attachments.map((x) => ({ attachment: x })),
-        meta: {
-          tag: [
-            {
-              code: "ehi-export",
-              display: "generated as part of an ehi-export request",
-            },
-          ],
-        },
-      })
-    );
-
-    return result as EHI.ExportManifest;
   }
 }

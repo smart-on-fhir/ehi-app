@@ -3,8 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import InstitutionOption from ".";
 
 /**
- * An list-item representation of an institution;
- * NOTE: the border is driven by container-class styling, not by the institutionOption itself
+ * An unordered list of institutions
  */
 const meta: Meta<typeof InstitutionOption> = {
   component: InstitutionOption,
@@ -60,7 +59,7 @@ export const FullInstitutionList: Story = {
 /**
  * An institution list with one element
  */
-export const SingleElementInsitutionList: Story = {
+export const SingleElementInstitutionList: Story = {
   args: {
     institutions: simpleInstitutions.slice(0, 1),
     setInstitution: setInstitutionHandler,
@@ -70,7 +69,7 @@ export const SingleElementInsitutionList: Story = {
 /**
  * An institution list with two elements
  */
-export const TwoElementInsitutionList: Story = {
+export const TwoElementInstitutionList: Story = {
   args: {
     institutions: simpleInstitutions.slice(0, 2),
     setInstitution: setInstitutionHandler,

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import InstitutionOption from ".";
 
 /**
- * An list-item representation of an institution;
+ * A list-item representation of an institution;
  * NOTE: the border is driven by container-class styling, not by the institutionOption itself
  */
 const meta: Meta<typeof InstitutionOption> = {
