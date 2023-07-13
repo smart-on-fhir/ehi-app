@@ -15,13 +15,12 @@ export default function RejectButton({ job, updateJob }: RejectButtonProps) {
   const status = job.status;
   function rejectJob() {
     updateExportStatus(job.id, "reject")
-      .then((job) => updateJob(job))
+      .then(() => navigate("/admin/jobs"))
       .catch((err) => alert(err.message));
   }
   function deleteJob() {
     deleteExportJob(job.id)
-      // Go back to the previous page since we've deleted the current job
-      .then(() => navigate(-1))
+      .then(() => navigate("/admin/jobs"))
       .catch((err) => alert(err.message));
   }
   function statusBasedButton() {
@@ -30,21 +29,11 @@ export default function RejectButton({ job, updateJob }: RejectButtonProps) {
         return <Button onClick={rejectJob}>Reject</Button>;
       case "awaiting-input":
       case "requested":
-        return (
-          <Button
-            variant="danger"
-            className="w-28"
-            disabled
-            onClick={rejectJob}
-          >
-            Reject
-          </Button>
-        );
       case "approved":
       case "aborted":
       case "rejected":
         return (
-          <Button variant="danger" className="w-28" onClick={deleteJob}>
+          <Button variant="danger" className="w-28" onClick={rejectJob}>
             Delete Now
           </Button>
         );

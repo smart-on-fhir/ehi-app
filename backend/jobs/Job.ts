@@ -183,14 +183,6 @@ export default class Job {
       return this.waitForExport();
     }
 
-    // Base Case: The export is complete, we can save and finish
-    if (res.status === 200) {
-      this.manifest = await res.json();
-      this.status = "approved";
-      this.approvedAt = Date.now();
-      return this.save();
-    }
-
     // Export job is in progress, check again later
     if (res.status === 202) {
       // We might have been in an awaiting-input stage; if we aren't requested already, change status
@@ -202,15 +194,30 @@ export default class Job {
       return this.waitForExport();
     }
 
+    // Base Case: The export is complete, we can save and finish
+    if (res.status === 200) {
+      this.manifest = await res.json();
+      this.status = "approved";
+      this.approvedAt = Date.now();
+      return this.save();
+    }
+
+    // Base Case: Job is deleted on the ehi-server
     if (res.status === 404) {
-      // TODO FIXME: This can't be the best way to do this
-      // Check to see if we've aborted the job in another thread
-      const mostRecentJob = await Job.byId(this.id);
-      if (mostRecentJob.status === "aborted") {
-        this.status = "aborted";
-        return this;
-      } else {
-        // Else, we have a 404; the job was deleted
+      try {
+        // Check to see if we've aborted the job in another thread
+        const mostRecentJob = await Job.byId(this.id);
+        if (mostRecentJob.status === "aborted") {
+          this.status = "aborted";
+          return this;
+        } else {
+          // Else, we have a 404; the job was deleted
+          this.status = "deleted";
+          return this.save();
+        }
+      } catch {
+        // If Job.byId throws an error, then the job manager
+        // recycled this job already; mark ourselves deleted
         this.status = "deleted";
         return this.save();
       }
@@ -372,8 +379,6 @@ export default class Job {
   public async abort() {
     if (this.status === "requested") {
       await this.request(true)(this.statusUrl, { method: "DELETE" });
-      this.status = "aborted";
-      await this.save();
     }
     return this;
   }
