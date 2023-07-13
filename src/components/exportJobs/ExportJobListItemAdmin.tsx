@@ -1,7 +1,6 @@
 import LinkButton from "../generic/LinkButton";
 import ExportJobStatusIndicatorAdmin from "./ExportJobStatusIndicatorAdmin";
 import ExportJobStatusBlurbAdmin from "./ExportJobStatusBlurbAdmin";
-import ExportJobLink from "./ExportJobLink";
 import {
   displayCreatedDate,
   displayPatientInformation,
@@ -25,7 +24,6 @@ export default function ExportJobListItemAdmin({
         <h1 className="mr-2 inline-flex items-center text-lg font-bold">
           Job #{id}{" "}
         </h1>
-        {status === "retrieved" && <ExportJobLink jobId={id} />}
         <pre className="whitespace-pre-wrap text-xs italic opacity-50">
           {[
             displayPatientInformation(job),
