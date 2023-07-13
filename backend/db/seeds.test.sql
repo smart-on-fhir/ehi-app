@@ -1,5 +1,6 @@
 INSERT INTO "users" ("id","username","password","sid") VALUES 
-(1, 'patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'USER_SID'); -- Password: patient-password
+(1, 'patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'USER_SID'), -- Password: patient-password
+(2, 'backup_patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'BACKUP_USER_SID'); -- Password: patient-password
 
 
 INSERT INTO "institutions" ("id","displayName","fhirUrl","location","disabled","clientId","scope") VALUES 
@@ -32,7 +33,7 @@ INSERT INTO "jobs" (
     -- id
     1,
     
-    -- userId (admin)
+    -- userId (patient)
     1,
 
     -- patientId
@@ -194,7 +195,7 @@ INSERT INTO "jobs" (
     -- id
     2,
 
-    -- userId (patient)
+    -- userId (another_patient)
     2,
 
     -- patientId

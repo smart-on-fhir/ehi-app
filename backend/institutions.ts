@@ -42,6 +42,7 @@ export async function startAuthorization(req: Request, res: Response) {
   return smart(req, res, getStorage(req)).authorize({
     clientId: institution.clientId,
     scope: institution.scope,
+    // NOTE: This base url should match whatever invokes completeAuthorization
     redirectUri: `/api/institutions/${
       institution.id
     }/redirect?referer=${req.get("referer")}`,
@@ -49,6 +50,7 @@ export async function startAuthorization(req: Request, res: Response) {
   });
 }
 
+// The handler used in completing SMART Launch via redirectUri
 export async function completeAuthorization(req: Request, res: Response) {
   const client = await smart(req, res, getStorage(req)).ready();
   const { response } = await client.request({
@@ -88,12 +90,6 @@ export async function completeAuthorization(req: Request, res: Response) {
   );
   // If we have a referer, use that; otherwise use req baseURL
   const redirectUrl = (referer || getRequestBaseURL(req) + "/") + "jobs";
-  // const redirectUrl = getRequestBaseURL(req) + "/jobs"
-
-  // let redirectUrl = "/jobs"
-  // if (process.env.NODE_ENV !== "production") {
-  //     redirectUrl = "http://127.0.0.1:3000/jobs"
-  // }
 
   job.sync(); // START POOLING!!!
 

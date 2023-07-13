@@ -202,9 +202,8 @@ export default class Job {
       return this.waitForExport();
     }
 
-    // TODO: Need to handle 4XX and 5XX
     if (res.status === 404) {
-      // FIX: This can't be the best way to do this
+      // TODO FIXME: This can't be the best way to do this
       // Check to see if we've aborted the job in another thread
       const mostRecentJob = await Job.byId(this.id);
       if (mostRecentJob.status === "aborted") {
@@ -267,6 +266,7 @@ export default class Job {
           documentReference?.meta?.tag?.some((t) => t.code === "ehi-export")
         ) {
           console.log("is an ehi-export doc ref; should download attachments");
+          // TODO TEST THIS
           // this.downloadAttachments(documentReference);
         }
       }
@@ -372,7 +372,6 @@ export default class Job {
    * Aborts a running export
    */
   public async abort() {
-    // TODO: Re-enable abort
     if (this.status === "requested") {
       await this.request(true)(this.statusUrl, { method: "DELETE" });
       this.status = "aborted";
