@@ -59,7 +59,7 @@ export default function NotificationContainer(): JSX.Element | null {
           <div
             key={id}
             className={`absolute bottom-0 right-0 m-4 flex max-w-screen-md animate-fade-in items-center break-words rounded border p-4 pr-6 text-sm transition-all duration-1000 ${variantStyles}`}
-            style={{ bottom: i * 100 }}
+            style={{ bottom: i * 80 }}
             onMouseEnter={() => clearNotificationTimeout(id)}
             onMouseLeave={() => createNotificationTimeout(id)}
           >

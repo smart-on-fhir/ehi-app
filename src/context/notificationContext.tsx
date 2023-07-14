@@ -51,7 +51,7 @@ type NotificationProviderProps = {
 };
 
 const NotificationContext = createContext<NotificationContextInterface>(null!);
-const NOTIF_DECAY_RATE = 7000;
+const NOTIF_DECAY_RATE = 2000;
 // Only an internal representation for avoiding collisions, using incrementor as ID should be safe
 let idCounter = 0;
 
@@ -61,23 +61,28 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
 
   // Create a new notification and track it in lookup
   function createNotification(notificationData: NotificationData) {
-    const newNotifications = { ...notifications };
-    // Increment id counter when we access it
-    const notificationId = String(idCounter++);
-    // Ensure notifications have a default variant set
-    newNotifications[notificationId] = {
-      variant: "information",
-      id: notificationId,
-      ...notificationData,
-    };
-    setNotifications(newNotifications);
+    setNotifications((prevNotifications) => {
+      const newNotifications = { ...prevNotifications };
+      // Increment id counter when we access it
+      const notificationId = String(idCounter++);
+      // Ensure notifications have a default variant set
+      newNotifications[notificationId] = {
+        variant: "information",
+        id: notificationId,
+        ...notificationData,
+      };
+      createNotificationTimeout(notificationId);
+      return newNotifications;
+    });
   }
 
   // Remove a notification from our lookup by id, clearing its timeouts
   function deleteNotification(id: NotificationObject["id"]) {
-    const newNotifications = { ...notifications };
-    delete newNotifications[id];
-    setNotifications(newNotifications);
+    setNotifications((prevNotifications) => {
+      const newNotifications = { ...prevNotifications };
+      delete newNotifications[id];
+      return newNotifications;
+    });
   }
 
   // In addition to tracking the notification information, we need to create and decay them
@@ -88,52 +93,58 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   // Create and store a new timeout fn for a notification,
   const createNotificationTimeout = useCallback(
     (id: NotificationObject["id"]) => {
-      // Anytime we create a new timeout, we should clear the old one
-      if (notificationTimeoutMap[id]) {
-        clearTimeout(notificationTimeoutMap![id]);
-      }
-      // Create a timeout for deleting this notification, track it in our map
-      let tempTimeout = setTimeout(() => {
-        deleteNotification(id);
-      }, NOTIF_DECAY_RATE);
-      setNotificationTimeoutMap({
-        ...notificationTimeoutMap,
-        [id]: tempTimeout,
+      setNotificationTimeoutMap((prevNotificationTimeoutMap) => {
+        // Anytime we create a new timeout, we should clear the old one
+        if (prevNotificationTimeoutMap[id]) {
+          clearTimeout(prevNotificationTimeoutMap![id]);
+        }
+        // Create a timeout for deleting this notification, track it in our map
+        let tempTimeout = setTimeout(() => {
+          deleteNotification(id);
+        }, NOTIF_DECAY_RATE);
+        return {
+          ...prevNotificationTimeoutMap,
+          [id]: tempTimeout,
+        };
       });
     },
-    [notificationTimeoutMap, notifications]
+    []
   );
 
   // Clear a given notification's decay timeout
   const clearNotificationTimeout = useCallback(
     (id: NotificationObject["id"]) => {
-      if (notificationTimeoutMap) {
-        const newNotificationTimeoutMap = { ...notificationTimeoutMap };
+      setNotificationTimeoutMap((prevNotificationTimeoutMap) => {
+        const newNotificationTimeoutMap = { ...prevNotificationTimeoutMap };
         clearTimeout(newNotificationTimeoutMap[id]);
         delete newNotificationTimeoutMap[id];
-        setNotificationTimeoutMap(newNotificationTimeoutMap);
-      }
+        return newNotificationTimeoutMap;
+      });
     },
-    [notificationTimeoutMap, setNotificationTimeoutMap]
+    []
   );
 
-  // Notifications decay after some time
-  useEffect(() => {
-    // For every notification we have, create a timeout
-    if (notifications) {
-      Object.values(notifications).map((notification) =>
-        createNotificationTimeout(notification.id)
-      );
-    }
-    return () => {
-      if (notifications) {
-        Object.values(notifications).map((notification) =>
-          clearNotificationTimeout(notification.id)
-        );
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // // Notifications decay after some time
+  // useEffect(() => {
+  //   // For every notification we have, create a timeout
+  //   if (notifications) {
+  //     console.log("in notification container useeffect");
+  //     console.log(notifications);
+  //     Object.values(notifications).map((notification) =>
+  //       createNotificationTimeout(notification.id)
+  //     );
+  //   }
+  //   return () => {
+  //     if (notifications) {
+  //       console.log("in cleanup? ");
+
+  //       Object.values(notifications).map((notification) =>
+  //         clearNotificationTimeout(notification.id)
+  //       );
+  //     }
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [notifications]);
 
   return (
     <NotificationContext.Provider
