@@ -34,7 +34,6 @@ export default function NotificationContainer(): JSX.Element | null {
   } = useNotificationContext();
 
   if (!notifications) return null;
-  console.log(notifications);
   return createPortal(
     <>
       {Object.entries(notifications).map(([id, notification], i) => {

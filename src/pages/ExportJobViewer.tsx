@@ -41,7 +41,6 @@ export default function ExportJobViewer() {
 
   // If the job failed to load exit with an error message
   if (error) {
-    console.log(error);
     return (
       <>
         <BackLink />
