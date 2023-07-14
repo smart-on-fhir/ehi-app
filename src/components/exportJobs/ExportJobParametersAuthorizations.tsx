@@ -1,4 +1,5 @@
 import { formatDate } from "../../lib";
+import ExportJobNoFormDataDisclaimer from "./ExportJobNoFormDataDisclaimer";
 
 /**
  * Formats authorization information to identify info that IS authorized for release
@@ -112,6 +113,8 @@ export default function ExportJobParametersAuthorizations({
 }: {
   job: EHIApp.ExportJob;
 }) {
+  // Render a placeholder if the form hasn't been completed yet
+  if (job.status === "awaiting-input") return <ExportJobNoFormDataDisclaimer />;
   const { authorizations, parameters } = job;
   return (
     <section className="space-y-1 text-sm">

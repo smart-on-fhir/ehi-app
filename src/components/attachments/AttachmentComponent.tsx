@@ -6,7 +6,6 @@ import {
 } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
 import { deleteAttachment } from "../../api/adminApiHandlers";
-import NotificationModal from "../generic/NotificationModal";
 
 type AttachmentComponentProps = {
   jobId: EHIApp.ExportJob["id"];
@@ -21,7 +20,7 @@ export default function AttachmentComponent({
   updateJob,
   attachment,
 }: AttachmentComponentProps) {
-  const { setNotification } = useNotificationContext();
+  const { createNotification } = useNotificationContext();
   const attachmentFileName = getAttachmentName(attachment);
   const attachmentTitle = attachment.title;
 
@@ -29,10 +28,10 @@ export default function AttachmentComponent({
     deleteAttachment(jobId, attachmentFileName)
       .then((newJob) => updateJob(newJob))
       .catch((err) => {
-        setNotification({
-          id: attachmentFileName,
+        createNotification({
           title: `Unable to delete '${attachmentTitle}' with error: `,
           errorMessage: err.message,
+          variant: "warning",
         });
       });
   };
@@ -55,7 +54,6 @@ export default function AttachmentComponent({
           </div>
         )}
       </li>
-      <NotificationModal id={attachmentFileName} variant="warning" />
     </>
   );
 }

@@ -179,14 +179,19 @@ export default class Job {
     // Check against headers to determine if we need to complete the form still
     const customizeUrl = getJobCustomizationUrl(res);
     if (customizeUrl !== "") {
-      await wait(config.statusCheckInterval);
+      console.log("there is still a customize url");
+      await wait(config.statusCheckInterval / 10);
       return this.waitForExport();
+    } else {
+      console.log(res.status);
+      console.log(this.status);
     }
 
     // Export job is in progress, check again later
     if (res.status === 202) {
       // We might have been in an awaiting-input stage; if we aren't requested already, change status
       if (this.status !== "requested") {
+        console.log("should have saved and changed things on disk");
         this.status = "requested";
         this.save();
       }
@@ -380,6 +385,7 @@ export default class Job {
     if (this.status === "requested") {
       await this.request(true)(this.statusUrl, { method: "DELETE" });
     }
-    return this;
+    this.status = "deleted";
+    return this.save();
   }
 }

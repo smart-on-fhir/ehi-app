@@ -14,6 +14,12 @@ export default function PatientExportJobList() {
 
   // Always check for new jobs regularly
   usePolling(refreshJobs);
+  // If there's an awaiting-input job, check more regularly
+  usePolling(
+    refreshJobs,
+    500,
+    () => jobs?.some((job) => job.status === "awaiting-input") || false
+  );
 
   function PageBody() {
     if (loading && jobs === null) {

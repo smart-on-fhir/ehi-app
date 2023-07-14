@@ -16,6 +16,7 @@ import AuthCheckWrapper from "./components/routing/AuthCheckWrapper";
 import AlreadyAuthedAccountRedirect from "./components/routing/AlreadyAuthedAccountRedirect";
 import { AuthProvider } from "./context/authContext";
 import { NotificationProvider } from "./context/notificationContext";
+import NotificationContainer from "./components/generic/NotificationContainer";
 // Necessary for tailwind styles
 import "./index.css";
 
@@ -115,6 +116,7 @@ root.render(
             <Route path="forbidden" element={<Forbidden />} />
             <Route path="*" element={<FourOhFour />} />
           </Routes>
+          <NotificationContainer />
         </AppWrapper>
       </NotificationProvider>
     </AuthProvider>

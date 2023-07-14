@@ -47,7 +47,7 @@ async function checkJobs() {
     }
   }
 
-  setTimeout(checkJobs, config.statusCheckInterval).unref();
+  setTimeout(checkJobs, config.deletedJobLifetime).unref();
 }
 
 // On startup
