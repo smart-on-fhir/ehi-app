@@ -1,10 +1,8 @@
-import { readdirSync, rmSync, statSync } from "fs";
+import { statSync } from "fs";
 import { readdir, rm } from "fs/promises";
 import { join } from "path";
 import config from "../config";
 import db from "../db";
-
-const UPLOADS_DIR = join(__dirname, "../uploads");
 
 async function removeJobs(filter?: (id: string) => Promise<boolean>) {
   const items = await readdir(config.jobsDir);
@@ -14,16 +12,6 @@ async function removeJobs(filter?: (id: string) => Promise<boolean>) {
       if (!filter || (await filter(id))) {
         await rm(dir, { force: true, recursive: true });
       }
-    }
-  }
-}
-
-function deleteUploads() {
-  const files = readdirSync(UPLOADS_DIR);
-  for (const name of files) {
-    const file = join(UPLOADS_DIR, name);
-    if (statSync(file).isFile()) {
-      rmSync(file, { force: true });
     }
   }
 }
@@ -51,7 +39,6 @@ async function checkJobs() {
 }
 
 // On startup
-deleteUploads();
 removeJobs();
 setTimeout(checkJobs, 1000).unref();
 
