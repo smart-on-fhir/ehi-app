@@ -57,7 +57,7 @@ export default function NotificationContainer(): JSX.Element | null {
         return (
           <div
             key={id}
-            className={`flex max-w-screen-md animate-fade-in items-center break-words rounded-xl border p-4 pr-6 transition-all duration-1000  ${variantStyles}`}
+            className={`flex max-w-screen-md animate-fade-in items-center break-words rounded-xl border p-4 pr-7 transition-all duration-1000  ${variantStyles}`}
             onMouseEnter={() => clearNotificationTimeout(id)}
             onMouseLeave={() => createNotificationTimeout(id)}
           >
@@ -73,7 +73,7 @@ export default function NotificationContainer(): JSX.Element | null {
               )}
             </div>
             <button
-              className="absolute right-0 top-0 border-b border-l  border-dashed p-1"
+              className="absolute right-0 top-0 border-b border-l border-dashed p-2"
               onClick={onClose}
             >
               <X size={12} aria-label="Close" />
