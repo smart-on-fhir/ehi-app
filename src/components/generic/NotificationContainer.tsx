@@ -35,7 +35,7 @@ export default function NotificationContainer(): JSX.Element | null {
 
   if (!notifications) return null;
   return createPortal(
-    <>
+    <div className={`absolute bottom-0 right-0 m-4 flex-col space-y-1`}>
       {Object.entries(notifications).map(([id, notification], i) => {
         const onClose = () => deleteNotification(id);
         let variantStyles = "";
@@ -57,8 +57,7 @@ export default function NotificationContainer(): JSX.Element | null {
         return (
           <div
             key={id}
-            className={`absolute bottom-0 right-0 m-4 flex max-w-screen-md animate-fade-in items-center break-words rounded border p-4 pr-6 text-sm transition-all duration-1000 ${variantStyles}`}
-            style={{ bottom: i * 80 }}
+            className={`flex max-w-screen-md animate-fade-in items-center break-words rounded-xl border p-4 pr-6 transition-all duration-1000  ${variantStyles}`}
             onMouseEnter={() => clearNotificationTimeout(id)}
             onMouseLeave={() => createNotificationTimeout(id)}
           >
@@ -83,7 +82,7 @@ export default function NotificationContainer(): JSX.Element | null {
           </div>
         );
       })}
-    </>,
+    </div>,
     document.body
   );
 }

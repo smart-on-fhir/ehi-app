@@ -79,8 +79,13 @@ export async function uploadAttachments(
 ): Promise<EHIApp.ExportJob> {
   // attachments is a FileList, must convert into an iterable for filtering
   let filesArray = Array.from(attachments);
+  // If we have a non-fatal error to report, collect it in this variable
+  let minorError: Error;
   if (filesArray.length > MAX_FILE_NUM) {
     console.warn(
+      `Number of files provided exceeds MAX_FILE_NUM of ${MAX_FILE_NUM}, only using the first ${MAX_FILE_NUM}.`
+    );
+    minorError = new Error(
       `Number of files provided exceeds MAX_FILE_NUM of ${MAX_FILE_NUM}, only using the first ${MAX_FILE_NUM}.`
     );
     filesArray = filesArray.slice(0, MAX_FILE_NUM);
@@ -91,10 +96,14 @@ export async function uploadAttachments(
     formData.append("attachments", file, file.name);
   });
   formData.append("action", "addAttachments");
-  return request(`${baseUrl}/admin/jobs/${jobId}/add-files`, {
+  return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${jobId}/add-files`, {
     method: "post",
     body: formData,
     credentials: "include",
+  }).finally(() => {
+    if (minorError !== undefined) {
+      throw minorError;
+    }
   });
 }
 

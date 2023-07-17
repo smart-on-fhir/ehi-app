@@ -51,7 +51,7 @@ type NotificationProviderProps = {
 };
 
 const NotificationContext = createContext<NotificationContextInterface>(null!);
-const NOTIF_DECAY_RATE = 2000;
+const NOTIF_DECAY_RATE = 7000;
 // Only an internal representation for avoiding collisions, using incrementor as ID should be safe
 let idCounter = 0;
 
@@ -123,28 +123,6 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
     },
     []
   );
-
-  // // Notifications decay after some time
-  // useEffect(() => {
-  //   // For every notification we have, create a timeout
-  //   if (notifications) {
-  //     console.log("in notification container useeffect");
-  //     console.log(notifications);
-  //     Object.values(notifications).map((notification) =>
-  //       createNotificationTimeout(notification.id)
-  //     );
-  //   }
-  //   return () => {
-  //     if (notifications) {
-  //       console.log("in cleanup? ");
-
-  //       Object.values(notifications).map((notification) =>
-  //         clearNotificationTimeout(notification.id)
-  //       );
-  //     }
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [notifications]);
 
   return (
     <NotificationContext.Provider

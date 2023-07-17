@@ -2,6 +2,7 @@ import LinkButton from "../generic/LinkButton";
 import { getExportJobLink, abortExportJob } from "../../api/patientApiHandlers";
 import Button from "../generic/Button";
 import { getCustomizeUrl } from "../../lib/jobHelpers";
+import { useNotificationContext } from "../../context/notificationContext";
 
 type ExportJobActionProps = {
   job: EHIApp.PatientExportJob;
@@ -14,6 +15,7 @@ export default function ExportJobAction({
   status,
   refreshJobs,
 }: ExportJobActionProps) {
+  const { createNotification } = useNotificationContext();
   switch (status) {
     case "awaiting-input":
       return (
@@ -26,7 +28,12 @@ export default function ExportJobAction({
       return (
         <Button
           onClick={async () => {
-            await abortExportJob(job.id);
+            await abortExportJob(job.id).then(() => {
+              createNotification({
+                title: `Successfully aborted job'${job.id}'.`,
+                variant: "success",
+              });
+            });
             refreshJobs();
           }}
         >

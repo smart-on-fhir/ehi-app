@@ -1,5 +1,6 @@
 import Button from "../generic/Button";
 import { updateExportStatus } from "../../api/adminApiHandlers";
+import { useNotificationContext } from "../../context/notificationContext";
 
 type ApproveButtonProps = {
   job: EHIApp.ExportJob;
@@ -8,10 +9,17 @@ type ApproveButtonProps = {
 
 export default function ApproveButton({ job, updateJob }: ApproveButtonProps) {
   const status = job.status;
+  const { createNotification } = useNotificationContext();
   function approveJob() {
     updateExportStatus(job.id, "approve")
       .then((newJob) => updateJob(newJob))
-      .catch((err) => alert(err.message));
+      .catch((err) => {
+        createNotification({
+          title: `Unable to approve job '${job.id}' with error: `,
+          errorMessage: err.message,
+          variant: "error",
+        });
+      });
   }
   function statusBasedButton() {
     switch (status) {
