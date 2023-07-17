@@ -75,6 +75,7 @@ const rejected = red[400];
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       keyframes: {
