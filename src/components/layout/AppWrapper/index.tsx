@@ -15,7 +15,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
         isAdminRoute ? "dark" : ""
       }`}
     >
-      <div className="text-opacity-900 w-full bg-primary-100 text-stone-600 dark:bg-neutral-900 dark:text-gray-200 ">
+      <div className="text-opacity-900 w-full bg-primary-100 text-stone-600 dark:bg-stone-900 dark:text-gray-200 ">
         <div className="container mx-auto max-w-screen-lg px-4">
           <AppHeader />
         </div>
@@ -28,7 +28,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
       <div className="container mx-auto max-w-screen-lg flex-1 flex-shrink-0 px-4 pb-16 pt-8">
         {children}
       </div>
-      <div className="relative mt-8 w-full bg-active py-4 pb-8 text-white dark:bg-neutral-900">
+      <div className="relative mt-8 w-full bg-active py-4 pb-8 text-white dark:bg-stone-900">
         <div
           id="wave-container"
           className="absolute -top-8 -mx-[calc(-50vw--50%)] h-8 w-full"
@@ -36,7 +36,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
           <Wave
             title="Decorative wave"
             preserveAspectRatio="none"
-            fill={isAdminRoute ? "#2F2C29" : "#72663C"}
+            fill={isAdminRoute ? "#1C1917" : "#72663C"}
           />
         </div>
         <div className="container mx-auto max-w-screen-lg px-4">

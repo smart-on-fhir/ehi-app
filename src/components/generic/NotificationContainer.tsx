@@ -41,23 +41,23 @@ export default function NotificationContainer(): JSX.Element | null {
         let variantStyles = "";
         switch (notification.variant) {
           case "information":
-            variantStyles = "bg-blue-500";
+            variantStyles = "bg-blue-200";
             break;
           case "success":
-            variantStyles = "bg-green-500";
+            variantStyles = "bg-green-200";
             break;
           case "warning":
-            variantStyles = "bg-yellow-500";
+            variantStyles = "bg-yellow-200";
             break;
           case "error":
-            variantStyles = "bg-red-500";
+            variantStyles = "bg-red-200";
             break;
         }
 
         return (
           <div
             key={id}
-            className={`relative flex max-w-screen-md animate-fade-in items-center break-words rounded-xl border border-gray-100 p-4 pr-7 transition-all duration-1000  ${variantStyles} text-gray-100`}
+            className={`relative flex max-w-screen-md animate-fade-in items-center break-words rounded-xl border p-4 pr-7 transition-all duration-1000  ${variantStyles} `}
             onMouseEnter={() => clearNotificationTimeout(id)}
             onMouseLeave={() => createNotificationTimeout(id)}
           >
@@ -73,10 +73,10 @@ export default function NotificationContainer(): JSX.Element | null {
               )}
             </div>
             <button
-              className="p absolute right-0 top-0 border-b border-l border-dashed border-gray-100 p-1.5"
+              className="p absolute right-0 top-0 p-1.5"
               onClick={onClose}
             >
-              <X size={14} aria-label="Close" />
+              <X size={16} strokeWidth="3" aria-label="Close" />
               <span className="sr-only">Close notification</span>
             </button>
           </div>
