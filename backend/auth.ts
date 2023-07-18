@@ -14,7 +14,7 @@ export async function authenticate(
   res: Response,
   next: NextFunction
 ) {
-  const sid = req.cookies?.sid;
+  const sid = req.cookies?.user_sid;
   if (sid) {
     try {
       const user = await db.promise(
@@ -93,7 +93,7 @@ export async function login(req: Request, res: Response) {
       expires.setFullYear(new Date().getFullYear() + 1);
     }
 
-    res.cookie("sid", sid, { httpOnly: true, expires });
+    res.cookie("user_sid", sid, { httpOnly: true, expires });
     res.json({ id: user.id, username: user.username });
   } catch (ex) {
     debug(ex + "");
@@ -111,7 +111,7 @@ export async function logout(req: EHI.UserRequest, res: Response) {
         "UPDATE users SET sid = NULL WHERE sid=?",
         user.sid
       );
-      res.clearCookie("sid");
+      res.clearCookie("user_sid");
       return res.end("Logout successful");
     } catch (ex) {
       debug(ex + "");

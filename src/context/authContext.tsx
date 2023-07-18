@@ -41,14 +41,14 @@ function buildLoginPayload(
 function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
+  // Track if we are displaying the admin version of pages or not
+  const isAdminRoute = location.pathname.indexOf("/admin") !== -1;
   const [authUser, setAuthUser] = useSessionStorage<EHIApp.AuthUser | null>(
-    "user",
+    isAdminRoute ? "admin" : "user",
     null
   );
   const [authLoading, setAuthLoading] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
-  // Track if we are displaying the admin version of pages or not
-  const isAdminRoute = location.pathname.indexOf("/admin") !== -1;
 
   return {
     authUser,
