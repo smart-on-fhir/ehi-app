@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import smartLogo from "./smart-logo.svg";
+import smartLogoTall from "./tall-smart-logo.svg";
 import AccountNavLink from "../AccountNavLink";
 import ExportsNavLink from "../ExportsNavLink";
 import useAuthConsumer from "../../../context/authContext";
@@ -13,7 +14,12 @@ export default function AppHeader() {
         <img
           src={smartLogo}
           alt="SMART on FHIR logo"
-          className="mr-2 inline-block h-[36px]"
+          className="mr-2 hidden h-[36px] sm:inline-block"
+        />
+        <img
+          src={smartLogoTall}
+          alt="SMART on FHIR logo"
+          className="mr-2 inline-block h-[70px] sm:hidden"
         />
         {isAdminRoute ? (
           <h1 className="text-2xl ">EHI Export Review App</h1>
