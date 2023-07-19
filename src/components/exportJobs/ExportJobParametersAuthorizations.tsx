@@ -17,11 +17,13 @@ function formatAuthorizedReleases(
   }
   const activeAuthorizations = Object.values(authorizations)
     .map((authorization: EHIApp.ExportJobAuthorization) => {
-      if (authorization.value) {
+      if (authorization.value !== false) {
         return (
           authorization.name +
-          // Optionally include authorization information represented as free-text
-          (authorization.value !== true ? ` [${authorization.value}]` : "")
+          // Optionally include authorization information represented as free-text, so long as they are not empty string
+          (authorization.value !== true && authorization.value !== ""
+            ? ` [${authorization.value}]`
+            : "")
         );
       } else return undefined;
     })
@@ -53,7 +55,7 @@ function formatUnauthorizedReleases(
     .map((authorization: EHIApp.ExportJobAuthorization) => {
       // Special case: ignore Others for disabled fields
       if (authorization.name === "Other(s)") return undefined;
-      if (!authorization.value) {
+      if (authorization.value === false) {
         return authorization.name;
       } else return undefined;
     })
