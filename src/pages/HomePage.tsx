@@ -3,17 +3,27 @@ import LinkButton from "../components/generic/LinkButton";
 import useAuthConsumer from "../context/authContext";
 
 export default function Home() {
-  const { isAdminRoute } = useAuthConsumer();
-  const baseUrl = isAdminRoute ? "/admin" : "";
+  // const { isAdminRoute } = useAuthConsumer();
+  // const baseUrl = isAdminRoute ? "/admin" : "";
 
   return (
     <main>
       {/* <h1 className="mx-auto mb-8 text-center text-4xl"> EHI Export</h1> */}
       <div className="flex items-baseline justify-between">
         <HeadingOne>EHI Export Demonstration</HeadingOne>
-        <LinkButton variant="emphasized" size="lg" to={`${baseUrl}/jobs`}>
-          Visit Demo
-        </LinkButton>
+        <div className="flex space-x-2">
+          <LinkButton variant="emphasized" size="lg" to={`/jobs`}>
+            Patient Demo
+          </LinkButton>
+          <LinkButton
+            variant="emphasized"
+            size="lg"
+            target="_blank"
+            to={`/admin/jobs`}
+          >
+            Admin Demo
+          </LinkButton>
+        </div>
       </div>
       <div className="space-y-4">
         <p>
