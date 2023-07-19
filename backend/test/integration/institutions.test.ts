@@ -15,7 +15,7 @@ describe("GET /api/institutions", () => {
   it("Rejects unknown users", async () => {
     await request(SERVER.baseUrl)
       .get("/api/institutions")
-      .set("Cookie", ["sid=whatever"])
+      .set("Cookie", ["user_sid=whatever"])
       .send()
       .expect(401)
       .expect("content-type", /\btext\b/);
@@ -24,7 +24,7 @@ describe("GET /api/institutions", () => {
   it("Works for user", async () => {
     await request(SERVER.baseUrl)
       .get("/api/institutions")
-      .set("Cookie", ["sid=USER_SID"])
+      .set("Cookie", ["user_sid=USER_SID"])
       .send()
       .expect(200)
       .expect("content-type", /\bjson\b/)
@@ -45,7 +45,7 @@ describe("GET /api/institutions/:id", () => {
   it("Rejects unknown users", async () => {
     await request(SERVER.baseUrl)
       .get("/api/institutions/1")
-      .set("Cookie", ["sid=whatever"])
+      .set("Cookie", ["user_sid=whatever"])
       .send()
       .expect(401)
       .expect("content-type", /\btext\b/);
@@ -54,7 +54,7 @@ describe("GET /api/institutions/:id", () => {
   it("Rejects for missing institutions", async () => {
     await request(SERVER.baseUrl)
       .get("/api/institutions/123")
-      .set("Cookie", ["sid=USER_SID"])
+      .set("Cookie", ["user_sid=USER_SID"])
       .send()
       .expect(404)
       .expect("content-type", /\btext\b/);
@@ -103,7 +103,7 @@ describe.skip("GET /api/institutions/:id/launch", () => {
     const a = await request(SERVER.baseUrl)
       .get("/api/institutions/100/launch")
       .redirects(1)
-      .set("Cookie", ["sid=ADMIN_SID"])
+      .set("Cookie", ["user_sid=ADMIN_SID"])
       // .send()
       .expect(console.log);
     // .expect(302)
@@ -120,7 +120,7 @@ describe.skip("GET /api/institutions/:id/launch", () => {
     // // console.log(u)
     // const b = await request(SERVER.baseUrl)
     //     .get("/api/institutions/100/redirect?state=" + encodeURIComponent(u.searchParams.get("state")!))
-    //     .set('Cookie', ['sid=ADMIN_SID'])
+    //     .set('Cookie', ['user_sid=ADMIN_SID'])
     //     .redirects(0)
     //     .send()
     //     .expect(console.log)

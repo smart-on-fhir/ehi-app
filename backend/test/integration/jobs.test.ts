@@ -16,7 +16,7 @@ function testEndpoint({
   it("Rejects unknown users", async () => {
     await request(SERVER.baseUrl)
       [method](path)
-      .set("Cookie", ["sid=whatever"])
+      .set("Cookie", ["user_sid=whatever"])
       .send()
       .expect(401);
   });
@@ -24,7 +24,7 @@ function testEndpoint({
   it("Works for user", async () => {
     await request(SERVER.baseUrl)
       [method](path)
-      .set("Cookie", ["sid=USER_SID"])
+      .set("Cookie", ["user_sid=USER_SID"])
       .send()
       .expect(200);
   });
@@ -32,7 +32,7 @@ function testEndpoint({
   //     it("Rejects user", async () => {
   //       await request(SERVER.baseUrl)
   //         [method](path)
-  //         .set("Cookie", ["sid=USER_SID"])
+  //         .set("Cookie", ["user_sid=USER_SID"])
   //         .send()
   //         .expect(403);
   //     });
@@ -55,14 +55,14 @@ describe("GET /api/jobs/:id", () => {
   it("Rejects for non-authors", async () => {
     await request(SERVER.baseUrl)
       .get("/api/jobs/2")
-      .set("Cookie", ["sid=USER_SID"])
+      .set("Cookie", ["user_sid=USER_SID"])
       .expect(403);
   });
 
   it("Rejects for missing jobs", async () => {
     await request(SERVER.baseUrl)
       .get("/api/jobs/123")
-      .set("Cookie", ["sid=USER_SID"])
+      .set("Cookie", ["user_sid=USER_SID"])
       .expect(404);
   });
 });
@@ -76,7 +76,7 @@ describe("POST /api/jobs/:id/abort", () => {
   it("Rejects for missing jobs", async () => {
     await request(SERVER.baseUrl)
       .post("/api/jobs/123/abort")
-      .set("Cookie", ["sid=USER_SID"])
+      .set("Cookie", ["user_sid=USER_SID"])
       .expect(404);
   });
 });
@@ -85,7 +85,7 @@ describe.skip("GET /api/jobs/:id/download", () => {
   it("Rejects for missing jobs", async () => {
     await request(SERVER.baseUrl)
       .get("/api/jobs/123/download")
-      .set("Cookie", ["sid=ADMIN_SID"])
+      .set("Cookie", ["user_sid=ADMIN_SID"])
       .expect(404);
   });
 
@@ -96,21 +96,21 @@ describe.skip("GET /api/jobs/:id/download", () => {
   it("Rejects unknown users", async () => {
     await request(SERVER.baseUrl)
       .get("/api/jobs/1/download")
-      .set("Cookie", ["sid=whatever"])
+      .set("Cookie", ["user_sid=whatever"])
       .expect(401);
   });
 
   it("Rejects non-owner", async () => {
     await request(SERVER.baseUrl)
       .get("/api/jobs/1/download")
-      .set("Cookie", ["sid=USER_SID"])
+      .set("Cookie", ["user_sid=USER_SID"])
       .expect(403);
   });
 
   it("Works as expected", async () => {
     await request(SERVER.baseUrl)
       .get("/api/jobs/2/download")
-      .set("Cookie", ["sid=USER_SID"])
+      .set("Cookie", ["user_sid=USER_SID"])
       .expect(200)
       .expect("content-type", "application/zip");
   });
