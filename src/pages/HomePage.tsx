@@ -10,7 +10,7 @@ export default function Home() {
     <main>
       <div className="flex  justify-between sm:items-baseline">
         <HeadingOne>EHI Export Demo</HeadingOne>
-        <div className="mx-1 flex flex-col space-y-1 sm:flex-row sm:space-x-2">
+        <div className="mx-1 flex flex-col space-y-1 sm:flex-row sm:space-x-2 sm:space-y-0">
           <LinkButton variant="emphasized" size="lg" to={`/jobs`}>
             Patient View
           </LinkButton>
