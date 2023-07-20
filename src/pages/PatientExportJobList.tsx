@@ -7,10 +7,21 @@ import { Plus } from "react-feather";
 import { usePolling } from "../hooks/usePolling";
 import { getExportJobs } from "../api/patientApiHandlers";
 import useAsyncJobs from "../hooks/useAsyncJobs";
+import useCookie from "../hooks/useCookie";
+import { useEffect } from "react";
 
 export default function PatientExportJobList() {
   const { refreshJobs, loading, jobs, error } =
     useAsyncJobs<EHIApp.PatientExportJob[]>(getExportJobs);
+  const [cookie, setCookie] = useCookie("job-list", 1);
+  useEffect(() => {
+    if (jobs) {
+      setCookie(
+        jobs.map((job: EHIApp.PatientExportJob) => job.patient.id).join(",")
+      );
+    }
+  }, [jobs, setCookie]);
+  console.log(cookie.split(","));
 
   // Always check for new jobs regularly
   usePolling(refreshJobs);
