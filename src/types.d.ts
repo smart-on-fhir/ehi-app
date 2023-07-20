@@ -1,16 +1,10 @@
 declare namespace EHIApp {
   /**
-   * The types of roles available to different accounts
-   */
-  export type UserRole = "admin" | "user" | null;
-
-  /**
    * Information associated with an authenticated user
    */
   export type AuthUser = {
     id: string;
     username: string;
-    role: UserRole;
   };
 
   export interface Institution {
@@ -23,7 +17,7 @@ declare namespace EHIApp {
     // A URL pointing to this institution's FHIR server
     fhirUrl: string;
     // Whether or not this institution should be displayed in the UI
-    disabled: boolean;
+    disabled: number;
   }
 
   /**
@@ -31,14 +25,13 @@ declare namespace EHIApp {
    *
    * - `awaiting-input` - The user needs to fill in the form.
    *
-   * - `in-review` - After the form is submitted successfully no more actions
-   *   are required by the user. Then the job switches to "in-review" status,
-   *   meaning that it is waiting for the admin to approve or reject the export.
+   * - `requested` - After the form is submitted successfully no more actions
+   *    are required by the user. FHIR bulk export is running, this is prior to admin approval
    *
-   * - `requested` - After the export is approved by the admin and while the
-   *   data is being exported.
+   * - `retrieved` - FHIR Bulk export is done and the job is now being reviewed by admins
    *
-   * - `approved` - All the data transmitted to its destination.
+   * - `approved` - FHIR Bulk export is done and the job has been approved;
+   *    now accessible via ehi-export status requests
    *
    * - `aborted` - The admin or the patient aborted/canceled this export.
    *
@@ -47,8 +40,8 @@ declare namespace EHIApp {
    */
   export type ExportJobStatus =
     | "awaiting-input"
-    | "in-review"
     | "requested"
+    | "retrieved"
     | "approved"
     | "aborted"
     | "rejected";
@@ -148,4 +141,21 @@ declare namespace EHIApp {
      */
     authorizations?: ExportJobAuthorizations;
   }
+
+  ////////////////////////////
+  // Patient Specific Interfaces
+
+  type PatientExportJobStatus =
+    | Extract<
+        ExportJobStatus,
+        "awaiting-input" | "requested" | "approved" | "aborted"
+      >
+    | "deleted";
+
+  type PatientExportJob = Omit<
+    ExportJob,
+    "parameters" | "authorizations" | "status"
+  > & {
+    status: PatientExportJobStatus;
+  };
 }

@@ -6,6 +6,7 @@ export interface AuthContextInterface {
   authUser: EHIApp.AuthUser | null;
   authLoading: boolean;
   authError: string | null;
+  isAdminRoute: boolean;
   login: (
     username: string,
     password: string,
@@ -40,8 +41,10 @@ function buildLoginPayload(
 function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
+  // Track if we are displaying the admin version of pages or not
+  const isAdminRoute = location.pathname.indexOf("/admin") !== -1;
   const [authUser, setAuthUser] = useSessionStorage<EHIApp.AuthUser | null>(
-    "user",
+    isAdminRoute ? "admin" : "user",
     null
   );
   const [authLoading, setAuthLoading] = useState<boolean>(false);
@@ -51,6 +54,7 @@ function useAuth() {
     authUser,
     authLoading,
     authError,
+    isAdminRoute,
     async login(
       username: string,
       password: string,
@@ -60,7 +64,10 @@ function useAuth() {
       setAuthError(null);
       const payload = buildLoginPayload(username, password, remember);
 
-      const response = await fetch("/api/login", {
+      const loginEndpoint = isAdminRoute
+        ? `${process.env.REACT_APP_EHI_SERVER}/admin/login`
+        : "/api/login";
+      const response = await fetch(loginEndpoint, {
         method: "POST",
         headers: { accept: "application/json" },
         body: payload,
@@ -85,8 +92,8 @@ function useAuth() {
         const user = await response.json();
         setAuthLoading(false);
         setAuthUser(user);
-        if (user.role === "admin") {
-          navigate("/admin");
+        if (isAdminRoute) {
+          navigate("/admin/jobs");
         } else {
           navigate(location.state?.redirect || "/jobs");
         }
@@ -94,11 +101,14 @@ function useAuth() {
     },
     async logout() {
       setAuthLoading(true);
-      const response = await fetch("/api/logout", {
+      const logoutEndpoint = isAdminRoute
+        ? `${process.env.REACT_APP_EHI_SERVER}/admin/logout`
+        : "/api/logout";
+      const response = await fetch(logoutEndpoint, {
         headers: { accept: "application/json" },
         credentials: "include",
       });
-      // Always log out and
+      // Always log out
       setAuthLoading(false);
       setAuthUser(null);
       if (!response.ok) {
@@ -115,7 +125,7 @@ function useAuth() {
         }
         console.error(errorMessage);
       }
-      navigate("/");
+      navigate(isAdminRoute ? "/admin" : "/");
     },
   };
 }

@@ -15,8 +15,6 @@ export default function AccountDetails() {
       </div>
       <h2 className="text-sm text-black text-opacity-70">User Name</h2>
       <p className="mb-4 text-lg font-semibold">{authUser.username}</p>
-      <h2 className="text-sm text-black text-opacity-70">Account Type</h2>
-      <p className="mb-4 text-lg font-semibold">{authUser.role}</p>
       <Button
         className="mt-4 w-full"
         size="lg"

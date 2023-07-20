@@ -1,4 +1,5 @@
 import { formatDate } from "../../lib";
+import ExportJobNoFormDataDisclaimer from "./ExportJobNoFormDataDisclaimer";
 
 /**
  * Formats authorization information to identify info that IS authorized for release
@@ -16,11 +17,13 @@ function formatAuthorizedReleases(
   }
   const activeAuthorizations = Object.values(authorizations)
     .map((authorization: EHIApp.ExportJobAuthorization) => {
-      if (authorization.value) {
+      if (authorization.value !== false) {
         return (
           authorization.name +
-          // Optionally include authorization information represented as free-text
-          (authorization.value !== true ? ` [${authorization.value}]` : "")
+          // Optionally include authorization information represented as free-text, so long as they are not empty string
+          (authorization.value !== true && authorization.value !== ""
+            ? ` [${authorization.value}]`
+            : "")
         );
       } else return undefined;
     })
@@ -52,7 +55,7 @@ function formatUnauthorizedReleases(
     .map((authorization: EHIApp.ExportJobAuthorization) => {
       // Special case: ignore Others for disabled fields
       if (authorization.name === "Other(s)") return undefined;
-      if (!authorization.value) {
+      if (authorization.value === false) {
         return authorization.name;
       } else return undefined;
     })
@@ -112,6 +115,8 @@ export default function ExportJobParametersAuthorizations({
 }: {
   job: EHIApp.ExportJob;
 }) {
+  // Render a placeholder if the form hasn't been completed yet
+  if (job.status === "awaiting-input") return <ExportJobNoFormDataDisclaimer />;
   const { authorizations, parameters } = job;
   return (
     <section className="space-y-1 text-sm">

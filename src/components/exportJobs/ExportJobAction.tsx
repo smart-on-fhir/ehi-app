@@ -1,28 +1,44 @@
 import LinkButton from "../generic/LinkButton";
-import { getExportJobLink, abortExportJob } from "../../lib/exportJobHelpers";
+import { getExportJobLink, abortExportJob } from "../../api/patientApiHandlers";
 import Button from "../generic/Button";
+import { getCustomizeUrl } from "../../lib/jobHelpers";
+import { useNotificationContext } from "../../context/notificationContext";
 
 type ExportJobActionProps = {
-  job: EHIApp.ExportJob;
-  status: EHIApp.ExportJobStatus;
-  syncJobs: Function;
+  job: EHIApp.PatientExportJob;
+  status: EHIApp.PatientExportJobStatus;
+  refreshJobs: (signal?: AbortSignal | undefined) => Promise<void>;
 };
 
 export default function ExportJobAction({
   job,
   status,
-  syncJobs,
+  refreshJobs,
 }: ExportJobActionProps) {
-  const link = `${job.customizeUrl}&redirect=${
-    window.location.origin + window.location.pathname
-  }`;
-
+  const { createNotification } = useNotificationContext();
   switch (status) {
     case "awaiting-input":
       return (
-        <LinkButton className="min-w-fit" to={link}>
+        <LinkButton className="min-w-fit" to={getCustomizeUrl(job)}>
           Complete Form
         </LinkButton>
+      );
+
+    case "requested":
+      return (
+        <Button
+          onClick={async () => {
+            await abortExportJob(job.id).then(() => {
+              createNotification({
+                title: `Successfully aborted job'${job.id}'.`,
+                variant: "success",
+              });
+            });
+            refreshJobs();
+          }}
+        >
+          Abort
+        </Button>
       );
 
     case "approved":
@@ -37,20 +53,8 @@ export default function ExportJobAction({
         </LinkButton>
       );
 
-    case "in-review":
-      return (
-        <Button
-          onClick={async () => {
-            await abortExportJob(job.id);
-            syncJobs();
-          }}
-        >
-          Abort
-        </Button>
-      );
-    case "requested":
+    case "deleted":
     case "aborted":
-    case "rejected":
       return null;
   }
 }

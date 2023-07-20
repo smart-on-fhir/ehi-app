@@ -1,12 +1,7 @@
 import { useState } from "react";
-import {
-  uploadAttachments,
-  formatBytes,
-  MAX_FILE_NUM,
-  MAX_FILE_SIZE,
-} from "../../lib/attachmentUploadHelpers";
+import { formatBytes, MAX_FILE_SIZE } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
-import NotificationModal from "../generic/NotificationModal";
+import { MAX_FILE_NUM, uploadAttachments } from "../../api/adminApiHandlers";
 
 const SUPPORTED_FILES = [
   // Data Files
@@ -33,25 +28,24 @@ const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document
 
 type AttachmentUploadProps = {
   jobId: EHIApp.ExportJob["id"];
-  refreshJob: () => Promise<void>;
+  updateJob: (newJob: EHIApp.ExportJob) => void;
 };
 
 export default function AttachmentUpload({
   jobId,
-  refreshJob,
+  updateJob,
 }: AttachmentUploadProps) {
-  const { setNotification } = useNotificationContext();
+  const { createNotification } = useNotificationContext();
   const [dragActive, setDragActive] = useState(false);
-  const notificationId = "attachment-upload";
 
   function handleAttachments(attachmentList: FileList) {
     uploadAttachments(jobId, attachmentList)
-      .then(() => refreshJob())
+      .then((job) => updateJob(job))
       .catch((err) => {
-        setNotification({
-          id: notificationId,
+        createNotification({
           title: `There was an error uploading attachments:`,
           errorMessage: err.message,
+          variant: "warning",
         });
       });
   }
@@ -116,7 +110,6 @@ export default function AttachmentUpload({
           multiple
         />
       </label>
-      <NotificationModal id={notificationId} variant="warning" />
     </div>
   );
 }

@@ -1,24 +1,25 @@
-import { useCallback } from "react";
-import { useAsync } from "../hooks/useAsync";
-import ExportJobListItemUser from "../components/exportJobs/ExportJobListItemUser";
+import ExportJobListItemPatient from "../components/exportJobs/ExportJobListItemPatient";
 import LinkButton from "../components/generic/LinkButton";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
-import { getExportJobs } from "../lib/exportJobHelpers";
 import { Plus } from "react-feather";
 import { usePolling } from "../hooks/usePolling";
+import { getExportJobs } from "../api/patientApiHandlers";
+import useAsyncJobs from "../hooks/useAsyncJobs";
 
-export default function UserExportJobList() {
-  const {
-    execute: syncJobs,
-    loading,
-    result: jobs,
-    error,
-  } = useAsync<EHIApp.ExportJob[]>(useCallback(getExportJobs, []), true);
+export default function PatientExportJobList() {
+  const { refreshJobs, loading, jobs, error } =
+    useAsyncJobs<EHIApp.PatientExportJob[]>(getExportJobs);
 
-  // Always check for new jobs every 5 seconds
-  usePolling(syncJobs, 5000);
+  // Always check for new jobs regularly
+  usePolling(refreshJobs);
+  // If there's an awaiting-input job, check more regularly
+  usePolling(
+    refreshJobs,
+    500,
+    () => jobs?.some((job) => job.status === "awaiting-input") || false
+  );
 
   function PageBody() {
     if (loading && jobs === null) {
@@ -35,10 +36,10 @@ export default function UserExportJobList() {
         <ul className="space-y-4">
           {jobs && jobs.length > 0 ? (
             jobs.map((job) => (
-              <ExportJobListItemUser
+              <ExportJobListItemPatient
                 key={job.id}
                 job={job}
-                syncJobs={syncJobs}
+                refreshJobs={refreshJobs}
               />
             ))
           ) : (

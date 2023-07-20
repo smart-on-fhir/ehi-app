@@ -1,39 +1,36 @@
-import ExportJobStatusIndicator from "./ExportJobStatusIndicator";
-import ExportJobStatusBlurb from "./ExportJobStatusBlurb";
+import ExportJobStatusIndicatorAdmin from "./ExportJobStatusIndicatorAdmin";
+import ExportJobStatusBlurbAdmin from "./ExportJobStatusBlurbAdmin";
 import ExportJobParametersAuthorizations from "./ExportJobParametersAuthorizations";
 import ExportApproveButton from "./ExportApproveButton";
 import ExportRejectButton from "./ExportRejectButton";
 import AttachmentSection from "../attachments/AttachmentSection";
-import ExportJobLink from "./ExportJobLink";
 import {
-  displayApprovedDate,
   displayCreatedDate,
   displayPatientInformation,
-} from "../../lib/exportJobHelpers";
+} from "../../lib/jobHelpers";
 
 type ExportJobDetailViewProps = {
   job: EHIApp.ExportJob;
-  refreshJob: () => Promise<void>;
+  updateJob: (newJob: EHIApp.ExportJob) => void;
 };
 
 export default function ExportJobDetailView({
   job,
-  refreshJob,
+  updateJob,
 }: ExportJobDetailViewProps) {
   const { id, status, attachments } = job;
   return (
     <section className="space-y-4 rounded border bg-white p-4">
       <header className="flex items-center">
         <div className="flex w-24 flex-col items-center pr-2 text-center">
-          <ExportJobStatusIndicator status={status} />
+          <ExportJobStatusIndicatorAdmin status={status} />
           <div className="text-sm opacity-80">
-            <ExportJobStatusBlurb status={status} />
+            <ExportJobStatusBlurbAdmin status={status} />
           </div>
         </div>
         <div className="flex w-full items-center justify-between">
           <div>
             <h1 className="mr-2 inline-block text-lg font-bold">Job #{id}</h1>
-            {status === "approved" && <ExportJobLink jobId={id} />}
             <pre className="whitespace-pre-wrap text-xs italic opacity-50">
               {[
                 displayPatientInformation(job),
@@ -44,12 +41,12 @@ export default function ExportJobDetailView({
           </div>
         </div>
         <div className="flex flex-1 flex-wrap justify-end space-x-0 space-y-2 sm:flex-nowrap sm:justify-normal sm:space-x-2 sm:space-y-0">
-          <ExportRejectButton job={job} refreshJob={refreshJob} />
-          <ExportApproveButton job={job} refreshJob={refreshJob} />
+          <ExportRejectButton job={job} updateJob={updateJob} />
+          <ExportApproveButton job={job} updateJob={updateJob} />
         </div>
       </header>
       <ExportJobParametersAuthorizations job={job} />
-      <AttachmentSection job={job} refreshJob={refreshJob} />
+      <AttachmentSection job={job} updateJob={updateJob} />
     </section>
   );
 }

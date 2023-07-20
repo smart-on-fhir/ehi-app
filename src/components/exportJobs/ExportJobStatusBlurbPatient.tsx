@@ -1,14 +1,13 @@
-type ExportJobBlurbProps = {
-  status: EHIApp.ExportJobStatus;
+type ExportJobStatusBlurbPatientProps = {
+  status: EHIApp.PatientExportJobStatus;
 };
 
-export default function ExportJobBlurb({ status }: ExportJobBlurbProps) {
+export default function ExportJobStatusBlurbPatient({
+  status,
+}: ExportJobStatusBlurbPatientProps) {
   switch (status) {
     case "awaiting-input":
       return <p>Information Needed</p>;
-
-    case "in-review":
-      return <p>In Review</p>;
 
     case "requested":
       return <p>Processing</p>;
@@ -16,10 +15,10 @@ export default function ExportJobBlurb({ status }: ExportJobBlurbProps) {
     case "approved":
       return <p>Complete</p>;
 
+    case "deleted":
+      return <p>Deleted</p>;
+
     case "aborted":
       return <p>Aborted</p>;
-
-    case "rejected":
-      return <p>Rejected</p>;
   }
 }

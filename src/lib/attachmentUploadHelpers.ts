@@ -1,7 +1,4 @@
-import { request } from ".";
-
 export const MAX_FILE_SIZE = 1e7;
-export const MAX_FILE_NUM = 5;
 
 /**
  * A filter function for determining which files can be uploaded to the server.
@@ -42,56 +39,4 @@ export function getAttachmentName(attachment: fhir4.Attachment) {
   }
   // The file name is at the end of the url, split on '/'
   return urlSplit[urlSplit.length - 1];
-}
-
-/**
- * Upload attachments for a given job
- * @param job
- * @param attachments
- * @returns Promise corresponding to the upload request,  resulting in a new attachments
- */
-export async function uploadAttachments(
-  jobId: EHIApp.ExportJob["id"],
-  attachments: FileList
-): Promise<void> {
-  // attachments is a FileList, must convert into an iterable for filtering
-  let filesArray = Array.from(attachments);
-  if (filesArray.length > MAX_FILE_NUM) {
-    console.warn(
-      `Number of files provided exceeds MAX_FILE_NUM of ${MAX_FILE_NUM}, only using the first ${MAX_FILE_NUM}.`
-    );
-    filesArray = filesArray.slice(0, MAX_FILE_NUM);
-  }
-  const filesToAdd = filesArray.filter(validFileFilter);
-  const formData = new FormData();
-  filesToAdd.forEach((file: File) => {
-    formData.append("attachments", file, file.name);
-  });
-  formData.append("action", "addAttachments");
-  return request(`/api/jobs/${jobId}/add-files`, {
-    method: "post",
-    body: formData,
-  });
-}
-
-/**
- * Delete an attachment for a given job
- * @param jobId
- * @param attachmentName
- * @returns nothing, but should remove the attachment from the job
- */
-export async function deleteAttachment(
-  jobId: EHIApp.ExportJob["id"],
-  attachmentName: string
-): Promise<void> {
-  return await request(`/api/jobs/${jobId}/remove-files`, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      action: "removeAttachments",
-      params: [attachmentName],
-    }),
-  });
 }

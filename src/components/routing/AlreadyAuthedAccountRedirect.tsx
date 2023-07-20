@@ -9,9 +9,11 @@ type AlreadyAuthedAccountRedirectProps = {
 export default function AlreadyAuthedAccountRedirect({
   children,
 }: AlreadyAuthedAccountRedirectProps) {
-  const { authUser } = useAuthConsumer();
+  const { authUser, isAdminRoute } = useAuthConsumer();
   if (authUser) {
-    return <Navigate to="/account" replace />;
+    return (
+      <Navigate to={isAdminRoute ? "/admin/account" : "/account"} replace />
+    );
   }
 
   return children;

@@ -66,21 +66,16 @@ const primary = {
   900: "#17140c",
 };
 // Status Indicator Colors
-// awaiting-input`
 const awaitingInput = yellow[200];
-// requested`
 const requested = yellow[200];
-// in-review`
-const inReview = "#abc1e4";
-// approved`
+const retrieved = "#abc1e4";
 const approved = green[400];
-// aborted`
 const aborted = "#e4aa86";
-// rejected`
 const rejected = red[400];
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       keyframes: {
@@ -111,7 +106,7 @@ module.exports = {
         "alert-dark": red["600"],
         "awaiting-input": awaitingInput,
         requested,
-        "in-review": inReview,
+        retrieved,
         approved,
         aborted,
         rejected,

@@ -12,17 +12,28 @@ export default function AuthCheckWrapper({
   children,
 }: AuthCheckWrapperProps) {
   const location = useLocation();
-  const { authUser } = useAuthConsumer();
+  const { authUser, isAdminRoute } = useAuthConsumer();
+  const baseUrl = isAdminRoute ? "/admin" : "";
 
+  // If no auth, then always redirect to login
   if (!authUser) {
     return (
-      <Navigate to="/login" replace state={{ redirect: location.pathname }} />
+      <Navigate
+        to={`${baseUrl}/login`}
+        replace
+        state={{ redirect: location.pathname }}
+      />
     );
   }
 
-  if (needsAdmin && authUser.role !== "admin") {
+  // If admin is needed, we're on an admin route, and the user isn't authenticated then cancel
+  if (needsAdmin && isAdminRoute && authUser.username !== "admin") {
     return (
-      <Navigate to="/forbidden" replace state={{ from: location.pathname }} />
+      <Navigate
+        to={`${baseUrl}/forbidden`}
+        replace
+        state={{ from: location.pathname }}
+      />
     );
   }
 

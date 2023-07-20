@@ -1,16 +1,28 @@
 import HeadingOne from "../components/generic/HeadingOne";
 import LinkButton from "../components/generic/LinkButton";
+import useAuthConsumer from "../context/authContext";
 
 export default function Home() {
+  // const { isAdminRoute } = useAuthConsumer();
+  // const baseUrl = isAdminRoute ? "/admin" : "";
+
   return (
     <main>
-      {/* <h1 className="mx-auto mb-8 text-center text-4xl"> EHI Export</h1> */}
-
-      <div className="flex items-baseline justify-between">
-        <HeadingOne>EHI Export Demonstration</HeadingOne>
-        <LinkButton variant="emphasized" size="lg" to="/jobs">
-          Visit Demo
-        </LinkButton>
+      <div className="flex  justify-between sm:items-baseline">
+        <HeadingOne>EHI Export Demo</HeadingOne>
+        <div className="mx-1 flex flex-col space-y-1 sm:flex-row sm:space-x-2 sm:space-y-0">
+          <LinkButton variant="emphasized" size="lg" to={`/jobs`}>
+            Patient View
+          </LinkButton>
+          <LinkButton
+            variant="emphasized"
+            size="lg"
+            target="_blank"
+            to={`/admin/jobs`}
+          >
+            Admin View
+          </LinkButton>
+        </div>
       </div>
       <div className="space-y-4">
         <p>

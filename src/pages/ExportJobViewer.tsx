@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
-import { useCallback } from "react";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import ExportJobDetailView from "../components/exportJobs/ExportJobDetailView";
-import { useAsync } from "../hooks/useAsync";
 import { usePolling } from "../hooks/usePolling";
-import { getExportJob } from "../lib/exportJobHelpers";
+import { getExportJob } from "../api/adminApiHandlers";
+import { useAsyncJob } from "../hooks/useAsyncJob";
 
 export default function ExportJobViewer() {
   const { id } = useParams();
@@ -15,15 +14,12 @@ export default function ExportJobViewer() {
     else throw Error("Error in viewing a job: there was no id");
   }
 
-  const {
-    execute: refreshJob,
-    loading,
-    result: job,
-    error,
-  } = useAsync<EHIApp.ExportJob>(useCallback(getExportJobWithId, [id]), true);
+  // Custom hook that allows for updating of jobs directly, in addition to wrapping a getter
+  const { refreshJob, updateJob, loading, job, error } =
+    useAsyncJob<EHIApp.ExportJob>(getExportJobWithId);
 
-  // Always check for job updates every 5 seconds
-  usePolling(refreshJob, 5000);
+  // Always check for job updates regularly
+  usePolling(refreshJob);
 
   function BackLink() {
     return (
@@ -45,7 +41,6 @@ export default function ExportJobViewer() {
 
   // If the job failed to load exit with an error message
   if (error) {
-    console.log(error);
     return (
       <>
         <BackLink />
@@ -72,7 +67,7 @@ export default function ExportJobViewer() {
   return (
     <>
       <BackLink />
-      <ExportJobDetailView job={job} refreshJob={refreshJob} />
+      <ExportJobDetailView job={job} updateJob={updateJob} />
     </>
   );
 }

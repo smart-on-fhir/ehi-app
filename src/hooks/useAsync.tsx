@@ -6,11 +6,12 @@ interface State<T> {
   result: T | null;
 }
 
-interface UseAsyncReturnValue<T> {
+interface UseAsyncHook<T> {
   execute: (signal?: AbortSignal) => Promise<void>;
   loading: boolean;
   result: T | null;
   error: Error | null;
+  dispatch: React.Dispatch<Partial<State<T>>>;
 }
 
 function reducer<T>(state: State<T>, payload: Partial<State<T>>): State<T> {
@@ -20,7 +21,7 @@ function reducer<T>(state: State<T>, payload: Partial<State<T>>): State<T> {
 export function useAsync<T>(
   fn: (signal?: AbortSignal) => Promise<T>,
   immediate = false
-): UseAsyncReturnValue<T> {
+): UseAsyncHook<T> {
   const [state, dispatch] = useReducer(reducer<T>, {
     loading: immediate,
     error: null,
@@ -63,5 +64,6 @@ export function useAsync<T>(
     loading: state.loading,
     result: state.result,
     error: state.error,
+    dispatch,
   };
 }

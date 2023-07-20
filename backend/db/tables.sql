@@ -4,7 +4,6 @@ CREATE TABLE "users"(
 	"id"        Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"username"  Text NOT NULL,
 	"password"  Text NOT NULL,
-	"role"      Text NOT NULL,
 	"lastLogin" DateTime,
 	"sid"       Text,
 	"session"   Text

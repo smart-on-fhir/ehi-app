@@ -3,28 +3,27 @@ import {
   Edit,
   // requested`
   Loader,
-  // in-review`
-  Search,
   // approved`
   CheckCircle,
+  // deleted`
+  Slash,
   // aborted`
   XOctagon,
-  // rejected`
-  Slash,
 } from "react-feather";
 
-function displayStatus(status: EHIApp.ExportJobStatus) {
+function displayStatus(status: EHIApp.PatientExportJobStatus) {
   return status.split("-").join(" ");
 }
 
-export default function ExportJobStatusIndicator({
+export default function ExportJobStatusIndicatorPatient({
   status,
   size,
 }: {
-  status: EHIApp.ExportJobStatus;
+  status: EHIApp.PatientExportJobStatus;
   size?: string | number;
 }) {
   switch (status) {
+    // Waiting on form completion by the patient
     case "awaiting-input":
       return (
         <div
@@ -43,15 +42,14 @@ export default function ExportJobStatusIndicator({
           <Loader className="m-2" size={size} />
         </div>
       );
-    case "in-review":
+    // Aborted an in-progress job
+    case "aborted":
       return (
-        <div
-          className="rounded-full bg-in-review "
-          title={displayStatus(status)}
-        >
-          <Search className="m-2 " size={size} />
+        <div className="rounded-full bg-aborted " title={displayStatus(status)}>
+          <XOctagon className="m-2" size={size} />
         </div>
       );
+    // Job is completed
     case "approved":
       return (
         <div
@@ -61,13 +59,8 @@ export default function ExportJobStatusIndicator({
           <CheckCircle className="m-2" size={size} />
         </div>
       );
-    case "aborted":
-      return (
-        <div className="rounded-full bg-aborted " title={displayStatus(status)}>
-          <XOctagon className="m-2" size={size} />
-        </div>
-      );
-    case "rejected":
+    // Job was deleted
+    case "deleted":
       return (
         <div
           className="rounded-full bg-rejected text-white text-opacity-90 "
