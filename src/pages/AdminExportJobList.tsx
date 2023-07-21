@@ -6,9 +6,22 @@ import HeadingOne from "../components/generic/HeadingOne";
 import { Link } from "react-router-dom";
 import { usePolling } from "../hooks/usePolling";
 import useAsyncJobs from "../hooks/useAsyncJobs";
+import useCookie from "../hooks/useCookie";
+import { useMemo } from "react";
 
 export default function AdminExportJobList() {
   const { refreshJobs, loading, jobs, error } = useAsyncJobs(getExportJobs);
+  const { cookie: jobCookie } = useCookie("job-list");
+  const filteredJobs = useMemo(() => {
+    if (jobCookie) {
+      const activePatientIds = jobCookie.split(",");
+      return jobs?.filter(
+        (job) => activePatientIds.indexOf(job.patient.id) !== -1
+      );
+    } else {
+      return jobs;
+    }
+  }, [jobs, jobCookie]);
 
   // Always check for new jobs regularly
   usePolling(refreshJobs);
@@ -23,10 +36,10 @@ export default function AdminExportJobList() {
           display="An error occurred in fetching jobs."
         />
       );
-    } else if (jobs && jobs.length > 0) {
+    } else if (filteredJobs && filteredJobs.length > 0) {
       return (
         <ul className="space-y-4">
-          {jobs.map((job, i) => (
+          {filteredJobs.map((job, i) => (
             <ExportJobListItemAdmin key={job.id} job={job} />
           ))}
         </ul>

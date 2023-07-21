@@ -1,8 +1,14 @@
 import { useState } from "react";
 
+interface UseCookieProps {
+  cookie: string;
+  updateCookie: (value: string, customDays?: number) => void;
+  deleteCookie: (name: string) => void;
+}
+
 /**
  * Delete a cookie
- * @param {String} name The name of the cookie
+ * @param {String} name The name of the cookie to delete
  *
  * @return {void}
  */
@@ -51,7 +57,7 @@ export default function useCookie(
   name: string,
   defaultDays?: number,
   initialValue?: string
-): [string, (value: string, customDays?: number) => void] {
+): UseCookieProps {
   // If this cookie has no value and we've been provided an initial value, use it to initialize our cookie
   if (getCookie(name) === null && initialValue) {
     setCookie(name, initialValue, defaultDays);
@@ -65,5 +71,5 @@ export default function useCookie(
     setLocalCookie(value);
   }
 
-  return [localCookie, updateCookie];
+  return { cookie: localCookie, updateCookie, deleteCookie };
 }

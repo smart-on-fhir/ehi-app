@@ -13,15 +13,15 @@ import { useEffect } from "react";
 export default function PatientExportJobList() {
   const { refreshJobs, loading, jobs, error } =
     useAsyncJobs<EHIApp.PatientExportJob[]>(getExportJobs);
-  const [cookie, setCookie] = useCookie("job-list", 1);
+  const { cookie: jobCookie, updateCookie } = useCookie("job-list");
   useEffect(() => {
     if (jobs) {
-      setCookie(
+      updateCookie(
         jobs.map((job: EHIApp.PatientExportJob) => job.patient.id).join(",")
       );
     }
-  }, [jobs, setCookie]);
-  console.log(cookie.split(","));
+  }, [jobs, updateCookie]);
+  console.log(jobCookie.split(","));
 
   // Always check for new jobs regularly
   usePolling(refreshJobs);
