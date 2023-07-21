@@ -8,7 +8,7 @@ export default function Login() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [remember, setRemember] = useState<boolean>(false);
-  const { login, authLoading, authError } = useAuthConsumer();
+  const { login, authLoading, authError, isAdminRoute } = useAuthConsumer();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,7 +21,9 @@ export default function Login() {
     <div className="mx-auto flex max-w-screen-sm justify-center accent-active">
       <div className="w-full rounded-lg border bg-white p-4">
         <div className="flex justify-center">
-          <HeadingOne alignment="center">Login</HeadingOne>
+          <HeadingOne alignment="center">
+            {isAdminRoute ? "Admin" : "Patient"} Login
+          </HeadingOne>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="flex w-full flex-col">
@@ -59,7 +61,8 @@ export default function Login() {
             Remember Me
           </label>
           <button
-            className="h-12 w-full rounded border bg-active py-2 text-xl text-white disabled:bg-opacity-80"
+            className="d bled:bg-opacity-80 h-12 w-full rounded border bg-active py-2 text-xl
+            text-white"
             disabled={authLoading || !(Boolean(username) && Boolean(password))}
             type="submit"
           >

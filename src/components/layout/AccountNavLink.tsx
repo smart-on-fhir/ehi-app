@@ -22,16 +22,16 @@ export default function AccountNavLink() {
       >
         {authUser.username}
         {authUser && isAdminRoute ? (
-          <User
+          <Shield
             aria-hidden
             className="ml-1 inline stroke-2 text-active dark:text-gray-200"
             name="admin"
           />
         ) : (
-          <Shield
+          <User
             aria-hidden
             className="ml-1 inline stroke-2 text-active dark:text-gray-200"
-            name="admin"
+            name="user"
           />
         )}
       </NavLink>

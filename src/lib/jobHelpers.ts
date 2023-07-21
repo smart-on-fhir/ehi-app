@@ -16,7 +16,7 @@ export function displayCreatedDate(
   job: EHIApp.ExportJob | EHIApp.PatientExportJob
 ) {
   const { createdAt } = job;
-  return `Created ${formatDateTime(createdAt)}`;
+  return `Started at ${formatDateTime(createdAt)}`;
 }
 
 // Format when a job was approved in a user-friendly way
