@@ -30,7 +30,8 @@ export default function AppHeader() {
       <nav className="mt-4 flex basis-full space-x-4 sm:mt-0 sm:basis-auto">
         <NavLink
           className={({ isActive }) => (isActive ? "font-bold" : "")}
-          to={`${baseUrl}/`}
+          to={{ pathname: `${baseUrl}/`, hash: "#about" }}
+          reloadDocument={true}
         >
           About
         </NavLink>
