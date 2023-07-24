@@ -19,12 +19,6 @@ export default function Home() {
           delete completed jobs directly from the EHI server. Click below to get
           started experimenting with both these user workflows.
         </p>
-        <p>
-          As you experiment with the application, please report any issues or
-          bugs as issues on our GitHub projects, links provided in the
-          application footer. If you want to expand on this work, feel free to
-          fork the project or star it for future reference.
-        </p>
         <div className="mx-auto flex max-w-md justify-between ">
           <LinkButton variant="emphasized" size="lg" to={`/jobs`}>
             Patient View
@@ -126,6 +120,12 @@ export default function Home() {
             EHI export dashboards for managing export requests, and for the
             standards community in iterating on the current FHIR EHI Export API
             specification.
+          </p>
+          <p>
+            As you experiment with the application, please report any issues or
+            bugs as issues on our GitHub projects, links provided in the footer
+            below. If you expand on this work, feel free to fork the project or
+            star it for future reference.
           </p>
         </div>
       </section>

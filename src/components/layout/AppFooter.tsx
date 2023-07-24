@@ -17,7 +17,7 @@ function AnchorTag({
 
 export default function AppFooter() {
   return (
-    <footer className="flex flex-wrap ">
+    <footer id="footer" className="flex flex-wrap ">
       <div className="flex basis-full flex-col space-y-2 sm:basis-1/2">
         <AnchorTag href="https://github.com/smart-on-fhir/ehi-app">
           <GitHub size="18" className="mr-2 inline" />
