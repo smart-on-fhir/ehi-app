@@ -30,7 +30,8 @@ export default function AuthCheckWrapper({
   if (
     needsAdmin &&
     isAdminRoute &&
-    !(authUser.username === "admin" || authUser.username === "admin2")
+    authUser.username !== "admin" &&
+    authUser.username !== "admin2"
   ) {
     return (
       <Navigate
