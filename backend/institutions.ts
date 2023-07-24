@@ -39,13 +39,15 @@ export async function startAuthorization(req: Request, res: Response) {
   const institution = await byId(+req.params.id);
   const storage = getStorage(req);
   await storage.clear();
+
+  const redirectUri = new URL(`/api/institutions/${institution.id}/redirect`, getRequestBaseURL(req))
+  redirectUri.searchParams.set("referer", req.get("referer") || "")
+  redirectUri.searchParams.set("patients", req.cookies.patients || "")
+
   return smart(req, res, getStorage(req)).authorize({
     clientId: institution.clientId,
     scope: institution.scope,
-    // NOTE: This base url should match whatever invokes completeAuthorization
-    redirectUri: `/api/institutions/${
-      institution.id
-    }/redirect?referer=${req.get("referer")}`,
+    redirectUri: redirectUri.href,
     iss: institution.fhirUrl,
   });
 }
@@ -83,15 +85,18 @@ export async function completeAuthorization(req: Request, res: Response) {
     tokenUri: client.state.tokenUri!,
   });
 
-  // Parse off everything before the ? mark, get the referer param from that
-  // BUG: will lose everything after a potential second ?
-  const referer = new URLSearchParams(req.originalUrl.split("?")[1]).get(
-    "referer"
-  );
+  const patients = String(req.query.patients || "").trim().split(/\s*,\s*/).filter(Boolean)
+  patients.push(client.patient.id!)
+
   // If we have a referer, use that; otherwise use req baseURL
-  const redirectUrl = (referer || getRequestBaseURL(req) + "/") + "jobs";
+  const redirectUrl = [
+    req.query.referer || getRequestBaseURL(req),
+    `/jobs`
+  ].join("/").replace(/\/+/g, "/");
 
   job.sync(); // START POOLING!!!
+
+  res.cookie("patients", patients.join(","), { httpOnly: true });
 
   if (customizeUrl) {
     let url = new URL(customizeUrl);
