@@ -96,7 +96,7 @@ export async function completeAuthorization(req: Request, res: Response) {
 
   job.sync(); // START POOLING!!!
 
-  res.cookie("patients", patients.join(","), { httpOnly: true });
+  res.cookie("patients", patients.join(","));
 
   if (customizeUrl) {
     let url = new URL(customizeUrl);
