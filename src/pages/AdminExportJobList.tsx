@@ -11,17 +11,17 @@ import { useMemo } from "react";
 
 export default function AdminExportJobList() {
   const { refreshJobs, loading, jobs, error } = useAsyncJobs(getExportJobs);
-  const { cookie: jobCookie } = useCookie("job-list");
+  const { cookie: patientCookie } = useCookie("patients");
   const filteredJobs = useMemo(() => {
-    if (jobCookie) {
-      const activePatientIds = jobCookie.split(",");
+    if (patientCookie) {
+      const activePatientIds = patientCookie.split(",");
       return jobs?.filter(
         (job) => activePatientIds.indexOf(job.patient.id) !== -1
       );
     } else {
       return jobs;
     }
-  }, [jobs, jobCookie]);
+  }, [jobs, patientCookie]);
 
   // Always check for new jobs regularly
   usePolling(refreshJobs);

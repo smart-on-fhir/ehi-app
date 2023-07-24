@@ -8,20 +8,23 @@ import { usePolling } from "../hooks/usePolling";
 import { getExportJobs } from "../api/patientApiHandlers";
 import useAsyncJobs from "../hooks/useAsyncJobs";
 import useCookie from "../hooks/useCookie";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 export default function PatientExportJobList() {
   const { refreshJobs, loading, jobs, error } =
     useAsyncJobs<EHIApp.PatientExportJob[]>(getExportJobs);
-  const { cookie: jobCookie, updateCookie } = useCookie("job-list");
-  useEffect(() => {
-    if (jobs) {
-      updateCookie(
-        jobs.map((job: EHIApp.PatientExportJob) => job.patient.id).join(",")
+  const { cookie: patientCookie } = useCookie("patients");
+
+  const filteredJobs: EHIApp.PatientExportJob[] | null = useMemo(() => {
+    if (patientCookie && jobs) {
+      const activePatientIds = patientCookie.split(",");
+      return jobs.filter(
+        (job) => activePatientIds.indexOf(job.patient.id) !== -1
       );
+    } else {
+      return [];
     }
-  }, [jobs, updateCookie]);
-  console.log(jobCookie.split(","));
+  }, [jobs, patientCookie]);
 
   // Always check for new jobs regularly
   usePolling(refreshJobs);
@@ -29,11 +32,11 @@ export default function PatientExportJobList() {
   usePolling(
     refreshJobs,
     500,
-    () => jobs?.some((job) => job.status === "awaiting-input") || false
+    () => filteredJobs?.some((job) => job.status === "awaiting-input") || false
   );
 
   function PageBody() {
-    if (loading && jobs === null) {
+    if (loading && filteredJobs === null) {
       return <Loading display="Loading health record requests..." />;
     } else if (error) {
       return (
@@ -42,11 +45,11 @@ export default function PatientExportJobList() {
           display="There was an error loading health record requests."
         />
       );
-    } else if (jobs) {
+    } else if (filteredJobs) {
       return (
         <ul className="space-y-4">
-          {jobs && jobs.length > 0 ? (
-            jobs.map((job) => (
+          {filteredJobs && filteredJobs.length > 0 ? (
+            filteredJobs.map((job) => (
               <ExportJobListItemPatient
                 key={job.id}
                 job={job}
