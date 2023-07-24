@@ -3,7 +3,7 @@ import LinkButton from "../components/generic/LinkButton";
 
 export default function Home() {
   return (
-    <main className="space-y-6">
+    <main className="space-y-8">
       <section id="app-demo" className="space-y-4">
         <HeadingOne>EHI Export Demo</HeadingOne>
         <p>
@@ -19,7 +19,7 @@ export default function Home() {
           delete completed jobs directly from the EHI server. Click below to get
           started experimenting with both these user workflows.
         </p>
-        <div className="mx-auto flex max-w-md justify-between ">
+        <div className="mx-auto flex max-w-sm justify-between ">
           <LinkButton variant="emphasized" size="lg" to={`/jobs`}>
             Patient View
           </LinkButton>
