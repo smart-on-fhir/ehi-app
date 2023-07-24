@@ -76,6 +76,7 @@ root.render(
                   </AuthCheckWrapper>
                 }
               />
+              <Route path="forbidden" element={<Forbidden />} />
             </Route>
             <Route path="/">
               <Route index element={<HomePage />} />

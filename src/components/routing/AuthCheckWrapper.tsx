@@ -27,7 +27,11 @@ export default function AuthCheckWrapper({
   }
 
   // If admin is needed, we're on an admin route, and the user isn't authenticated then cancel
-  if (needsAdmin && isAdminRoute && authUser.username !== "admin") {
+  if (
+    needsAdmin &&
+    isAdminRoute &&
+    !(authUser.username === "admin" || authUser.username === "admin2")
+  ) {
     return (
       <Navigate
         to={`${baseUrl}/forbidden`}
