@@ -179,7 +179,6 @@ export default class Job {
     // Check against headers to determine if we need to complete the form still
     const customizeUrl = getJobCustomizationUrl(res);
     if (customizeUrl !== "") {
-      console.log("there is still a customize url");
       await wait(config.statusCheckInterval / 10);
       return this.waitForExport();
     }
