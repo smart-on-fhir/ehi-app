@@ -178,6 +178,8 @@ export default class Job {
     // Before we check for status codes
     // Check against headers to determine if we need to complete the form still
     const customizeUrl = getJobCustomizationUrl(res);
+    // If we have a customize Url, the patient still needs to complete this form
+    // Make sure we poll more frequently to avoid poor UX for users just completing their forms
     if (customizeUrl !== "") {
       await wait(config.statusCheckInterval / 10);
       return this.waitForExport();
