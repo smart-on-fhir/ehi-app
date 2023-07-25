@@ -23,6 +23,16 @@ export async function getExportJob(
   return request<EHIApp.PatientExportJob>(`/api/jobs/${id}`, { signal });
 }
 
+export async function deleteExportJob(
+  id: string,
+  signal?: AbortSignal
+): Promise<EHIApp.PatientExportJob> {
+  return request<EHIApp.PatientExportJob>(`/api/jobs/${id}`, {
+    method: "delete",
+    signal,
+  });
+}
+
 export async function abortExportJob(
   id: string,
   signal?: AbortSignal

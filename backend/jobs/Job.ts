@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, rmSync } from "fs";
 // import { copyFile, mkdir, unlink } from "fs/promises";
 import { basename, join } from "path";
 import config from "../config";
@@ -376,11 +376,37 @@ export default class Job {
   /**
    * Aborts a running export
    */
+
   public async abort() {
     if (this.status === "requested") {
       await this.request(true)(this.statusUrl, { method: "DELETE" });
+      this.status = "deleted";
+      return this.save();
     }
-    this.status = "deleted";
-    return this.save();
+    return this;
+  }
+  //NOTE: Basically identical to abort without the status gating;
+  // should we combine and deprecate abort as a concept on the backend?
+  public async destroy() {
+    if (this.id) {
+      await db.promise("run", "BEGIN");
+      try {
+        await db.promise("run", "DELETE FROM jobs WHERE id=?", [this.id]);
+        if (this.statusUrl) {
+          // Try to delete the remote job but ignore errors in case
+          // the remote job is no longer available
+          await this.request(true)(this.statusUrl, { method: "DELETE" }).catch(
+            () => {}
+          );
+        }
+        rmSync(this.directory, { force: true, recursive: true });
+      } catch (ex) {
+        console.error(ex);
+        await db.promise("run", "ROLLBACK");
+        throw new Error(`Unable to delete  job with id jobs/${this.id}/`);
+      }
+      await db.promise("run", "COMMIT");
+    }
+    return this;
   }
 }

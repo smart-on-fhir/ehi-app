@@ -45,6 +45,16 @@ router.get(
   })
 );
 
+router.delete(
+  "/:id",
+  asyncRouteWrap(async (req: Request, res: Response) => {
+    const job = await Job.byId(+req.params.id);
+    requireOwner(job, req);
+    await job.destroy();
+    res.json(job);
+  })
+);
+
 router.post(
   "/:id/abort",
   asyncRouteWrap(async (req: Request, res: Response) => {

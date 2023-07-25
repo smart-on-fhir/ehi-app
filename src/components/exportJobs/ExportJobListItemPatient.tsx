@@ -32,7 +32,7 @@ export default function ExportJobListItemPatient({
           <p className="text-sm ">{displayApprovedDate(job)}</p>
         )}
       </div>
-      <ExportJobAction job={job} status={status} refreshJobs={refreshJobs} />
+      <ExportJobAction job={job} refreshJobs={refreshJobs} />
     </li>
   );
 }
