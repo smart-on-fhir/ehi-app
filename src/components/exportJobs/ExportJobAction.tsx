@@ -19,6 +19,7 @@ function DeleteButton({ job, refreshJobs }: ExportJobActionProps) {
   return (
     <Button
       variant="danger"
+      className="min-w-fit"
       onClick={async () => {
         await deleteExportJob(id)
           .then(() => {
