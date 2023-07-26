@@ -26,13 +26,16 @@ export default function PatientExportJobList() {
 }
 
 /**
- * Contains conditional rendering logic, hoisted into its own component inorder
+ * Contains conditional rendering logic, cleaved into its own component in order
  * to avoid redefining this function every re-render of the overarching list component
  */
 function PageBody() {
   const { refreshJobs, loading, jobs, error } =
     useAsyncJobs<EHIApp.PatientExportJob[]>(getExportJobs);
   const { cookie: patientCookie } = useCookie("patients");
+
+  // Patient-users should only see jobs associated with the patient id they've selected;
+  // filter all others out. This value should update when jobs or our cookie change
   const filteredJobs: EHIApp.PatientExportJob[] | null = useMemo(() => {
     if (patientCookie && jobs) {
       const activePatientIds = patientCookie.split(",");

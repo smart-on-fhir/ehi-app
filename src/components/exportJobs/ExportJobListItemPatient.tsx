@@ -42,6 +42,7 @@ function ExportJobListItemPatient({
   );
 }
 
+// This list-item should only update if the job has updated
 export default React.memo(
   ExportJobListItemPatient,
   jobEqualityMemoizer<EHIApp.PatientExportJob>

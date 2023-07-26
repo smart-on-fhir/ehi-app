@@ -19,17 +19,22 @@ export default function AdminExportJobList() {
 }
 
 /**
- * Contains conditional rendering logic, hoisted into its own component inorder
+ * Contains conditional rendering logic, cleaved into its own component in order
  * to avoid redefining this function every re-render of the overarching list component
  */
 function PageBody() {
   const { refreshJobs, loading, jobs, error } = useAsyncJobs(getExportJobs);
   const { cookie: patientCookie } = useCookie("patients");
+
+  // Admins should see all jobs, but jobs linked with our patients cookie should
+  // be hoisted to the top and styled differently; update this value
+  // whenever the cookie or the jobs change
   const filteredJobs = useMemo(() => {
     if (patientCookie) {
       const activePatientIds = patientCookie.split(",");
       const jobsWithKnownLabels = jobs
         ?.map((job) => {
+          // Mark jobs created by patients in our cookie
           if (activePatientIds.indexOf(job.patient.id) !== -1) {
             job.knownPatientId = true;
             return job;
@@ -37,6 +42,7 @@ function PageBody() {
             return job;
           }
         })
+        // Push all marked jobs to the top
         .sort((j1, j2) => (j2.knownPatientId ? 1 : -1));
       return jobsWithKnownLabels;
     } else {
@@ -46,6 +52,7 @@ function PageBody() {
 
   // Always check for new jobs regularly
   usePolling(refreshJobs);
+
   if (loading && jobs === null) {
     return <Loading display={"Loading current export jobs"} />;
   } else if (error) {

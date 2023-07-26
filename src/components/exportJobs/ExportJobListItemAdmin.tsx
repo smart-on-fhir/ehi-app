@@ -8,14 +8,32 @@ import {
   displayPatientInformation,
 } from "../../lib/jobHelpers";
 
-// function displayOwnedJobNote(job: EHIApp.ExportJob) {
-//   const { knownPatientId } = job;
-//   if (knownPatientId) {
-//     return <p>Created by you</p>;
-//   } else {
-//     return "";
-//   }
-// }
+/**
+ * Render a sentence fragment to visually indicate if this is a known patient
+ * @param knownPatientId whether or not to display this indicator
+ * @returns some stylized text with a leading comma
+ */
+function KnownPatientIndicator({
+  knownPatientId,
+}: {
+  knownPatientId: boolean | undefined;
+}) {
+  if (knownPatientId) {
+    return (
+      <>
+        <span className="opacity-50">{", "}</span>
+        <span
+          className="cursor-default font-bold text-red-600 opacity-100"
+          title="This job is associated with a patient used in the patient-facing app."
+        >
+          Your Patient
+        </span>
+      </>
+    );
+  } else {
+    return null;
+  }
+}
 
 function ExportJobListItemAdmin({ job }: { job: EHIApp.ExportJob }) {
   const { id, status, attachments } = job;
@@ -32,16 +50,9 @@ function ExportJobListItemAdmin({ job }: { job: EHIApp.ExportJob }) {
           Job #{id}
         </h1>
         <pre className="whitespace-pre-wrap text-xs italic">
-          <p className="opacity-50">
-            {displayPatientInformation(job)}
-            {job.knownPatientId && (
-              <span
-                className="cursor-default text-red-600 opacity-100"
-                title="This job is associated with a patient used in the patient-facing app."
-              >
-                , Known Patient
-              </span>
-            )}
+          <p>
+            <span className="opacity-50">{displayPatientInformation(job)}</span>
+            <KnownPatientIndicator knownPatientId={job.knownPatientId} />
           </p>
           <p className="opacity-50">{displayCreatedDate(job)}</p>
           <p className="opacity-50">{`${attachments.length} Attachments`}</p>
@@ -54,6 +65,7 @@ function ExportJobListItemAdmin({ job }: { job: EHIApp.ExportJob }) {
   );
 }
 
+// This list-item should only update if the job has updated
 export default React.memo(
   ExportJobListItemAdmin,
   jobEqualityMemoizer<EHIApp.ExportJob>
