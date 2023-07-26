@@ -7,8 +7,8 @@ import { Plus } from "react-feather";
 import { usePolling } from "../hooks/usePolling";
 import { getExportJobs } from "../api/patientApiHandlers";
 import useAsyncJobs from "../hooks/useAsyncJobs";
-import useCookie from "../hooks/useCookie";
-import { useMemo } from "react";
+// import useCookie from "../hooks/useCookie";
+// import { useMemo } from "react";
 
 export default function PatientExportJobList() {
   return (
@@ -32,20 +32,21 @@ export default function PatientExportJobList() {
 function PageBody() {
   const { refreshJobs, loading, jobs, error } =
     useAsyncJobs<EHIApp.PatientExportJob[]>(getExportJobs);
-  const { cookie: patientCookie } = useCookie("patients");
 
-  // Patient-users should only see jobs associated with the patient id they've selected;
-  // filter all others out. This value should update when jobs or our cookie change
-  const filteredJobs: EHIApp.PatientExportJob[] | null = useMemo(() => {
-    if (patientCookie && jobs) {
-      const activePatientIds = patientCookie.split(",");
-      return jobs.filter(
-        (job) => activePatientIds.indexOf(job.patient.id) !== -1
-      );
-    } else {
-      return [];
-    }
-  }, [jobs, patientCookie]);
+  // TODO: Reevaluate this filtering
+  // const { cookie: patientCookie } = useCookie("patients");
+  // // Patient-users should only see jobs associated with the patient id they've selected;
+  // // filter all others out. This value should update when jobs or our cookie change
+  // const filteredJobs: EHIApp.PatientExportJob[] | null = useMemo(() => {
+  //   if (patientCookie && jobs) {
+  //     const activePatientIds = patientCookie.split(",");
+  //     return jobs.filter(
+  //       (job) => activePatientIds.indexOf(job.patient.id) !== -1
+  //     );
+  //   } else {
+  //     return [];
+  //   }
+  // }, [jobs, patientCookie]);
 
   // Always check for new jobs regularly
   usePolling(refreshJobs);
@@ -53,10 +54,10 @@ function PageBody() {
   usePolling(
     refreshJobs,
     500,
-    () => filteredJobs?.some((job) => job.status === "awaiting-input") || false
+    () => jobs?.some((job) => job.status === "awaiting-input") || false
   );
 
-  if (loading && filteredJobs === null) {
+  if (loading && jobs === null) {
     return <Loading display="Loading health record requests..." />;
   } else if (error) {
     return (
@@ -65,11 +66,11 @@ function PageBody() {
         display="There was an error loading health record requests."
       />
     );
-  } else if (filteredJobs) {
+  } else if (jobs) {
     return (
       <ul className="space-y-4">
-        {filteredJobs && filteredJobs.length > 0 ? (
-          filteredJobs.map((job) => (
+        {jobs && jobs.length > 0 ? (
+          jobs.map((job) => (
             <ExportJobListItemPatient
               key={job.id}
               job={job}
