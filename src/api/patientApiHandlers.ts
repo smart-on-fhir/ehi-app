@@ -1,7 +1,7 @@
 import { request } from "../lib";
 import pkg from "../../package.json";
 
-export function getExportJobLink(id: string) {
+export function getExportJobLink(id: number) {
   if (process.env.NODE_ENV === "production") {
     return `/api/jobs/${id}/download`;
   }
@@ -17,14 +17,14 @@ export async function getExportJobs(
 }
 
 export async function getExportJob(
-  id: string,
+  id: number,
   signal?: AbortSignal
 ): Promise<EHIApp.PatientExportJob> {
   return request<EHIApp.PatientExportJob>(`/api/jobs/${id}`, { signal });
 }
 
 export async function deleteExportJob(
-  id: string,
+  id: number,
   signal?: AbortSignal
 ): Promise<EHIApp.PatientExportJob> {
   return request<EHIApp.PatientExportJob>(`/api/jobs/${id}`, {
@@ -34,7 +34,7 @@ export async function deleteExportJob(
 }
 
 export async function abortExportJob(
-  id: string,
+  id: number,
   signal?: AbortSignal
 ): Promise<EHIApp.PatientExportJob> {
   return request<EHIApp.PatientExportJob>(`/api/jobs/${id}/abort`, {

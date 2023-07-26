@@ -1,14 +1,19 @@
 import ExportJobStatusIndicatorPatient from "./ExportJobStatusIndicatorPatient";
 import ExportJobStatusBlurbPatient from "./ExportJobStatusBlurbPatient";
 import ExportJobAction from "./ExportJobAction";
-import { displayApprovedDate, displayCreatedDate } from "../../lib/jobHelpers";
+import {
+  jobEqualityMemoizer,
+  displayApprovedDate,
+  displayCreatedDate,
+} from "../../lib/jobHelpers";
+import React from "react";
 
 type ExportJobListItemPatientProps = {
   job: EHIApp.PatientExportJob;
   refreshJobs: (signal?: AbortSignal | undefined) => Promise<void>;
 };
 
-export default function ExportJobListItemPatient({
+function ExportJobListItemPatient({
   job,
   refreshJobs,
 }: ExportJobListItemPatientProps) {
@@ -36,3 +41,9 @@ export default function ExportJobListItemPatient({
     </li>
   );
 }
+
+// This list-item should only update if the job has updated
+export default React.memo(
+  ExportJobListItemPatient,
+  jobEqualityMemoizer<EHIApp.PatientExportJob>
+);

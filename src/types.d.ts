@@ -95,7 +95,7 @@ declare namespace EHIApp {
     /**
      * Random 8 char hex job ID
      */
-    id: string;
+    id: number;
 
     userId: number;
     statusUrl: string;
@@ -140,6 +140,11 @@ declare namespace EHIApp {
      * Dictionary specifying what privileged topics should be exported as part of this job
      */
     authorizations?: ExportJobAuthorizations;
+
+    /**
+     * Optional flag for admins to identify jobs that are associated with previously-used patient ids
+     */
+    knownPatientId?: boolean;
   }
 
   ////////////////////////////
@@ -154,7 +159,7 @@ declare namespace EHIApp {
 
   type PatientExportJob = Omit<
     ExportJob,
-    "parameters" | "authorizations" | "status"
+    "parameters" | "authorizations" | "status" | "knownPatientId"
   > & {
     status: PatientExportJobStatus;
   };
