@@ -49,6 +49,9 @@ export async function login(req: Request, res: Response) {
   // 1 second artificial delay to protect from automated brute-force attacks
   await wait(config.authDelay);
 
+  // Whenever somebody tries to login, also delete any expired sessions
+  await db.promise("run", "DELETE FROM sessions WHERE expires <= ?", Date.now()).catch();
+
   try {
     const { username, password, remember } = req.body;
 
