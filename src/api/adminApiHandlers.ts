@@ -6,7 +6,7 @@ const baseUrl = process.env.REACT_APP_EHI_SERVER;
 ///////////
 // JOB API
 
-export function getExportJobLink(id: number) {
+export function getExportJobLink(id: EHIApp.ExportJob["id"]) {
   return `${baseUrl}/admin/jobs/${id}/download`;
 }
 
@@ -20,7 +20,7 @@ export async function getExportJobs(
 }
 
 export async function getExportJob(
-  id: number,
+  id: EHIApp.ExportJob["id"],
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
   return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}`, {
@@ -30,7 +30,7 @@ export async function getExportJob(
 }
 
 export async function updateExportStatus(
-  id: number,
+  id: EHIApp.ExportJob["id"],
   newStatus: "approve" | "reject",
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
@@ -42,7 +42,7 @@ export async function updateExportStatus(
 }
 
 export async function abortExportJob(
-  id: number,
+  id: EHIApp.ExportJob["id"],
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
   return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}/abort`, {
@@ -53,7 +53,7 @@ export async function abortExportJob(
 }
 
 export async function deleteExportJob(
-  id: number,
+  id: EHIApp.ExportJob["id"],
   signal?: AbortSignal
 ): Promise<EHIApp.ExportJob> {
   return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}`, {

@@ -10,7 +10,7 @@ import { useAsyncJob } from "../hooks/useAsyncJob";
 export default function ExportJobViewer() {
   const { id } = useParams();
   function getExportJobWithId(signal?: AbortSignal): Promise<EHIApp.ExportJob> {
-    if (id) return getExportJob(+id, signal);
+    if (id) return getExportJob(id, signal);
     else throw Error("Error in viewing a job: there was no id");
   }
 

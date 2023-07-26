@@ -93,9 +93,9 @@ declare namespace EHIApp {
   }
   export interface ExportJob {
     /**
-     * Random 8 char hex job ID
+     * The ID of this job on the EHI Server
      */
-    id: number;
+    id: string;
 
     userId: number;
     statusUrl: string;
@@ -159,8 +159,10 @@ declare namespace EHIApp {
 
   type PatientExportJob = Omit<
     ExportJob,
-    "parameters" | "authorizations" | "status" | "knownPatientId"
+    "id" | "parameters" | "authorizations" | "status" | "knownPatientId"
   > & {
+    // PatientExportJob's use numeric ids, not string ids
+    id: number;
     status: PatientExportJobStatus;
   };
 }

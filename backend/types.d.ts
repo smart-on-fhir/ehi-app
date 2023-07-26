@@ -71,9 +71,9 @@ declare namespace EHI {
     | "rejected";
   interface ExportJob {
     /**
-     * Random 8 char hex job ID
+     * The ID of this job
      */
-    id: string;
+    id: number;
 
     /**
      * The ID of the exported patient
@@ -185,9 +185,9 @@ declare namespace EHI {
 
   type PatientExportJobStatus =
     | Extract<
-      ExportJobStatus,
-      "awaiting-input" | "requested" | "approved" | "aborted"
-    >
+        ExportJobStatus,
+        "awaiting-input" | "requested" | "approved" | "aborted"
+      >
     | "deleted";
 
   // Note: Not using simple Omit because we need status to change from type ExportJobStatus to PatientExportJobStatus

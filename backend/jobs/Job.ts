@@ -15,8 +15,7 @@ import { EHI } from "../types";
 
 export default class Job {
   /**
-   * The ID of this job in the database (or null for new instances that are
-   * not yet inserted in DB)
+   * The ID of this job in the database
    */
   protected id: number;
 
@@ -353,8 +352,8 @@ export default class Job {
         "run",
         `INSERT INTO "jobs" (${Object.keys(params).join(", ")})
                  VALUES (${Object.keys(params)
-          .map((k) => "?")
-          .join(", ")})`,
+                   .map((k) => "?")
+                   .join(", ")})`,
         Object.values(params)
       );
     }
@@ -402,7 +401,7 @@ export default class Job {
           // Try to delete the remote job but ignore errors in case
           // the remote job is no longer available
           await this.request(true)(this.statusUrl, { method: "DELETE" }).catch(
-            () => { }
+            () => {}
           );
         }
         rmSync(this.directory, { force: true, recursive: true });
