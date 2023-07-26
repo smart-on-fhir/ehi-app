@@ -73,7 +73,7 @@ declare namespace EHI {
     /**
      * Random 8 char hex job ID
      */
-    id: number;
+    id: string;
 
     /**
      * The ID of the exported patient
