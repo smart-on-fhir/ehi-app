@@ -155,20 +155,24 @@ export default class Job {
         delete options.headers?.authorization;
       }
 
-      let res = await fetch(input, options);
+      try {
+        let res = await fetch(input, options);
 
-      if (useAuth && res.status === 401) {
-        await this.refresh();
-        res = await fetch(input, {
-          ...options,
-          headers: {
-            ...options.headers,
-            authorization: "Bearer " + this.accessToken,
-          },
-        });
+        if (useAuth && res.status === 401) {
+          await this.refresh();
+          res = await fetch(input, {
+            ...options,
+            headers: {
+              ...options.headers,
+              authorization: "Bearer " + this.accessToken,
+            },
+          });
+        }
+
+        return res as T;
+      } catch (ex) {
+        throw new HttpError("fetch error: %j", ex);
       }
-
-      return res as T;
     };
   }
 
