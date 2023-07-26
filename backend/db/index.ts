@@ -1,7 +1,10 @@
 import sqlite3, { Database } from "sqlite3"
 import { readFile } from "fs/promises"
+import { existsSync } from "fs"
 
 const ENV = process.env.NODE_ENV || "development"
+const DB_PATH = __dirname + `/database.${ENV}.db`
+const DB_EXISTS = existsSync(DB_PATH)
 
 const db = new (sqlite3.verbose()).Database(__dirname + `/database.${ENV}.db`)
 
@@ -28,6 +31,9 @@ async function promise<T = any>(method: DbMethodName, ...args: any[]): Promise<T
 }
 
 async function init() {
+    if (DB_EXISTS && ENV === "development") {
+        return true
+    }
     mainPromise = executeSQLFile(__dirname + "/tables.sql")
         .then(() => executeSQLFile(__dirname + `/seeds.${ENV}.sql`))
     return mainPromise
