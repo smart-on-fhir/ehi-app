@@ -15,7 +15,6 @@ declare namespace EHI {
     id: number;
     username: string;
     password: string;
-    lastLogin: number | null;
     sid: string | null;
     session: string | null;
   }
@@ -186,9 +185,9 @@ declare namespace EHI {
 
   type PatientExportJobStatus =
     | Extract<
-        ExportJobStatus,
-        "awaiting-input" | "requested" | "approved" | "aborted"
-      >
+      ExportJobStatus,
+      "awaiting-input" | "requested" | "approved" | "aborted"
+    >
     | "deleted";
 
   // Note: Not using simple Omit because we need status to change from type ExportJobStatus to PatientExportJobStatus

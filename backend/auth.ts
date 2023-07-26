@@ -19,7 +19,9 @@ export async function authenticate(
     try {
       const user = await db.promise(
         "get",
-        "SELECT * FROM users WHERE sid=?",
+        `SELECT u.id as id, u.username, s.id as sid, s.session
+         FROM sessions s LEFT JOIN users u ON u.id = s.user_id
+         WHERE s.id=?`,
         sid
       );
       (req as EHI.UserRequest).user = user || null;
@@ -75,25 +77,26 @@ export async function login(req: Request, res: Response) {
     // Generate SID and update the user in DB
     const sid = Crypto.randomBytes(32).toString("hex");
 
-    // Update user's lastLogin and sid properties
-    await db.promise(
-      "run",
-      "UPDATE users SET sid=?, lastLogin=? WHERE id=?",
-      sid,
-      new Date(),
-      user.id
-    );
-
-    // Use session cookies by default
-    let expires: Date | undefined = undefined;
+    const expires = new Date();
 
     // If "remember" is set use cookies that expire in one year
     if (remember) {
-      expires = new Date();
       expires.setFullYear(new Date().getFullYear() + 1);
     }
+    // Otherwise use cookies for 10 minutes
+    else {
+      expires.setMinutes(new Date().getMinutes() + 10);
+    }
 
-    res.cookie("user_sid", sid, { httpOnly: true, expires });
+    await db.promise(
+      "run",
+      "INSERT INTO sessions (id, user_id, expires) VALUES (?, ?, ?)",
+      sid,
+      user.id,
+      expires
+    );
+
+    res.cookie("user_sid", sid, { httpOnly: true, expires, sameSite: "none", secure: true });
     res.json({ id: user.id, username: user.username });
   } catch (ex) {
     debug(ex + "");
@@ -106,17 +109,14 @@ export async function logout(req: EHI.UserRequest, res: Response) {
   const user = req.user;
   if (user) {
     try {
-      await db.promise(
-        "run",
-        "UPDATE users SET sid = NULL WHERE sid=?",
-        user.sid
-      );
-      res.clearCookie("user_sid");
-      return res.end("Logout successful");
+      await db.promise("run", "DELETE FROM sessions WHERE id=?", user.sid);
+      return res.clearCookie("user_sid")
+        .clearCookie("patients")
+        .end("Logout successful");
     } catch (ex) {
       debug(ex + "");
+      return res.status(400).end("Logout failed");
     }
   }
-
-  res.status(400).end("Logout failed");
+  res.status(400).end("Logout failed because you were not logged in");
 }

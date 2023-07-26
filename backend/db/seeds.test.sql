@@ -1,6 +1,10 @@
-INSERT INTO "users" ("id","username","password","sid") VALUES 
-(1, 'patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'USER_SID'), -- Password: patient-password
-(2, 'backup_patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm', 'BACKUP_USER_SID'); -- Password: patient-password
+INSERT INTO "users" ("id","username","password") VALUES 
+(1, 'patient'       , '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm'), -- Password: patient-password
+(2, 'backup_patient', '$2a$10$ZyXp2reLAbPDwNIIqzurIuJMtKgr34Wh3QeG21sjDflZvp5VWy1qm'); -- Password: patient-password
+
+INSERT INTO "sessions" ("id","user_id", "expires") VALUES 
+('USER_SID'       , 1, "DATE('now', '+10 minutes')"),
+('BACKUP_USER_SID', 2, "DATE('now', '+10 minutes')");
 
 
 INSERT INTO "institutions" ("id","displayName","fhirUrl","location","disabled","clientId","scope") VALUES 

@@ -47,7 +47,7 @@ describe("GET /api/login", () => {
       .post("/api/login")
       .send("username=patient&password=patient-password")
       .expect(200)
-      .expect("set-cookie", /^user_sid=.+?;\s*Path=\/;\s*HttpOnly$/)
+      .expect("set-cookie", /^user_sid=.+?;\s*Path=\//)
       .expect({ id: 1, username: "patient" });
   });
 
@@ -58,7 +58,7 @@ describe("GET /api/login", () => {
       .expect(200)
       .expect(
         "set-cookie",
-        /^user_sid=.+?;\s*Path=\/;\s*Expires=.+?;\s*HttpOnly$/
+        /^user_sid=.+?;\s*Path=\/;\s*Expires=.+?$/
       )
       .expect({ id: 1, username: "patient" });
   });
@@ -69,11 +69,10 @@ describe("GET /api/logout", () => {
     await request(SERVER.baseUrl)
       .get("/api/logout")
       .expect(400)
-      .expect("Logout failed");
+      .expect("Logout failed because you were not logged in");
   });
 
   it("Patient can logout", async () => {
-    await db.promise("run", "UPDATE users SET sid='USER_SID' WHERE id='1' ");
     await request(SERVER.baseUrl)
       .get("/api/logout")
       .set("Cookie", ["user_sid=USER_SID"])

@@ -21,15 +21,15 @@ export function getRequestBaseURL(req: Request) {
  * Given an ehi-export response, return a link to customization form if one exists,
  * Otherwise, return empty string
  */
-export function getJobCustomizationUrl(response): string { 
+export function getJobCustomizationUrl(response): string {
     const linkUrl = response.headers.get("Link");
 
     if (linkUrl) {
-      // If there is a patient-interaction link, get it so we can redirect the user there
-      const [href, rel] = linkUrl.split(/\s*;\s*/);
-      if (href && rel === 'rel="patient-interaction"') {
-        return href;
-      }
+        // If there is a patient-interaction link, get it so we can redirect the user there
+        const [href, rel] = linkUrl.split(/\s*;\s*/);
+        if (href && rel === 'rel="patient-interaction"') {
+            return href;
+        }
     }
     return ''
 }
@@ -65,7 +65,7 @@ export function getStorage(req: Request) {
             const session = JSON.parse(user.session || "{}")
             session[key] = value
             user.session = JSON.stringify(session)
-            await db.promise("run", `update "users" set "session"=? where id=?`, [user.session, user.id])
+            await db.promise("run", `update "sessions" set "session"=? where "id"=?`, [user.session, user.sid])
         },
         async get(key: string) {
             const user = (req as EHI.UserRequest).user!
@@ -78,14 +78,14 @@ export function getStorage(req: Request) {
             if (session.hasOwnProperty(key)) {
                 delete session[key]
                 user.session = JSON.stringify(session)
-                await db.promise("run", `update "users" set "session"=? where "id"=?`, [user.session, user.id])
+                await db.promise("run", `update "sessions" set "session"=? where "id"=?`, [user.session, user.sid])
                 return true
             }
             return false
         },
         async clear() {
             const user = (req as EHI.UserRequest).user!
-            await db.promise("run", `update "users" set "session"=? where "id"=?`, ['{}', +user.id])
+            await db.promise("run", `update "sessions" set "session"=? where "id"=?`, ['{}', user.sid])
         }
     }
 }

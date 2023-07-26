@@ -1,16 +1,19 @@
 DROP TABLE IF EXISTS "users";
-
 CREATE TABLE "users"(
 	"id"        Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"username"  Text NOT NULL,
-	"password"  Text NOT NULL,
-	"lastLogin" DateTime,
-	"sid"       Text,
-	"session"   Text
+	"password"  Text NOT NULL
+);
+
+DROP TABLE IF EXISTS "sessions";
+CREATE TABLE "sessions"(
+	"id"      Text NOT NULL,
+	"user_id" Integer NOT NULL,
+	"expires" DateTime NOT NULL,
+	"session" Text
 );
 
 DROP TABLE IF EXISTS "institutions";
-
 CREATE TABLE "institutions"(
 	"id"          Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"displayName" Text NOT NULL,
@@ -22,7 +25,6 @@ CREATE TABLE "institutions"(
 );
 
 DROP TABLE IF EXISTS "jobs";
-
 CREATE TABLE "jobs"(
 	"id"             Integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"userId"         Integer NOT NULL,
