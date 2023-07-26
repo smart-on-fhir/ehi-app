@@ -11,10 +11,28 @@ import useCookie from "../hooks/useCookie";
 import { useMemo } from "react";
 
 export default function PatientExportJobList() {
+  return (
+    <>
+      <div className="flex items-baseline justify-between">
+        <HeadingOne>My EHI Exports</HeadingOne>
+        <LinkButton variant="emphasized" size="lg" to="/institutionSelection">
+          <Plus size={16} className="mr-2 inline" />
+          New Export
+        </LinkButton>
+      </div>
+      <PageBody />
+    </>
+  );
+}
+
+/**
+ * Contains conditional rendering logic, hoisted into its own component inorder
+ * to avoid redefining this function every re-render of the overarching list component
+ */
+function PageBody() {
   const { refreshJobs, loading, jobs, error } =
     useAsyncJobs<EHIApp.PatientExportJob[]>(getExportJobs);
   const { cookie: patientCookie } = useCookie("patients");
-
   const filteredJobs: EHIApp.PatientExportJob[] | null = useMemo(() => {
     if (patientCookie && jobs) {
       const activePatientIds = patientCookie.split(",");
@@ -35,53 +53,38 @@ export default function PatientExportJobList() {
     () => filteredJobs?.some((job) => job.status === "awaiting-input") || false
   );
 
-  function PageBody() {
-    if (loading && filteredJobs === null) {
-      return <Loading display="Loading health record requests..." />;
-    } else if (error) {
-      return (
-        <ErrorMessage
-          error={error}
-          display="There was an error loading health record requests."
-        />
-      );
-    } else if (filteredJobs) {
-      return (
-        <ul className="space-y-4">
-          {filteredJobs && filteredJobs.length > 0 ? (
-            filteredJobs.map((job) => (
-              <ExportJobListItemPatient
-                key={job.id}
-                job={job}
-                refreshJobs={refreshJobs}
-              />
-            ))
-          ) : (
-            <>
-              <p>No exports were found on the server.</p>
-              <p>
-                Click the "New Export" button to start exporting your electronic
-                health information from any supported institution.
-              </p>
-            </>
-          )}
-        </ul>
-      );
-    } else {
-      return null;
-    }
+  if (loading && filteredJobs === null) {
+    return <Loading display="Loading health record requests..." />;
+  } else if (error) {
+    return (
+      <ErrorMessage
+        error={error}
+        display="There was an error loading health record requests."
+      />
+    );
+  } else if (filteredJobs) {
+    return (
+      <ul className="space-y-4">
+        {filteredJobs && filteredJobs.length > 0 ? (
+          filteredJobs.map((job) => (
+            <ExportJobListItemPatient
+              key={job.id}
+              job={job}
+              refreshJobs={refreshJobs}
+            />
+          ))
+        ) : (
+          <>
+            <p>No exports were found on the server.</p>
+            <p>
+              Click the "New Export" button to start exporting your electronic
+              health information from any supported institution.
+            </p>
+          </>
+        )}
+      </ul>
+    );
+  } else {
+    return null;
   }
-
-  return (
-    <>
-      <div className="flex items-baseline justify-between">
-        <HeadingOne>My EHI Exports</HeadingOne>
-        <LinkButton variant="emphasized" size="lg" to="/institutionSelection">
-          <Plus size={16} className="mr-2 inline" />
-          New Export
-        </LinkButton>
-      </div>
-      <PageBody />
-    </>
-  );
 }

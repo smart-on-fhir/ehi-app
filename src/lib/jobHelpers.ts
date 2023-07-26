@@ -28,6 +28,19 @@ export function displayApprovedDate(
   return `Completed ${formatDateTime(approvedAt)}`;
 }
 
+/**
+ * A generic memoizer function for admin and patient job-lists
+ * to check if incoming props contain a different job and require a re-render
+ * @param prevProps
+ * @param nextProps
+ * @returns true if the jobs are equal, false otherwise
+ */
+export function jobEqualityMemoizer<
+  T extends EHIApp.ExportJob | EHIApp.PatientExportJob
+>(prevProps: { job: T }, nextProps: { job: T }) {
+  return JSON.stringify(prevProps.job) === JSON.stringify(nextProps.job);
+}
+
 ///////////////////
 // Admin only
 
