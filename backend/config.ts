@@ -28,4 +28,10 @@ export default {
 
   // Keep approved jobs for how long (minutes since approval)?
   approvedJobMaxLifetimeMinutes: +(env.APPROVED_JOBS_LIFETIME_MINUTES || 60),
+
+  // session cookie lifetime in minutes
+  sessionLifetimeMinutes: 10,
+
+  // should we renew the session cookie and only let expire due to inactivity?
+  rollingSession: true
 };

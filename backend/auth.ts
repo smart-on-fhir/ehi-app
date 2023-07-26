@@ -24,7 +24,20 @@ export async function authenticate(
          WHERE s.id=?`,
         sid
       );
-      (req as EHI.UserRequest).user = user || null;
+      if (user) {
+        if (config.rollingSession && req.headers["x-request-type"] !== "polling") {
+          const expires = new Date()
+          expires.setMinutes(expires.getMinutes() + config.sessionLifetimeMinutes);
+          await db.promise(
+            "run",
+            "UPDATE sessions SET expires=? WHERE id=?",
+            expires,
+            sid
+          );
+          res.cookie("user_sid", sid, { httpOnly: true, expires, sameSite: "none", secure: true });
+        }
+        (req as EHI.UserRequest).user = user;
+      }
     } catch (ex) {
       debug(ex + "");
     }
@@ -81,15 +94,7 @@ export async function login(req: Request, res: Response) {
     const sid = Crypto.randomBytes(32).toString("hex");
 
     const expires = new Date();
-
-    // If "remember" is set use cookies that expire in one year
-    if (remember) {
-      expires.setFullYear(new Date().getFullYear() + 1);
-    }
-    // Otherwise use cookies for 10 minutes
-    else {
-      expires.setMinutes(new Date().getMinutes() + 10);
-    }
+    expires.setMinutes(expires.getMinutes() + config.sessionLifetimeMinutes);
 
     await db.promise(
       "run",
