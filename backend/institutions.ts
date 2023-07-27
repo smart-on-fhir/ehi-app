@@ -94,15 +94,17 @@ export async function completeAuthorization(req: Request, res: Response) {
     `/jobs`
   ].join("/").replace(/\/+/g, "/");
 
-  job.sync(); // START POOLING!!!
-
   res.cookie("patients", patients.join(","), { sameSite: "strict", secure: true });
 
   if (customizeUrl) {
     let url = new URL(customizeUrl);
     url.searchParams.set("redirect", redirectUrl);
+    await job.setStatus("awaiting-input")
+    job.sync();
     res.redirect(url.href);
   } else {
+    await job.setStatus("requested")
+    job.sync();
     res.redirect(redirectUrl);
   }
 }

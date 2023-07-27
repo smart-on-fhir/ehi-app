@@ -286,18 +286,11 @@ export default class Job {
   }
 
   public async sync(): Promise<Job> {
-    if (!this.status) {
-      this.status = "awaiting-input";
+    await this.waitForExport();
+    if (this.status === "approved") {
+      await this.fetchExportedFiles();
       await this.save();
-      // Side-effect: should change status
-      await this.waitForExport();
-      // @ts-ignore
-      if (this.status === "approved") {
-        await this.fetchExportedFiles();
-        await this.save();
-      }
     }
-
     return this;
   }
 
