@@ -192,8 +192,7 @@ export default class Job {
     if (res.status === 202) {
       // We might have been in an awaiting-input stage; if we aren't requested already, change status
       if (this.status !== "requested") {
-        this.status = "requested";
-        this.save();
+        await this.setStatus("requested");
       }
       await wait(config.statusCheckInterval);
       return this.waitForExport();
@@ -202,9 +201,8 @@ export default class Job {
     // Base Case: The export is complete, we can save and finish
     if (res.status === 200) {
       this.manifest = await res.json();
-      this.status = "approved";
       this.approvedAt = Date.now();
-      return this.save();
+      return this.setStatus("approved");
     }
 
     // Base Case: Job is deleted on the ehi-server
@@ -217,14 +215,12 @@ export default class Job {
           return this;
         } else {
           // Else, we have a 404; the job was deleted
-          this.status = "deleted";
-          return this.save();
+          return this.setStatus("deleted");
         }
       } catch {
         // If Job.byId throws an error, then the job manager
         // recycled this job already; mark ourselves deleted
-        this.status = "deleted";
-        return this.save();
+        return this.setStatus("deleted");
       }
     }
 
@@ -282,6 +278,11 @@ export default class Job {
       }
     }
     return this;
+  }
+
+  public async setStatus(status: EHI.PatientExportJobStatus): Promise<Job> {
+    this.status = status
+    return this.save()
   }
 
   public async sync(): Promise<Job> {
@@ -350,10 +351,8 @@ export default class Job {
     } else {
       await db.promise(
         "run",
-        `INSERT INTO "jobs" (${Object.keys(params).join(", ")})
-                 VALUES (${Object.keys(params)
-                   .map((k) => "?")
-                   .join(", ")})`,
+        `INSERT INTO "jobs" (${Object.keys(params).join(", ")}) VALUES
+        (${Object.keys(params).map((k) => "?").join(", ")})`,
         Object.values(params)
       );
     }
@@ -385,8 +384,7 @@ export default class Job {
   public async abort() {
     if (this.status === "requested") {
       await this.request(true)(this.statusUrl, { method: "DELETE" });
-      this.status = "deleted";
-      return this.save();
+      return this.setStatus("deleted");
     }
     return this;
   }
@@ -400,9 +398,7 @@ export default class Job {
         if (this.statusUrl) {
           // Try to delete the remote job but ignore errors in case
           // the remote job is no longer available
-          await this.request(true)(this.statusUrl, { method: "DELETE" }).catch(
-            () => {}
-          );
+          await this.request(true)(this.statusUrl, { method: "DELETE" }).catch();
         }
         rmSync(this.directory, { force: true, recursive: true });
       } catch (ex) {
