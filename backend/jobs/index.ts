@@ -26,12 +26,8 @@ router.use(requireAuth());
 router.get(
   "/",
   asyncRouteWrap(async (req: Request, res: Response) => {
-    const { id: userId } = (req as EHI.AuthenticatedRequest).user;
-    const params: any[] = [];
-    let sql = "SELECT * FROM jobs";
-    sql += " WHERE userId=?";
-    params.push(userId);
-    const jobs = await db.promise("all", sql, params);
+    const { id } = (req as EHI.AuthenticatedRequest).user;
+    const jobs = await db.promise("all", "SELECT * FROM jobs WHERE userId=?", [id]);
     res.json(jobs.map((j: any) => new Job(j)));
   })
 );
