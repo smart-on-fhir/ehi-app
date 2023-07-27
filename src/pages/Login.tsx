@@ -51,15 +51,18 @@ export default function Login() {
               autoComplete="current-password"
             />
           </label>
-          <label className="block">
-            <input
-              className="mr-2"
-              type="checkbox"
-              checked={remember}
-              onChange={(e) => setRemember(e.target.checked)}
-            />
-            Remember Me
-          </label>
+          {/* Only render the remember-me checkbox on admin logins */}
+          {isAdminRoute && (
+            <label className="block">
+              <input
+                className="mr-2"
+                type="checkbox"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+              />
+              Remember Me
+            </label>
+          )}
           <button
             className="d bled:bg-opacity-80 h-12 w-full rounded border bg-active py-2 text-xl
             text-white"

@@ -1,6 +1,7 @@
 import { useState, useContext, createContext, ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router";
 import useSessionStorage from "../hooks/useSessionStorage";
+import { isAdminRoute as isAdminRouteFn } from "../lib";
 
 export interface AuthContextInterface {
   authUser: EHIApp.AuthUser | null;
@@ -10,7 +11,7 @@ export interface AuthContextInterface {
   login: (
     username: string,
     password: string,
-    remember: boolean
+    remember?: boolean
   ) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -21,13 +22,13 @@ const authContext = createContext<AuthContextInterface>(null!);
  * Create a payload for logging to the ehi-app's backend
  * @param username
  * @param password
- * @param remember should the account credentials persist for a long time?
+ * @param remember optional
  * @returns
  */
 function buildLoginPayload(
   username: string,
   password: string,
-  remember: boolean
+  remember?: boolean
 ) {
   const payload = new URLSearchParams();
   payload.set("username", username);
@@ -42,7 +43,7 @@ function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
   // Track if we are displaying the admin version of pages or not
-  const isAdminRoute = location.pathname.indexOf("/admin") !== -1;
+  const isAdminRoute = isAdminRouteFn(location);
   const [authUser, setAuthUser] = useSessionStorage<EHIApp.AuthUser | null>(
     isAdminRoute ? "admin" : "user",
     null
@@ -58,7 +59,7 @@ function useAuth() {
     async login(
       username: string,
       password: string,
-      remember: boolean
+      remember?: boolean
     ): Promise<void> {
       setAuthLoading(true);
       setAuthError(null);

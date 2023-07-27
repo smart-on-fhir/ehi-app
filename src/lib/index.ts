@@ -1,3 +1,14 @@
+import { Location as ReactRouterLocation } from "react-router";
+
+/**
+ * A helper function that takes either a native Location object
+ * or a react-router Location and determines if its on an admin page
+ * @param ms
+ */
+export function isAdminRoute(location: Location | ReactRouterLocation) {
+  return location.pathname.indexOf("/admin") !== -1;
+}
+
 export async function sleep(ms: number) {
   await new Promise((r) => setTimeout(r, ms));
 }
@@ -35,6 +46,15 @@ export async function request<T>(
         );
       }
     }
+    // Handle 401 errors by returning to the login page
+    if (res.status === 401) {
+      const isAdmin = isAdminRoute(window.location);
+      // isAdmin
+      //   ? window.location.assign("/admin/login")
+      //   : window.location.assign("/login");
+      console.log("SEE 401");
+    }
+
     // else, provide default message
     throw new Error(res.status + ": " + (body || res.statusText));
   }

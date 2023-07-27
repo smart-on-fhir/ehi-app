@@ -37,6 +37,10 @@ export async function authenticate(
           res.cookie("user_sid", sid, { httpOnly: true, expires, sameSite: "none", secure: true });
         }
         (req as EHI.UserRequest).user = user;
+      } else { 
+        // Delete the user_sid cookie if there is user matching this session
+        res.clearCookie("user_sid")
+          .clearCookie("patients")
       }
     } catch (ex) {
       debug(ex + "");
