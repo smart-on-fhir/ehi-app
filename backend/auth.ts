@@ -25,22 +25,31 @@ export async function authenticate(
         sid
       );
       if (user) {
-        if (config.rollingSession && req.headers["x-request-type"] !== "polling") {
-          const expires = new Date()
-          expires.setMinutes(expires.getMinutes() + config.sessionLifetimeMinutes);
+        if (
+          config.rollingSession &&
+          req.headers["x-request-type"] !== "polling"
+        ) {
+          const expires = new Date();
+          expires.setMinutes(
+            expires.getMinutes() + config.sessionLifetimeMinutes
+          );
           await db.promise(
             "run",
             "UPDATE sessions SET expires=? WHERE id=?",
             expires,
             sid
           );
-          res.cookie("user_sid", sid, { httpOnly: true, expires, sameSite: "none", secure: true });
+          res.cookie("user_sid", sid, {
+            httpOnly: true,
+            expires,
+            sameSite: "none",
+            secure: true,
+          });
         }
         (req as EHI.UserRequest).user = user;
-      } else { 
+      } else {
         // Delete the user_sid cookie if there is user matching this session
-        res.clearCookie("user_sid")
-          .clearCookie("patients")
+        res.clearCookie("user_sid").clearCookie("patients");
       }
     } catch (ex) {
       debug(ex + "");
@@ -67,7 +76,9 @@ export async function login(req: Request, res: Response) {
   await wait(config.authDelay);
 
   // Whenever somebody tries to login, also delete any expired sessions
-  await db.promise("run", "DELETE FROM sessions WHERE expires <= ?", Date.now()).catch();
+  await db
+    .promise("run", "DELETE FROM sessions WHERE expires <= ?", Date.now())
+    .catch();
 
   try {
     const { username, password, remember } = req.body;
@@ -108,7 +119,12 @@ export async function login(req: Request, res: Response) {
       expires
     );
 
-    res.cookie("user_sid", sid, { httpOnly: true, expires, sameSite: "none", secure: true });
+    res.cookie("user_sid", sid, {
+      httpOnly: true,
+      expires,
+      sameSite: "none",
+      secure: true,
+    });
     res.json({ id: user.id, username: user.username });
   } catch (ex) {
     debug(ex + "");
@@ -122,7 +138,8 @@ export async function logout(req: EHI.UserRequest, res: Response) {
   if (user) {
     try {
       await db.promise("run", "DELETE FROM sessions WHERE id=?", user.sid);
-      return res.clearCookie("user_sid")
+      return res
+        .clearCookie("user_sid")
         .clearCookie("patients")
         .end("Logout successful");
     } catch (ex) {
