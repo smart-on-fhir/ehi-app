@@ -10,7 +10,7 @@ import { useNotificationContext } from "../../context/notificationContext";
 
 type ExportJobActionProps = {
   job: EHIApp.PatientExportJob;
-  refreshJobs: (signal?: AbortSignal | undefined) => Promise<void>;
+  refreshJobs: (requestOptions?: RequestInit) => Promise<void>;
 };
 
 function DeleteButton({ job, refreshJobs }: ExportJobActionProps) {

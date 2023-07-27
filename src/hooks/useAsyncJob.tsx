@@ -4,7 +4,7 @@ import { useAsync } from "./useAsync";
 type EitherExport = EHIApp.ExportJob | EHIApp.PatientExportJob;
 
 interface UseAsyncJobHook<T extends EitherExport> {
-  refreshJob: (signal?: AbortSignal | undefined) => Promise<void>;
+  refreshJob: (requestOptions?: RequestInit) => Promise<void>;
   updateJob: (newJob: T) => void;
   loading: boolean;
   job: T | null;
@@ -12,7 +12,7 @@ interface UseAsyncJobHook<T extends EitherExport> {
 }
 
 export function useAsyncJob<T extends EitherExport>(
-  getJobFn: (signal?: AbortSignal) => Promise<T>
+  getJobFn: (requestOptions?: RequestInit) => Promise<T>
 ): UseAsyncJobHook<T> {
   const {
     execute: refreshJob,

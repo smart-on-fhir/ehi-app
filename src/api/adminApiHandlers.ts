@@ -11,20 +11,20 @@ export function getExportJobLink(id: EHIApp.ExportJob["id"]) {
 }
 
 export async function getExportJobs(
-  signal?: AbortSignal
+  requestOptions?: RequestInit
 ): Promise<EHIApp.ExportJob[]> {
   return request<EHIApp.ExportJob[]>(`${baseUrl}/admin/jobs`, {
-    signal,
+    ...requestOptions,
     credentials: "include",
   });
 }
 
 export async function getExportJob(
   id: EHIApp.ExportJob["id"],
-  signal?: AbortSignal
+  requestOptions?: RequestInit
 ): Promise<EHIApp.ExportJob> {
   return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}`, {
-    signal,
+    ...requestOptions,
     credentials: "include",
   });
 }
@@ -32,34 +32,34 @@ export async function getExportJob(
 export async function updateExportStatus(
   id: EHIApp.ExportJob["id"],
   newStatus: "approve" | "reject",
-  signal?: AbortSignal
+  requestOptions?: RequestInit
 ): Promise<EHIApp.ExportJob> {
   return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}/${newStatus}`, {
+    ...requestOptions,
     method: "post",
-    signal,
     credentials: "include",
   });
 }
 
 export async function abortExportJob(
   id: EHIApp.ExportJob["id"],
-  signal?: AbortSignal
+  requestOptions?: RequestInit
 ): Promise<EHIApp.ExportJob> {
   return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}/abort`, {
+    ...requestOptions,
     method: "post",
     credentials: "include",
-    signal,
   });
 }
 
 export async function deleteExportJob(
   id: EHIApp.ExportJob["id"],
-  signal?: AbortSignal
+  requestOptions?: RequestInit
 ): Promise<EHIApp.ExportJob> {
   return request<EHIApp.ExportJob>(`${baseUrl}/admin/jobs/${id}`, {
+    ...requestOptions,
     method: "delete",
     credentials: "include",
-    signal,
   });
 }
 

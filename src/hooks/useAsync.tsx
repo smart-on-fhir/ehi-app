@@ -7,7 +7,7 @@ interface State<T> {
 }
 
 interface UseAsyncHook<T> {
-  execute: (signal?: AbortSignal) => Promise<void>;
+  execute: (requestOptions?: RequestInit) => Promise<void>;
   loading: boolean;
   result: T | null;
   error: Error | null;
@@ -19,7 +19,7 @@ function reducer<T>(state: State<T>, payload: Partial<State<T>>): State<T> {
 }
 
 export function useAsync<T>(
-  fn: (signal?: AbortSignal) => Promise<T>,
+  fn: (requestOptions?: RequestInit) => Promise<T>,
   immediate = false
 ): UseAsyncHook<T> {
   const [state, dispatch] = useReducer(reducer<T>, {
@@ -29,17 +29,31 @@ export function useAsync<T>(
   });
 
   const execute = useCallback(
-    (signal?: AbortSignal) => {
+    (requestOptions?: RequestInit) => {
       dispatch({ loading: true, error: null });
-      return fn(signal).then(
+      return fn(requestOptions).then(
         (result: T) => {
-          if (!signal?.aborted) {
+          // If we don't have request options, just dispatch the result
+          if (requestOptions === undefined) {
             dispatch({ loading: false, result });
+          } else {
+            // Otherwise, only dispatch the result if we haven't had the signal aborted
+            const { signal } = requestOptions;
+            if (!signal?.aborted) {
+              dispatch({ loading: false, result });
+            }
           }
         },
         (error: Error) => {
-          if (!signal?.aborted) {
+          // If we don't have request options, just dispatch the error
+          if (requestOptions === undefined) {
             dispatch({ loading: false, error });
+          } else {
+            // Otherwise, only dispatch the error if we haven't had the signal aborted
+            const { signal } = requestOptions;
+            if (!signal?.aborted) {
+              dispatch({ loading: false, error });
+            }
           }
         }
       );
@@ -51,7 +65,7 @@ export function useAsync<T>(
     const abortController = new AbortController();
 
     if (immediate) {
-      execute(abortController.signal);
+      execute({ signal: abortController.signal });
     }
     return () => {
       dispatch({ result: null, loading: false });

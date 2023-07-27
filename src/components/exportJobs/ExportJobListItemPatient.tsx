@@ -10,7 +10,7 @@ import React from "react";
 
 type ExportJobListItemPatientProps = {
   job: EHIApp.PatientExportJob;
-  refreshJobs: (signal?: AbortSignal | undefined) => Promise<void>;
+  refreshJobs: (requestOptions?: RequestInit) => Promise<void>;
 };
 
 function ExportJobListItemPatient({

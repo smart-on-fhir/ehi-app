@@ -4,11 +4,9 @@ import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import HeadingOne from "../components/generic/HeadingOne";
 import { Plus } from "react-feather";
-import { usePolling } from "../hooks/usePolling";
 import { getExportJobs } from "../api/patientApiHandlers";
 import useAsyncJobs from "../hooks/useAsyncJobs";
-// import useCookie from "../hooks/useCookie";
-// import { useMemo } from "react";
+import { usePollingWithRequestTypeHeader } from "../hooks/usePollingWithRequestTypeHeader";
 
 export default function PatientExportJobList() {
   return (
@@ -49,9 +47,9 @@ function PageBody() {
   // }, [jobs, patientCookie]);
 
   // Always check for new jobs regularly
-  usePolling(refreshJobs);
+  usePollingWithRequestTypeHeader(refreshJobs);
   // If there's an awaiting-input job, check more regularly
-  usePolling(
+  usePollingWithRequestTypeHeader(
     refreshJobs,
     500,
     () => jobs?.some((job) => job.status === "awaiting-input") || false

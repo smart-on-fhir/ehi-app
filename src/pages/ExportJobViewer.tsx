@@ -3,14 +3,19 @@ import { useParams } from "react-router";
 import Loading from "../components/generic/Loading";
 import ErrorMessage from "../components/generic/ErrorMessage";
 import ExportJobDetailView from "../components/exportJobs/ExportJobDetailView";
-import { usePolling } from "../hooks/usePolling";
 import { getExportJob } from "../api/adminApiHandlers";
 import { useAsyncJob } from "../hooks/useAsyncJob";
+import { usePolling } from "../hooks/usePolling";
 
 export default function ExportJobViewer() {
   const { id } = useParams();
-  function getExportJobWithId(signal?: AbortSignal): Promise<EHIApp.ExportJob> {
-    if (id) return getExportJob(id, signal);
+
+  // Wrap getExportJob with the ID we pull from url params,
+  // and have it optionally consume RequestOptions
+  function getExportJobWithId(
+    requestOptions?: RequestInit
+  ): Promise<EHIApp.ExportJob> {
+    if (id) return getExportJob(id, requestOptions);
     else throw Error("Error in viewing a job: there was no id");
   }
 
