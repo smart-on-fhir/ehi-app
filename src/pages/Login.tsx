@@ -7,13 +7,12 @@ import SpinningLoader from "../components/generic/SpinningLoader";
 export default function Login() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [remember, setRemember] = useState<boolean>(false);
   const { login, authLoading, authError, isAdminRoute } = useAuthConsumer();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (username && password) {
-      login(username, password, remember);
+      login(username, password);
     }
   }
 
@@ -53,18 +52,6 @@ export default function Login() {
               autoComplete={`${isAdminRoute ? "admin" : "patient"}-password`}
             />
           </label>
-          {/* Only render the remember-me checkbox on admin logins */}
-          {isAdminRoute && (
-            <label className="block">
-              <input
-                className="mr-2"
-                type="checkbox"
-                checked={remember}
-                onChange={(e) => setRemember(e.target.checked)}
-              />
-              Remember Me
-            </label>
-          )}
           <button
             className="d bled:bg-opacity-80 h-12 w-full rounded border bg-active py-2 text-xl
             text-white"

@@ -9,11 +9,7 @@ export interface AuthContextInterface {
   authError: string | null;
   isAdminRoute: boolean;
   navigateToLogin: () => void;
-  login: (
-    username: string,
-    password: string,
-    remember?: boolean
-  ) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   localLogout: () => void;
   logout: () => Promise<void>;
 }
@@ -24,20 +20,12 @@ const authContext = createContext<AuthContextInterface>(null!);
  * Create a payload for logging to the ehi-app's backend
  * @param username
  * @param password
- * @param remember optional
  * @returns
  */
-function buildLoginPayload(
-  username: string,
-  password: string,
-  remember?: boolean
-) {
+function buildLoginPayload(username: string, password: string) {
   const payload = new URLSearchParams();
   payload.set("username", username);
   payload.set("password", password);
-  if (remember) {
-    payload.set("remember", String(remember));
-  }
   return payload;
 }
 
@@ -90,14 +78,10 @@ function useAuth() {
      * Makes a login request and updates loading/authUser/error based on responses
      *
      */
-    async login(
-      username: string,
-      password: string,
-      remember?: boolean
-    ): Promise<void> {
+    async login(username: string, password: string): Promise<void> {
       setAuthLoading(true);
       setAuthError(null);
-      const payload = buildLoginPayload(username, password, remember);
+      const payload = buildLoginPayload(username, password);
 
       const loginEndpoint = isAdminRoute
         ? `${process.env.REACT_APP_EHI_SERVER}/admin/login`
