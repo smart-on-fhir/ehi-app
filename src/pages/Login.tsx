@@ -35,7 +35,8 @@ export default function Login() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              autoComplete="username"
+              name={`${isAdminRoute ? "admin" : "patient"}-username`}
+              autoComplete={`${isAdminRoute ? "admin" : "patient"}-username`}
               autoCapitalize="none"
             />
           </label>
@@ -48,7 +49,8 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
+              name={`${isAdminRoute ? "admin" : "patient"}-password`}
+              autoComplete={`${isAdminRoute ? "admin" : "patient"}-password`}
             />
           </label>
           {/* Only render the remember-me checkbox on admin logins */}
