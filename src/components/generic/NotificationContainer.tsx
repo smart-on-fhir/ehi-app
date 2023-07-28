@@ -35,7 +35,7 @@ export default function NotificationContainer(): JSX.Element | null {
 
   if (!notifications) return null;
   return createPortal(
-    <div className={`absolute bottom-0 right-0 m-4 flex-col space-y-1`}>
+    <div className={`fixed bottom-0 right-0 m-4 flex-col space-y-1`}>
       {Object.entries(notifications).map(([id, notification], i) => {
         const onClose = () => deleteNotification(id);
         let variantStyles = "";

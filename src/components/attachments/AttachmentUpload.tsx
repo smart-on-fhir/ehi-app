@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { formatBytes, MAX_FILE_SIZE } from "../../lib/attachmentUploadHelpers";
+import { SUPPORTED_FILES_TEXT } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
-import { MAX_FILE_NUM, uploadAttachments } from "../../api/adminApiHandlers";
+import { uploadAttachments } from "../../api/adminApiHandlers";
 
 const SUPPORTED_FILES = [
   // Data Files
@@ -22,9 +22,6 @@ const SUPPORTED_FILES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
-const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats. Upload up to ${formatBytes(
-  MAX_FILE_SIZE
-)} total across ${MAX_FILE_NUM} different files at a time.`;
 
 type AttachmentUploadProps = {
   jobId: EHIApp.ExportJob["id"];
