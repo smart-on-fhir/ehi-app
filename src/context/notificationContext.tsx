@@ -4,7 +4,6 @@ import {
   ReactNode,
   createContext,
   useContext,
-  useEffect,
   useState,
   useCallback,
 } from "react";
@@ -86,9 +85,8 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   }
 
   // In addition to tracking the notification information, we need to create and decay them
-  // A loopup storing all our notification timeouts
-  const [notificationTimeoutMap, setNotificationTimeoutMap] =
-    useState<NotificationTimeoutLookup>({});
+  // A lookpup storing all our notification timeouts
+  const [, setNotificationTimeoutMap] = useState<NotificationTimeoutLookup>({});
 
   // Create and store a new timeout fn for a notification,
   const createNotificationTimeout = useCallback(

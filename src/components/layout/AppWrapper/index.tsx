@@ -36,6 +36,7 @@ export default function AppWrapper({ children }: AppWrapperProps) {
           <Wave
             title="Decorative wave"
             preserveAspectRatio="none"
+            // NOTE: this needs to be changed manually if we change colors
             fill={isAdminRoute ? "#1C1917" : "#72663C"}
           />
         </div>

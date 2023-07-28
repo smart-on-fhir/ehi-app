@@ -1,3 +1,16 @@
+import { Location as ReactRouterLocation } from "react-router";
+import { UnauthorizedError } from "./errors";
+
+/**
+ * A helper function that takes either a native Location object
+ * or a react-router Location and determines if its on an admin page
+ * @param location A Location object
+ * @returns true if we are a
+ */
+export function isAdminRoute(location: Location | ReactRouterLocation) {
+  return location.pathname.indexOf("/admin") !== -1;
+}
+
 export async function sleep(ms: number) {
   await new Promise((r) => setTimeout(r, ms));
 }
@@ -35,6 +48,11 @@ export async function request<T>(
         );
       }
     }
+    // Handle 401 errors by throwing an UnauthorizedError
+    if (res.status === 401) {
+      throw new UnauthorizedError("Unauthorized 401");
+    }
+
     // else, provide default message
     throw new Error(res.status + ": " + (body || res.statusText));
   }

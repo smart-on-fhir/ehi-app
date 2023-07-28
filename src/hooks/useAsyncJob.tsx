@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useAsync } from "./useAsync";
+import { useUnauthorizedErrorCheck } from "./useUnauthorizedErrorCheck";
 
 type EitherExport = EHIApp.ExportJob | EHIApp.PatientExportJob;
 
@@ -22,6 +23,9 @@ export function useAsyncJob<T extends EitherExport>(
     dispatch,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   } = useAsync<T>(useCallback(getJobFn, []), true);
+
+  // Check for and handle unauthorizedErrors
+  useUnauthorizedErrorCheck(error);
 
   // A helper function to update one job from another network call's response
   function updateJob(newJob: T) {

@@ -7,13 +7,12 @@ import SpinningLoader from "../components/generic/SpinningLoader";
 export default function Login() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [remember, setRemember] = useState<boolean>(false);
   const { login, authLoading, authError, isAdminRoute } = useAuthConsumer();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (username && password) {
-      login(username, password, remember);
+      login(username, password);
     }
   }
 
@@ -35,7 +34,8 @@ export default function Login() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              autoComplete="username"
+              name={`${isAdminRoute ? "admin" : "patient"}-username`}
+              autoComplete={`${isAdminRoute ? "admin" : "patient"}-username`}
               autoCapitalize="none"
             />
           </label>
@@ -48,17 +48,9 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
+              name={`${isAdminRoute ? "admin" : "patient"}-password`}
+              autoComplete={`${isAdminRoute ? "admin" : "patient"}-password`}
             />
-          </label>
-          <label className="block">
-            <input
-              className="mr-2"
-              type="checkbox"
-              checked={remember}
-              onChange={(e) => setRemember(e.target.checked)}
-            />
-            Remember Me
           </label>
           <button
             className="d bled:bg-opacity-80 h-12 w-full rounded border bg-active py-2 text-xl
