@@ -8,11 +8,13 @@ export interface AuthContextInterface {
   authLoading: boolean;
   authError: string | null;
   isAdminRoute: boolean;
+  navigateToLogin: () => void;
   login: (
     username: string,
     password: string,
     remember?: boolean
   ) => Promise<void>;
+  localLogout: () => void;
   logout: () => Promise<void>;
 }
 
@@ -39,6 +41,28 @@ function buildLoginPayload(
   return payload;
 }
 
+/**
+ * Takes a Response object from a login/logout call and parses off an error
+ * message if there is one
+ * @param response
+ * @returns a text representation of the auth error, or undefined if the response is not an error
+ */
+export async function formatAuthResponseError(response: Response) {
+  if (!response.ok) {
+    let errorMessage = "";
+    if (
+      response.headers.get("Content-Type") &&
+      response.headers.get("Content-Type")?.indexOf("application/json") !== -1
+    ) {
+      const errorJson = await response.json();
+      errorMessage = errorJson.error;
+    } else {
+      errorMessage = await response.text();
+    }
+    return errorMessage;
+  }
+}
+
 function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,6 +80,16 @@ function useAuth() {
     authLoading,
     authError,
     isAdminRoute,
+    /**
+     * Navigate to the relevant login page based on if we're in admin or patient mode
+     */
+    navigateToLogin() {
+      isAdminRoute ? navigate("/admin/login") : navigate("/login");
+    },
+    /**
+     * Makes a login request and updates loading/authUser/error based on responses
+     *
+     */
     async login(
       username: string,
       password: string,
@@ -76,23 +110,15 @@ function useAuth() {
       });
 
       if (!response.ok) {
-        let errorMessage = "";
-        if (
-          response.headers.get("Content-Type") &&
-          response.headers.get("Content-Type")?.indexOf("application/json") !==
-            -1
-        ) {
-          const errorJson = await response.json();
-          errorMessage = errorJson.error;
-        } else {
-          errorMessage = await response.text();
-        }
-        setAuthError(errorMessage);
+        const errorMessage = await formatAuthResponseError(response);
+        // We know there will be an error since we've checked !response.ok
+        setAuthError(errorMessage!);
         setAuthLoading(false);
       } else {
         const user = await response.json();
         setAuthLoading(false);
         setAuthUser(user);
+        // After login, redirect to jobs by default and a redirect if supplied
         if (isAdminRoute) {
           navigate("/admin/jobs");
         } else {
@@ -100,6 +126,17 @@ function useAuth() {
         }
       }
     },
+    /**
+     * Public fn for removing auth information from local state
+     * Useful for clearing cached login information after a session cookie expires
+     */
+    localLogout() {
+      setAuthUser(null);
+    },
+    /**
+     * Makes a logout request and updates loading/authUser state, logging any errors it sees
+     * Note: Always remove local authUser state, regardless of the network response
+     */
     async logout() {
       setAuthLoading(true);
       const logoutEndpoint = isAdminRoute
@@ -109,24 +146,14 @@ function useAuth() {
         headers: { accept: "application/json" },
         credentials: "include",
       });
-      // Always log out
+      // Always log out locally, regardless of network response
       setAuthLoading(false);
       setAuthUser(null);
       if (!response.ok) {
-        let errorMessage = "";
-        if (
-          response.headers.get("Content-Type") &&
-          response.headers.get("Content-Type")?.indexOf("application/json") !==
-            -1
-        ) {
-          const errorJson = await response.json();
-          errorMessage = errorJson.error;
-        } else {
-          errorMessage = await response.text();
-        }
+        const errorMessage = await formatAuthResponseError(response);
+        // We know there will be an error since we've checked !response.ok
         console.error(errorMessage);
       }
-      navigate(isAdminRoute ? "/admin" : "/");
     },
   };
 }

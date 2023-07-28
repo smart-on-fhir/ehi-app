@@ -4,7 +4,7 @@ import SpinningLoader from "../components/generic/SpinningLoader";
 import useAuthConsumer from "../context/authContext";
 
 export default function AccountDetails() {
-  const { authLoading, authUser, logout } = useAuthConsumer();
+  const { navigateToLogin, authLoading, authUser, logout } = useAuthConsumer();
   if (!authUser) {
     return null;
   }
@@ -19,7 +19,7 @@ export default function AccountDetails() {
         className="mt-4 w-full"
         size="lg"
         variant="emphasized"
-        onClick={logout}
+        onClick={() => logout().then(navigateToLogin)}
         disabled={authLoading}
       >
         {!authLoading && "Log Out"}
