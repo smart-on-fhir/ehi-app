@@ -47,8 +47,6 @@ declare namespace EHI {
    *
    * - `retrieved` - All the data transmitted to its destination.
    *
-   * - `aborted` - The admin or the patient aborted/canceled this export.
-   *
    * - `rejected` - The admin rejected this export.
    *
    *
@@ -59,14 +57,12 @@ declare namespace EHI {
    * - `in-review`      - Expire after `config.jobMaxLifetimeMinutes`
    * - `requested`      - Expire after `config.jobMaxLifetimeMinutes`
    * - `retrieved`      - Expire after `config.jobMaxLifetimeMinutes`
-   * - `aborted`        - Expire immediately
    * - `rejected`       - Expire immediately
    */
   type ExportJobStatus =
     | "awaiting-input"
     | "requested"
     | "retrieved"
-    | "aborted"
     | "approved"
     | "rejected";
   interface ExportJob {
@@ -185,9 +181,9 @@ declare namespace EHI {
 
   type PatientExportJobStatus =
     | Extract<
-        ExportJobStatus,
-        "awaiting-input" | "requested" | "approved" | "aborted"
-      >
+      ExportJobStatus,
+      "awaiting-input" | "requested" | "approved"
+    >
     | "deleted";
 
   // Note: Not using simple Omit because we need status to change from type ExportJobStatus to PatientExportJobStatus

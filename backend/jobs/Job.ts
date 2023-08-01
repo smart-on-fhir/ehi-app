@@ -207,21 +207,7 @@ export default class Job {
 
     // Base Case: Job is deleted on the ehi-server
     if (res.status === 404) {
-      try {
-        // Check to see if we've aborted the job in another thread
-        const mostRecentJob = await Job.byId(this.id);
-        if (mostRecentJob.status === "aborted") {
-          this.status = "aborted";
-          return this;
-        } else {
-          // Else, we have a 404; the job was deleted
-          return this.setStatus("deleted");
-        }
-      } catch {
-        // If Job.byId throws an error, then the job manager
-        // recycled this job already; mark ourselves deleted
-        return this.setStatus("deleted");
-      }
+      return this.setStatus("deleted");
     }
 
     // Handle all other errors gracefully

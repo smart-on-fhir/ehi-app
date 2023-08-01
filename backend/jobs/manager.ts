@@ -24,11 +24,10 @@ async function checkJobs() {
 
   for (const job of jobs) {
     if (
-      job.status === "aborted" ||
       job.status === "deleted" ||
       (job.status === "retrieved" &&
         Date.now() - +(job.approvedAt || 0) >
-          config.approvedJobMaxLifetimeMinutes * 60000)
+        config.approvedJobMaxLifetimeMinutes * 60000)
     ) {
       await db.promise("run", "DELETE FROM jobs WHERE id=?", [job.id]);
       await rm(config.jobsDir + "/" + job.id, { force: true, recursive: true });
