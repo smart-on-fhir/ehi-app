@@ -1,5 +1,6 @@
 import HeadingOne from "../components/generic/HeadingOne";
 import LinkButton from "../components/generic/LinkButton";
+import { isAdminRoute } from "../lib";
 
 export default function Home() {
   return (
@@ -20,13 +21,20 @@ export default function Home() {
           started experimenting with both these user workflows.
         </p>
         <div className="mx-auto flex max-w-sm justify-between ">
-          <LinkButton variant="emphasized" size="lg" to={`/jobs`}>
+          <LinkButton
+            variant="emphasized"
+            size="lg"
+            to={`/jobs`}
+            // open patient jobs list in a new tab if we're in the admin app
+            target={isAdminRoute(window.location) ? "_blank" : ""}
+          >
             Patient View
           </LinkButton>
           <LinkButton
             variant="emphasized"
             size="lg"
-            target="_blank"
+            // open admin jobs list in a new tab if we're in the patient app
+            target={isAdminRoute(window.location) ? "" : "_blank"}
             to={`/admin/jobs`}
           >
             Admin View

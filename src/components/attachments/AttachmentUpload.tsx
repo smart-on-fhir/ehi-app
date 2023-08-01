@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { formatBytes, MAX_FILE_SIZE } from "../../lib/attachmentUploadHelpers";
+import { useRef, useState } from "react";
+import { SUPPORTED_FILES_TEXT } from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
-import { MAX_FILE_NUM, uploadAttachments } from "../../api/adminApiHandlers";
+import { uploadAttachments } from "../../api/adminApiHandlers";
 
 const SUPPORTED_FILES = [
   // Data Files
@@ -22,9 +22,6 @@ const SUPPORTED_FILES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
-const SUPPORTED_FILES_TEXT = `Supports CSV, JSON, excel, and most image/document file formats. Upload up to ${formatBytes(
-  MAX_FILE_SIZE
-)} total across ${MAX_FILE_NUM} different files at a time.`;
 
 type AttachmentUploadProps = {
   jobId: EHIApp.ExportJob["id"];
@@ -35,6 +32,7 @@ export default function AttachmentUpload({
   jobId,
   updateJob,
 }: AttachmentUploadProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { createNotification } = useNotificationContext();
   const [dragActive, setDragActive] = useState(false);
 
@@ -71,12 +69,23 @@ export default function AttachmentUpload({
     }
   }
 
+  // Process interactions with the file input element
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const filesToAdd = event.target.files;
     if (filesToAdd && filesToAdd.length > 0) {
       handleAttachments(filesToAdd);
     }
   }
+
+  // Proxy keyboard interactions with our label to trigger click events on our input element
+  function handleLabelKeyDown(e: React.KeyboardEvent<HTMLLabelElement>): void {
+    // Trigger the fileInput click process if we are processing an enter or a space click
+    if (fileInputRef.current !== null && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      fileInputRef.current.click();
+    }
+  }
+
   return (
     <div
       id="file-upload-zone"
@@ -92,6 +101,8 @@ export default function AttachmentUpload({
     >
       <label
         htmlFor="attachment-input"
+        tabIndex={0}
+        onKeyDown={handleLabelKeyDown}
         className="flex h-full cursor-pointer flex-col items-center justify-center p-2 text-center"
       >
         <p>
@@ -106,6 +117,7 @@ export default function AttachmentUpload({
           className="hidden"
           id="attachment-input"
           type="file"
+          ref={fileInputRef}
           accept={SUPPORTED_FILES.join(",")}
           multiple
         />

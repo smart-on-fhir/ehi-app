@@ -12,6 +12,7 @@ import {
   wait,
 } from "../lib";
 import { EHI } from "../types";
+import fetch from "node-fetch"
 
 export default class Job {
   /**
@@ -267,17 +268,24 @@ export default class Job {
   }
 
   public async setStatus(status: EHI.PatientExportJobStatus): Promise<Job> {
-    this.status = status
-    return this.save()
+    this.status = status;
+    return this.save();
   }
 
   public async sync(): Promise<Job> {
-    await this.waitForExport();
-    if (this.status === "approved") {
-      await this.fetchExportedFiles();
-      await this.save();
+    try {
+      await this.waitForExport();
+      if (this.status === "approved") {
+        await this.fetchExportedFiles();
+        await this.save();
+      }
+      return this;
+    } catch (err) {
+      // Step 1: Log error somewhere
+      console.error(err.message);
+      // Step 2: Destroy yourself
+      return this.destroy();
     }
-    return this;
   }
 
   private async refresh() {
@@ -331,7 +339,9 @@ export default class Job {
       await db.promise(
         "run",
         `INSERT INTO "jobs" (${Object.keys(params).join(", ")}) VALUES
-        (${Object.keys(params).map((k) => "?").join(", ")})`,
+        (${Object.keys(params)
+          .map((k) => "?")
+          .join(", ")})`,
         Object.values(params)
       );
     }

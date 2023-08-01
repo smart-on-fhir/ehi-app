@@ -1,5 +1,5 @@
 import { request } from "../lib";
-import { validFileFilter } from "../lib/attachmentUploadHelpers";
+import { formatFilterAttachments } from "../lib/attachmentUploadHelpers";
 
 const baseUrl = process.env.REACT_APP_EHI_SERVER;
 
@@ -65,7 +65,6 @@ export async function deleteExportJob(
 
 //////////////////
 // ATTACHMENT API
-export const MAX_FILE_NUM = 5;
 
 /**
  * Upload attachments for a given job
@@ -77,20 +76,9 @@ export async function uploadAttachments(
   jobId: EHIApp.ExportJob["id"],
   attachments: FileList
 ): Promise<EHIApp.ExportJob> {
-  // attachments is a FileList, must convert into an iterable for filtering
-  let filesArray = Array.from(attachments);
-  // If we have a non-fatal error to report, collect it in this variable
-  let minorError: Error;
-  if (filesArray.length > MAX_FILE_NUM) {
-    console.warn(
-      `Number of files provided exceeds MAX_FILE_NUM of ${MAX_FILE_NUM}, only using the first ${MAX_FILE_NUM}.`
-    );
-    minorError = new Error(
-      `Number of files provided exceeds MAX_FILE_NUM of ${MAX_FILE_NUM}, only using the first ${MAX_FILE_NUM}.`
-    );
-    filesArray = filesArray.slice(0, MAX_FILE_NUM);
-  }
-  const filesToAdd = filesArray.filter(validFileFilter);
+  // Format our fileList into an array of files, filtering and aggregating error information as appropriate
+  const [filesToAdd, minorError] = formatFilterAttachments(attachments);
+
   const formData = new FormData();
   filesToAdd.forEach((file: File) => {
     formData.append("attachments", file, file.name);
