@@ -362,7 +362,7 @@ export default class Job {
 
   public async abort() {
     if (this.status === "requested") {
-      await this.request(true)(this.statusUrl, { method: "DELETE" });
+      await this.request(true)(this.statusUrl, { method: "DELETE" }).catch(() => { });
       return this.setStatus("deleted");
     }
     return this;
@@ -377,7 +377,7 @@ export default class Job {
         if (this.statusUrl) {
           // Try to delete the remote job but ignore errors in case
           // the remote job is no longer available
-          await this.request(true)(this.statusUrl, { method: "DELETE" }).catch();
+          await this.request(true)(this.statusUrl, { method: "DELETE" }).catch(() => { });
         }
         rmSync(this.directory, { force: true, recursive: true });
       } catch (ex) {

@@ -2,10 +2,15 @@
 import Path from "path"
 import https from "https"
 import http, { IncomingMessage, RequestOptions } from "http"
-import { NextFunction, Request, Response, RequestHandler } from "express"
 import { statSync, createWriteStream, existsSync, mkdirSync } from "fs"
 import { EHI } from "./types"
 import db from "./db"
+import {
+    NextFunction,
+    Request,
+    Response as ExpressResponse,
+    RequestHandler
+} from "express"
 
 
 /**
@@ -21,7 +26,7 @@ export function getRequestBaseURL(req: Request) {
  * Given an ehi-export response, return a link to customization form if one exists,
  * Otherwise, return empty string
  */
-export function getJobCustomizationUrl(response): string {
+export function getJobCustomizationUrl(response: Response): string {
     const linkUrl = response.headers.get("Link");
 
     if (linkUrl) {
@@ -39,7 +44,7 @@ export function getJobCustomizationUrl(response): string {
  * route handlers without try/catch.
  */
 export function asyncRouteWrap(fn: RequestHandler) {
-    return (req: Request, res: Response, next: NextFunction) => Promise.resolve(
+    return (req: Request, res: ExpressResponse, next: NextFunction) => Promise.resolve(
         fn(req, res, next)
     ).catch(next);
 }

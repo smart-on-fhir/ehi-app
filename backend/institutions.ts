@@ -86,6 +86,7 @@ export async function completeAuthorization(req: Request, res: Response) {
   });
 
   const patients = String(req.query.patients || "").trim().split(/\s*,\s*/).filter(Boolean)
+  // TODO: Make this unique!
   patients.push(client.patient.id!)
 
   // If we have a referer, use that; otherwise use req baseURL

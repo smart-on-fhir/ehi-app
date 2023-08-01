@@ -78,7 +78,7 @@ export async function login(req: Request, res: Response) {
   // Whenever somebody tries to login, also delete any expired sessions
   await db
     .promise("run", "DELETE FROM sessions WHERE expires <= ?", Date.now())
-    .catch();
+    .catch(() => { });
 
   try {
     const { username, password, remember } = req.body;
