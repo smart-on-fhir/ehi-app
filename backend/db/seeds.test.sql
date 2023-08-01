@@ -8,12 +8,12 @@ INSERT INTO "sessions" ("id","user_id", "expires") VALUES
 
 
 INSERT INTO "institutions" ("id","displayName","fhirUrl","location","disabled","clientId","scope") VALUES 
-(1, 'Institution 1', 'Institution 1 url', 'Institution 1 location', 0, 'institution_1_client_id', 'offline_access patient/$ehi-export'),
-(2, 'Institution 2', 'Institution 2 url', 'Institution 2 location', 0, 'institution_2_client_id', 'offline_access patient/$ehi-export'),
-(3, 'Institution 3', 'Institution 3 url', 'Institution 3 location', 1, 'institution_3_client_id', 'offline_access patient/$ehi-export'),
-(4, 'Institution 4', 'Institution 4 url', 'Institution 4 location', 1, 'institution_4_client_id', 'offline_access patient/$ehi-export'),
-(5, 'Institution 5', 'Institution 5 url', 'Institution 5 location', 1, 'institution_5_client_id', 'offline_access patient/$ehi-export'),
-(6, 'Institution 6', 'Institution 6 url', 'Institution 6 location', 1, 'institution_6_client_id', 'offline_access patient/$ehi-export');
+(1, 'Institution 1', 'http://fhir-server.org', 'Institution 1 location', 0, 'institution_1_client_id', 'offline_access patient/$ehi-export'),
+(2, 'Institution 2', 'http://fhir-server.org', 'Institution 2 location', 0, 'institution_2_client_id', 'offline_access patient/$ehi-export'),
+(3, 'Institution 3', 'http://fhir-server.org', 'Institution 3 location', 1, 'institution_3_client_id', 'offline_access patient/$ehi-export'),
+(4, 'Institution 4', 'http://fhir-server.org', 'Institution 4 location', 1, 'institution_4_client_id', 'offline_access patient/$ehi-export'),
+(5, 'Institution 5', 'http://fhir-server.org', 'Institution 5 location', 1, 'institution_5_client_id', 'offline_access patient/$ehi-export'),
+(6, 'Institution 6', 'http://fhir-server.org', 'Institution 6 location', 1, 'institution_6_client_id', 'offline_access patient/$ehi-export');
 
 
 INSERT INTO "jobs" (

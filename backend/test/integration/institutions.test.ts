@@ -1,7 +1,7 @@
+import nock from "nock"
 import { expect } from "chai";
 import request from "supertest";
 import db from "../../db";
-import MockServer from "./MockServer";
 import { SERVER } from "./TestContext";
 
 describe("GET /api/institutions", () => {
@@ -61,70 +61,89 @@ describe("GET /api/institutions/:id", () => {
   });
 });
 
-describe.skip("GET /api/institutions/:id/launch", () => {
-  const mockServer = new MockServer();
+describe("GET /api/institutions/:id/launch", () => {
 
-  before(async () => {
-    await mockServer.start();
-
-    mockServer.mock("/metadata", { body: {} });
-    // mockServer.mock("/authorize", { status: 404 })
-    // mockServer.mock("/token", { status: 404 })
-    mockServer.mock("/.well-known/smart-configuration", {
-      body: {
-        authorization_endpoint: mockServer.baseUrl + "/authorize",
-        token_endpoint: mockServer.baseUrl + "/token",
-      },
-    });
-
-    await db.promise(
-      "run",
-      `INSERT INTO institutions values (?, ?, ?, ?, ?, ?, ?)`,
-      [
-        100,
-        "Test Institution",
-        mockServer.baseUrl,
-        "address",
-        0,
-        "test_client_id",
-        "offline_access patient/$ehi-export",
-      ]
-    );
-  });
-
-  after(async () => {
-    await db.promise("run", `DELETE FROM institutions WHERE id=100`);
-    await mockServer.stop();
-  });
-
-  it("TODO", async () => {
-    await db.promise("run", `UPDATE users SET session = NULL `);
-
-    const a = await request(SERVER.baseUrl)
+  it("rejects for unknown institutions", async () => {
+    await request(SERVER.baseUrl)
       .get("/api/institutions/100/launch")
-      .redirects(1)
-      .set("Cookie", ["user_sid=ADMIN_SID"])
-      // .send()
-      .expect(console.log);
-    // .expect(302)
-    // .expect("location", /\/api\/institutions\/100\/redirect\?state=.+/);
-    // --> http://127.0.0.1:8888/auth/authorize                  ?response_type=code&client_id=test_client_id&scope=offline_access%20patient%2F%24ehi-export&redirect_uri=http%3A%2F%2F127.0.0.1%3A5005%2Fapi%2Finstitutions%2F2%2Fredirect&aud=http%3A%2F%2F127.0.0.1%3A8888%2Ffhir&state=B9GLUJdVbiTRpOWI
-    // --> http://127.0.0.1:8888/patient-login                   ?response_type=code&client_id=test_client_id&scope=offline_access+patient%2F%24ehi-export&redirect_uri=http%3A%2F%2F127.0.0.1%3A5005%2Fapi%2Finstitutions%2F2%2Fredirect&aud=http%3A%2F%2F127.0.0.1%3A8888%2Ffhir&state=B9GLUJdVbiTRpOWI
-    // --> http://127.0.0.1:8888/authorize-app                   ?response_type=code&client_id=test_client_id&scope=offline_access+patient%2F%24ehi-export&redirect_uri=http%3A%2F%2F127.0.0.1%3A5005%2Fapi%2Finstitutions%2F2%2Fredirect&aud=http%3A%2F%2F127.0.0.1%3A8888%2Ffhir&state=B9GLUJdVbiTRpOWI&_patient=6c5d9ca9-54d7-42f5-bfae-a7c19cd217f2
-    // --> http://127.0.0.1:5005/api/institutions/2/redirect     ?code=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250ZXh0Ijp7Im5lZWRfcGF0aWVudF9iYW5uZXIiOnRydWUsInBhdGllbnQiOiI2YzVkOWNhOS01NGQ3LTQyZjUtYmZhZS1hN2MxOWNkMjE3ZjIifSwiY2xpZW50X2lkIjoidGVzdF9jbGllbnRfaWQiLCJyZWRpcmVjdF91cmkiOiJodHRwOi8vMTI3LjAuMC4xOjUwMDUvYXBpL2luc3RpdHV0aW9ucy8yL3JlZGlyZWN0Iiwic2NvcGUiOiJvZmZsaW5lX2FjY2VzcyBwYXRpZW50LyRlaGktZXhwb3J0IiwiaWF0IjoxNjg2MDcyMjI3LCJleHAiOjE2ODYwNzI1Mjd9.GA0QH9pONW15ZqNoVAarl_pB3bO1RFzHof7HSydGSJw&state=B9GLUJdVbiTRpOWI
-    // --> http://127.0.0.1:8888/jobs/bd5efb0ca70dbd5c/customize ?behavior=automatic&_patient=6c5d9ca9-54d7-42f5-bfae-a7c19cd217f2&redirect=http%3A%2F%2F127.0.0.1%3A3000%2Fjobs
-    // --> http://127.0.0.1:3000/jobs
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(404)
+  })
 
-    // const u = new URL(a.headers.location)
+  it("works", async () => {
 
-    // // console.log(u)
-    // const b = await request(SERVER.baseUrl)
-    //     .get("/api/institutions/100/redirect?state=" + encodeURIComponent(u.searchParams.get("state")!))
-    //     .set('Cookie', ['user_sid=ADMIN_SID'])
-    //     .redirects(0)
-    //     .send()
-    //     .expect(console.log)
+    nock("http://fhir-server.org")
+      .get("/.well-known/smart-configuration")
+      .reply(200, {
+        authorization_endpoint: "http://fhir-server.org/authorize",
+        token_endpoint: "http://fhir-server.org/token",
+      })
+
+    nock("http://fhir-server.org")
+      .get("/authorize")
+      .query(true)
+      .reply(302, {
+        location: SERVER.baseUrl + "/api/institutions/1/redirect"
+      })
+
+    await request(SERVER.baseUrl)
+      .get("/api/institutions/1/launch")
+      .redirects(0)
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect("location", /^http:\/\/fhir-server\.org\/authorize\?response_type=code.+$/)
   });
 });
 
-describe("GET /api/institutions/:id/redirect", () => {});
+describe.skip("GET /api/institutions/:id/redirect", () => {
+  it("works", async () => {
+    await db.promise("run", `update "sessions" set "session"=? where "id"='USER_SID'`, [JSON.stringify({
+      SMART_KEY: "MY_TEST_KEY",
+      MY_TEST_KEY: {
+        clientId: "institution_1_client_id",
+        scope: "offline_access patient/$ehi-export",
+        redirectUri: `${SERVER.baseUrl}/api/institutions/1/redirect?referer=${encodeURIComponent(SERVER.baseUrl)}&patients=7a05bc93-cf1a-4929-9aca-6178ba9abcb7`,
+        serverUrl: "http://fhir-server.org",
+        tokenResponse: {
+          "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6Im9mZmxpbmVfYWNjZXNzIHBhdGllbnQvJGVoaS1leHBvcnQiLCJpYXQiOjE2OTA5MTQwODMsImV4cCI6MTY5MDkxNzY4M30.Hy_QzFmLWGDdSmaOxADz0a3K2MxfNoPb3r5OZNcNTIg",
+          "token_type": "Bearer",
+          "expires_in": 3600,
+          "scope": "offline_access patient/$ehi-export",
+          "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250ZXh0Ijp7Im5lZWRfcGF0aWVudF9iYW5uZXIiOnRydWUsInBhdGllbnQiOiJmZGVkY2RlOS0zYWE1LTQxMWYtYmJkYy04NTA1MmVjNGVmN2YifSwic2NvcGUiOiJvZmZsaW5lX2FjY2VzcyBwYXRpZW50LyRlaGktZXhwb3J0IiwiaWF0IjoxNjkwOTE0MDgzLCJleHAiOjE3MjI0NTAwODN9.qopwVCUbDofzID5uD2KhZfxEsSm-M-Bm7JlNkbQrdDo",
+          "need_patient_banner": true,
+          "patient": "fdedcde9-3aa5-411f-bbdc-85052ec4ef7f"
+        },
+        key: "MY_TEST_KEY",
+        registrationUri: "",
+        authorizeUri: "https://ehi-server.herokuapp.com/auth/authorize",
+        tokenUri: "https://ehi-server.herokuapp.com/auth/token",
+        codeChallengeMethods: [],
+        expiresAt: 1690917683
+      }
+    })]);
+
+    nock("http://fhir-server.org")
+      .post("/auth/token")
+      .query(true)
+      .reply(200, {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6Im9mZmxpbmVfYWNjZXNzIHBhdGllbnQvJGVoaS1leHBvcnQiLCJpYXQiOjE2OTA5MTQwODMsImV4cCI6MTY5MDkxNzY4M30.Hy_QzFmLWGDdSmaOxADz0a3K2MxfNoPb3r5OZNcNTIg",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "scope": "offline_access patient/$ehi-export",
+        "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250ZXh0Ijp7Im5lZWRfcGF0aWVudF9iYW5uZXIiOnRydWUsInBhdGllbnQiOiJmZGVkY2RlOS0zYWE1LTQxMWYtYmJkYy04NTA1MmVjNGVmN2YifSwic2NvcGUiOiJvZmZsaW5lX2FjY2VzcyBwYXRpZW50LyRlaGktZXhwb3J0IiwiaWF0IjoxNjkwOTE0MDgzLCJleHAiOjE3MjI0NTAwODN9.qopwVCUbDofzID5uD2KhZfxEsSm-M-Bm7JlNkbQrdDo",
+        "need_patient_banner": true,
+        "patient": "fdedcde9-3aa5-411f-bbdc-85052ec4ef7f"
+      })
+
+    nock("http://fhir-server.org")
+      .post("/Patient/fdedcde9-3aa5-411f-bbdc-85052ec4ef7f/$ehi-export")
+      .query(true)
+      .reply(200, {})
+
+    await request(SERVER.baseUrl)
+      .get("/api/institutions/1/redirect")
+      .query({ code: "whatever", state: "MY_TEST_KEY" })
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(302)
+      .expect("location", SERVER.baseUrl + "/jobs")
+  })
+});

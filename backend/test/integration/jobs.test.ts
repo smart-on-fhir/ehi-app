@@ -15,7 +15,7 @@ function testEndpoint({
 
   it("Rejects unknown users", async () => {
     await request(SERVER.baseUrl)
-      [method](path)
+    [method](path)
       .set("Cookie", ["user_sid=whatever"])
       .send()
       .expect(401);
@@ -23,7 +23,7 @@ function testEndpoint({
 
   it("Works for user", async () => {
     await request(SERVER.baseUrl)
-      [method](path)
+    [method](path)
       .set("Cookie", ["user_sid=USER_SID"])
       .send()
       .expect(200);
@@ -40,17 +40,11 @@ function testEndpoint({
 }
 
 describe("GET /api/jobs", () => {
-  testEndpoint({
-    path: "/api/jobs",
-    method: "get",
-  });
+  testEndpoint({ path: "/api/jobs" });
 });
 
 describe("GET /api/jobs/:id", () => {
-  testEndpoint({
-    path: "/api/jobs/1",
-    method: "get",
-  });
+  testEndpoint({ path: "/api/jobs/1" });
 
   it("Rejects for non-authors", async () => {
     await request(SERVER.baseUrl)
@@ -68,10 +62,7 @@ describe("GET /api/jobs/:id", () => {
 });
 
 describe("POST /api/jobs/:id/abort", () => {
-  testEndpoint({
-    path: "/api/jobs/1/abort",
-    method: "post",
-  });
+  testEndpoint({ path: "/api/jobs/1/abort", method: "post" });
 
   it("Rejects for missing jobs", async () => {
     await request(SERVER.baseUrl)
@@ -81,16 +72,17 @@ describe("POST /api/jobs/:id/abort", () => {
   });
 });
 
-describe.skip("GET /api/jobs/:id/download", () => {
-  it("Rejects for missing jobs", async () => {
-    await request(SERVER.baseUrl)
-      .get("/api/jobs/123/download")
-      .set("Cookie", ["user_sid=ADMIN_SID"])
-      .expect(404);
-  });
+describe("GET /api/jobs/:id/download", () => {
 
   it("Requires authentication", async () => {
     await request(SERVER.baseUrl).get("/api/jobs/1/download").expect(401);
+  });
+
+  it("Rejects for missing jobs", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/123/download")
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(404);
   });
 
   it("Rejects unknown users", async () => {
@@ -102,7 +94,7 @@ describe.skip("GET /api/jobs/:id/download", () => {
 
   it("Rejects non-owner", async () => {
     await request(SERVER.baseUrl)
-      .get("/api/jobs/1/download")
+      .get("/api/jobs/2/download")
       .set("Cookie", ["user_sid=USER_SID"])
       .expect(403);
   });
@@ -110,8 +102,129 @@ describe.skip("GET /api/jobs/:id/download", () => {
   it("Works as expected", async () => {
     await request(SERVER.baseUrl)
       .get("/api/jobs/2/download")
-      .set("Cookie", ["user_sid=USER_SID"])
+      .set("Cookie", ["user_sid=BACKUP_USER_SID"])
       .expect(200)
       .expect("content-type", "application/zip");
   });
 });
+
+describe("GET /api/jobs/:id/download/:file", () => {
+
+  it("Requires authentication", async () => {
+    await request(SERVER.baseUrl).get("/api/jobs/1/download/Patient").expect(401);
+  });
+
+  it("Rejects for missing jobs", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/123/download/Patient")
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(404);
+  });
+
+  it("Rejects unknown users", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/1/download/Patient")
+      .set("Cookie", ["user_sid=whatever"])
+      .expect(401);
+  });
+
+  it("Rejects non-owner", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/2/download/Patient")
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(403);
+  });
+
+  it("Returns 404 for missing files", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/2/download/Patient")
+      .set("Cookie", ["user_sid=BACKUP_USER_SID"])
+      .expect(404);
+  });
+
+  it.skip("Works as expected", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/2/download/Patient")
+      .set("Cookie", ["user_sid=BACKUP_USER_SID"])
+      .expect(200)
+      .expect("content-type", "application/ndjson");
+  });
+
+});
+
+describe("GET /api/jobs/:id/download/attachments/:file", () => {
+  it("Requires authentication", async () => {
+    await request(SERVER.baseUrl).get("/api/jobs/1/download/attachments/x").expect(401);
+  });
+
+  it("Rejects for missing jobs", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/123/download/attachments/x")
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(404);
+  });
+
+  it("Rejects unknown users", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/1/download/attachments/x")
+      .set("Cookie", ["user_sid=whatever"])
+      .expect(401);
+  });
+
+  it("Rejects non-owner", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/2/download/attachments/x")
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(403);
+  });
+
+  it("Returns 404 for missing files", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/2/download/attachments/x")
+      .set("Cookie", ["user_sid=BACKUP_USER_SID"])
+      .expect(404);
+  });
+
+  it.skip("Works as expected", async () => {
+    await request(SERVER.baseUrl)
+      .get("/api/jobs/2/download/attachments/x")
+      .set("Cookie", ["user_sid=BACKUP_USER_SID"])
+      .expect(200)
+      .expect("content-type", "application/ndjson");
+  });
+})
+
+describe("DELETE /api/jobs/:id", () => {
+  it("Requires authentication", async () => {
+    await request(SERVER.baseUrl).delete("/api/jobs/1").expect(401);
+  });
+
+  it("Rejects for missing jobs", async () => {
+    await request(SERVER.baseUrl)
+      .delete("/api/jobs/123")
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(404);
+  });
+
+  it("Rejects unknown users", async () => {
+    await request(SERVER.baseUrl)
+      .delete("/api/jobs/1")
+      .set("Cookie", ["user_sid=whatever"])
+      .expect(401);
+  });
+
+  it("Rejects non-owner", async () => {
+    await request(SERVER.baseUrl)
+      .delete("/api/jobs/2")
+      .set("Cookie", ["user_sid=USER_SID"])
+      .expect(403);
+  });
+
+  it("Works as expected", async () => {
+    await request(SERVER.baseUrl)
+      .delete("/api/jobs/2")
+      .set("Cookie", ["user_sid=BACKUP_USER_SID"])
+      .expect(200)
+      .expect("content-type", /application\/json/);
+  });
+})
