@@ -281,17 +281,24 @@ export default class Job {
   }
 
   public async setStatus(status: EHI.PatientExportJobStatus): Promise<Job> {
-    this.status = status
-    return this.save()
+    this.status = status;
+    return this.save();
   }
 
   public async sync(): Promise<Job> {
-    await this.waitForExport();
-    if (this.status === "approved") {
-      await this.fetchExportedFiles();
-      await this.save();
+    try {
+      await this.waitForExport();
+      if (this.status === "approved") {
+        await this.fetchExportedFiles();
+        await this.save();
+      }
+      return this;
+    } catch (err) {
+      // Step 1: Log error somewhere
+      console.error(err.message);
+      // Step 2: Destroy yourself
+      return this.destroy();
     }
-    return this;
   }
 
   private async refresh() {
@@ -345,7 +352,9 @@ export default class Job {
       await db.promise(
         "run",
         `INSERT INTO "jobs" (${Object.keys(params).join(", ")}) VALUES
-        (${Object.keys(params).map((k) => "?").join(", ")})`,
+        (${Object.keys(params)
+          .map((k) => "?")
+          .join(", ")})`,
         Object.values(params)
       );
     }
@@ -391,7 +400,9 @@ export default class Job {
         if (this.statusUrl) {
           // Try to delete the remote job but ignore errors in case
           // the remote job is no longer available
-          await this.request(true)(this.statusUrl, { method: "DELETE" }).catch();
+          await this.request(true)(this.statusUrl, {
+            method: "DELETE",
+          }).catch();
         }
         rmSync(this.directory, { force: true, recursive: true });
       } catch (ex) {
