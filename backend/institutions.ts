@@ -75,9 +75,11 @@ export async function completeAuthorization(req: Request, res: Response) {
     }
   }
 
+  const patientId = client.patient.id!
+
   const job = await Job.create({
     userId: (req as EHI.AuthenticatedRequest).user.id,
-    patientId: client.patient.id!,
+    patientId,
     statusUrl,
     customizeUrl,
     accessToken: client.state.tokenResponse!.access_token!,
@@ -86,8 +88,9 @@ export async function completeAuthorization(req: Request, res: Response) {
   });
 
   const patients = String(req.query.patients || "").trim().split(/\s*,\s*/).filter(Boolean)
-  // TODO: Make this unique!
-  patients.push(client.patient.id!)
+  if (!patients.includes(patientId)) {
+    patients.push(patientId)
+  }
 
   // If we have a referer, use that; otherwise use req baseURL
   const redirectUrl = [
