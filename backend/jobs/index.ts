@@ -6,7 +6,7 @@ import { readdir } from "fs/promises";
 import Job from "./Job";
 import db from "../db";
 import { HttpError } from "../errors";
-import { asyncRouteWrap } from "../lib";
+import { asyncRouteWrap, unique } from "../lib";
 import { authenticate, requireAuth } from "../auth";
 import { EHI } from "../types";
 
@@ -27,7 +27,21 @@ router.get(
   "/",
   asyncRouteWrap(async (req: Request, res: Response) => {
     const { id } = (req as EHI.AuthenticatedRequest).user;
-    const jobs = await db.promise("all", "SELECT * FROM jobs WHERE userId=?", [id]);
+    const patientIds = unique(String(req.cookies.patients || ""));
+    const args: any[] = [id];
+    let sql = "SELECT * FROM jobs WHERE userId=?";
+    if (patientIds.length) {
+      sql += ` AND patientId IN(${patientIds.map(x => "?").join(", ")})`
+      args.push(...patientIds)
+    }
+    const jobs = await db.promise("all", sql, args);
+    const foundPatients = unique(jobs.map((j: any) => j.patientId)).join(",")
+    if (foundPatients) {
+      res.cookie("patients", foundPatients, { sameSite: "strict", secure: true });
+    } else {
+      res.clearCookie("patients")
+    }
+    // console.log(jobs, patientIds)
     res.json(jobs.map((j: any) => new Job(j)));
   })
 );

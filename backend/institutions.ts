@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import Job from "./jobs/Job";
 import db from "./db";
 import { HttpError } from "./errors";
-import { asyncRouteWrap, getRequestBaseURL, getStorage } from "./lib";
+import { asyncRouteWrap, getRequestBaseURL, getStorage, unique } from "./lib";
 import { authenticate, requireAuth } from "./auth";
 import { EHI } from "./types";
 
@@ -87,7 +87,7 @@ export async function completeAuthorization(req: Request, res: Response) {
     tokenUri: client.state.tokenUri!,
   });
 
-  const patients = String(req.query.patients || "").trim().split(/\s*,\s*/).filter(Boolean)
+  const patients = unique(String(req.query.patients || ""))
   if (!patients.includes(patientId)) {
     patients.push(patientId)
   }

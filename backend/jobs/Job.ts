@@ -282,7 +282,7 @@ export default class Job {
       return this;
     } catch (err) {
       // Step 1: Log error somewhere
-      console.error(err.message);
+      console.error(err);
       // Step 2: Destroy yourself
       return this.destroy();
     }

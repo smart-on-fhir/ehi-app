@@ -131,3 +131,16 @@ export function mkdirSyncRecursive(directoryPath: string) {
         mkdirSync(directoryPath, { recursive: true });
     }
 }
+
+export function unique(input: string | string[], separator?: string | RegExp): string[] {
+    const arr: string[] = typeof input === "string" ?
+        input.trim().split(separator || /\s*,\s*/).filter(Boolean) :
+        input.map(s => s.trim()).filter(Boolean);
+    const out: string[] = []
+    arr.forEach(s => {
+        if (!out.includes(s)) {
+            out.push(s)
+        }
+    })
+    return out;
+}
