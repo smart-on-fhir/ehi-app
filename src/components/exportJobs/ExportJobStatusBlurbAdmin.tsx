@@ -18,9 +18,6 @@ export default function ExportJobStatusBlurbAdmin({
     case "approved":
       return <p>Complete</p>;
 
-    case "aborted":
-      return <p>Aborted</p>;
-
     case "rejected":
       return <p>Rejected</p>;
   }

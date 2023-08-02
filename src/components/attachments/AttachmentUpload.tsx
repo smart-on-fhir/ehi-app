@@ -39,29 +39,30 @@ export default function AttachmentUpload({
   const { createNotification } = useNotificationContext();
   const [dragActive, setDragActive] = useState(false);
 
-  function handleAttachments(attachmentList: FileList) {
+  async function handleAttachments(attachmentList: FileList) {
     // Format our fileList into an array of files, filtering and aggregating error information as appropriate
     const [attachments, errorWithProvidedAttachments] =
       formatFilterAttachments(attachmentList);
-
-    uploadAttachments(jobId, attachments)
-      .then((job) => updateJob(job))
-      .catch((err) => {
-        createNotification({
-          title: `There was an error uploading attachments:`,
-          errorMessage: err.message,
-          variant: "warning",
-        });
-      })
-      .finally(() => {
-        if (errorWithProvidedAttachments !== undefined) {
+    // Only upload if there are still attachments
+    if (attachments.length !== 0) {
+      await uploadAttachments(jobId, attachments)
+        .then((job) => updateJob(job))
+        .catch((err) => {
           createNotification({
             title: `There was an error uploading attachments:`,
-            errorMessage: errorWithProvidedAttachments.message,
+            errorMessage: err.message,
             variant: "warning",
           });
-        }
+        });
+    }
+    // Log any errors from the filter process
+    if (errorWithProvidedAttachments !== undefined) {
+      createNotification({
+        title: `There was an error uploading attachments:`,
+        errorMessage: errorWithProvidedAttachments.message,
+        variant: "warning",
       });
+    }
   }
 
   function handleDrag(e: React.DragEvent<HTMLDivElement>) {

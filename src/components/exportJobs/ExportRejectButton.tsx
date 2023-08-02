@@ -56,7 +56,6 @@ export default function RejectButton({ job, updateJob }: RejectButtonProps) {
       case "awaiting-input":
       case "requested":
       case "approved":
-      case "aborted":
       case "rejected":
         return (
           <Button variant="danger" className="w-28" onClick={rejectJob}>

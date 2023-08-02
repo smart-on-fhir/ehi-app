@@ -70,7 +70,6 @@ const awaitingInput = yellow[200];
 const requested = yellow[200];
 const retrieved = "#abc1e4";
 const approved = green[400];
-const aborted = "#e4aa86";
 const rejected = red[400];
 
 module.exports = {
@@ -108,7 +107,6 @@ module.exports = {
         requested,
         retrieved,
         approved,
-        aborted,
         rejected,
       },
       borderColor: {

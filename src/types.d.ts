@@ -33,8 +33,6 @@ declare namespace EHIApp {
    * - `approved` - FHIR Bulk export is done and the job has been approved;
    *    now accessible via ehi-export status requests
    *
-   * - `aborted` - The admin or the patient aborted/canceled this export.
-   *
    * - `rejected` - The admin rejected this export.
    *
    */
@@ -43,7 +41,6 @@ declare namespace EHIApp {
     | "requested"
     | "retrieved"
     | "approved"
-    | "aborted"
     | "rejected";
 
   export interface ExportJobInformationParameter {

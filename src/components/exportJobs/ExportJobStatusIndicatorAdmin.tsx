@@ -7,8 +7,6 @@ import {
   Search,
   // approved`
   CheckCircle,
-  // aborted`
-  XOctagon,
   // rejected`
   Slash,
 } from "react-feather";
@@ -63,13 +61,6 @@ export default function ExportJobStatusIndicatorAdmin({
           title={displayStatus(status)}
         >
           <CheckCircle className="m-2" size={size} />
-        </div>
-      );
-    // Aborted in-process
-    case "aborted":
-      return (
-        <div className="rounded-full bg-aborted " title={displayStatus(status)}>
-          <XOctagon className="m-2" size={size} />
         </div>
       );
     // Rejected by admin

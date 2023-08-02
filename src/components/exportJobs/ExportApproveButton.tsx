@@ -33,7 +33,6 @@ export default function ApproveButton({ job, updateJob }: ApproveButtonProps) {
       case "awaiting-input":
       case "requested":
       case "approved":
-      case "aborted":
       case "rejected":
         return null;
     }
