@@ -17,8 +17,5 @@ export default function ExportJobStatusBlurbPatient({
 
     case "deleted":
       return <p>Deleted</p>;
-
-    case "aborted":
-      return <p>Aborted</p>;
   }
 }

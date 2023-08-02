@@ -60,7 +60,6 @@ export default function ExportJobAction({
       );
 
     case "deleted":
-    case "aborted":
       return (
         <DeleteExportJobButton
           job={job}

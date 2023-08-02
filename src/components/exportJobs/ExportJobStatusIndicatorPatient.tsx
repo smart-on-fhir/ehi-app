@@ -7,8 +7,6 @@ import {
   CheckCircle,
   // deleted`
   Slash,
-  // aborted`
-  XOctagon,
 } from "react-feather";
 
 function displayStatus(status: EHIApp.PatientExportJobStatus) {
@@ -40,13 +38,6 @@ export default function ExportJobStatusIndicatorPatient({
           title={displayStatus(status)}
         >
           <Loader className="m-2" size={size} />
-        </div>
-      );
-    // Aborted an in-progress job
-    case "aborted":
-      return (
-        <div className="rounded-full bg-aborted " title={displayStatus(status)}>
-          <XOctagon className="m-2" size={size} />
         </div>
       );
     // Job is completed

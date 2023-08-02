@@ -151,10 +151,7 @@ declare namespace EHIApp {
   // Patient Specific Interfaces
 
   type PatientExportJobStatus =
-    | Extract<
-        ExportJobStatus,
-        "awaiting-input" | "requested" | "approved" | "aborted"
-      >
+    | Extract<ExportJobStatus, "awaiting-input" | "requested" | "approved">
     | "deleted";
 
   type PatientExportJob = Omit<
