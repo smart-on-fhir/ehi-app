@@ -74,13 +74,10 @@ export async function deleteExportJob(
  */
 export async function uploadAttachments(
   jobId: EHIApp.ExportJob["id"],
-  attachments: FileList
+  attachments: File[]
 ): Promise<EHIApp.ExportJob> {
-  // Format our fileList into an array of files, filtering and aggregating error information as appropriate
-  const [filesToAdd, minorError] = formatFilterAttachments(attachments);
-
   const formData = new FormData();
-  filesToAdd.forEach((file: File) => {
+  attachments.forEach((file: File) => {
     formData.append("attachments", file, file.name);
   });
   formData.append("action", "addAttachments");
@@ -88,10 +85,6 @@ export async function uploadAttachments(
     method: "post",
     body: formData,
     credentials: "include",
-  }).finally(() => {
-    if (minorError !== undefined) {
-      throw minorError;
-    }
   });
 }
 

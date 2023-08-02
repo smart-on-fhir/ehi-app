@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
-import { SUPPORTED_FILES_TEXT } from "../../lib/attachmentUploadHelpers";
+import {
+  SUPPORTED_FILES_TEXT,
+  formatFilterAttachments,
+} from "../../lib/attachmentUploadHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
 import { uploadAttachments } from "../../api/adminApiHandlers";
 
@@ -37,7 +40,11 @@ export default function AttachmentUpload({
   const [dragActive, setDragActive] = useState(false);
 
   function handleAttachments(attachmentList: FileList) {
-    uploadAttachments(jobId, attachmentList)
+    // Format our fileList into an array of files, filtering and aggregating error information as appropriate
+    const [attachments, errorWithProvidedAttachments] =
+      formatFilterAttachments(attachmentList);
+
+    uploadAttachments(jobId, attachments)
       .then((job) => updateJob(job))
       .catch((err) => {
         createNotification({
@@ -45,6 +52,15 @@ export default function AttachmentUpload({
           errorMessage: err.message,
           variant: "warning",
         });
+      })
+      .finally(() => {
+        if (errorWithProvidedAttachments !== undefined) {
+          createNotification({
+            title: `There was an error uploading attachments:`,
+            errorMessage: errorWithProvidedAttachments.message,
+            variant: "warning",
+          });
+        }
       });
   }
 
