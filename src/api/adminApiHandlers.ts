@@ -1,5 +1,4 @@
 import { request } from "../lib";
-import { formatFilterAttachments } from "../lib/attachmentUploadHelpers";
 
 const baseUrl = process.env.REACT_APP_EHI_SERVER;
 

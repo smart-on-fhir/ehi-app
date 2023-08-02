@@ -20,7 +20,7 @@ export default function RejectButton({ job, updateJob }: RejectButtonProps) {
       .then(() => navigate("/admin/jobs"))
       .then(() => {
         createNotification({
-          title: `Successfully deleted job'${job.id}'.`,
+          title: `Successfully rejected job'${job.id}'.`,
           variant: "success",
         });
       })
@@ -58,7 +58,7 @@ export default function RejectButton({ job, updateJob }: RejectButtonProps) {
       case "approved":
       case "rejected":
         return (
-          <Button variant="danger" className="w-28" onClick={rejectJob}>
+          <Button variant="danger" className="w-28" onClick={deleteJob}>
             Delete Now
           </Button>
         );

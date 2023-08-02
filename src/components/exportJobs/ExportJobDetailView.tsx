@@ -8,6 +8,8 @@ import {
   displayCreatedDate,
   displayPatientInformation,
 } from "../../lib/jobHelpers";
+import KnownPatientIndicator from "./ExportJobKnownPatientIndicator";
+import useCookie from "../../hooks/useCookie";
 
 type ExportJobDetailViewProps = {
   job: EHIApp.ExportJob;
@@ -19,6 +21,13 @@ export default function ExportJobDetailView({
   updateJob,
 }: ExportJobDetailViewProps) {
   const { id, status, attachments } = job;
+
+  // Determine if the patient id associated with this job is in our patients cookie
+  const { cookie: patientCookie } = useCookie("patients");
+  const knownPatientId =
+    patientCookie
+      .split(",")
+      .findIndex((patientId) => patientId === job.patient.id) !== -1;
   return (
     <section className="space-y-4 rounded border bg-white p-4">
       <header className="flex items-center">
@@ -31,12 +40,15 @@ export default function ExportJobDetailView({
         <div className="flex w-full items-center justify-between">
           <div>
             <h1 className="mr-2 inline-block text-lg font-bold">Job #{id}</h1>
-            <pre className="whitespace-pre-wrap text-xs italic opacity-50">
-              {[
-                displayPatientInformation(job),
-                displayCreatedDate(job),
-                `${attachments.length} Attachments`,
-              ].join("\n")}
+            <pre className="whitespace-pre-wrap text-xs italic">
+              <p>
+                <span className="opacity-50">
+                  {displayPatientInformation(job)}
+                </span>
+                <KnownPatientIndicator knownPatientId={knownPatientId} />
+              </p>
+              <p className="opacity-50">{displayCreatedDate(job)}</p>
+              <p className="opacity-50">{`${attachments.length} Attachments`}</p>
             </pre>
           </div>
         </div>

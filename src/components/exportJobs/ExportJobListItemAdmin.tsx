@@ -7,33 +7,7 @@ import {
   displayCreatedDate,
   displayPatientInformation,
 } from "../../lib/jobHelpers";
-
-/**
- * Render a sentence fragment to visually indicate if this is a known patient
- * @param knownPatientId whether or not to display this indicator
- * @returns some stylized text with a leading comma
- */
-function KnownPatientIndicator({
-  knownPatientId,
-}: {
-  knownPatientId: boolean | undefined;
-}) {
-  if (knownPatientId) {
-    return (
-      <>
-        <span className="opacity-50">{", "}</span>
-        <span
-          className="cursor-default font-bold text-red-600 opacity-100"
-          title="This job is associated with a patient used in the patient-facing app."
-        >
-          Your Patient
-        </span>
-      </>
-    );
-  } else {
-    return null;
-  }
-}
+import KnownPatientIndicator from "./ExportJobKnownPatientIndicator";
 
 function ExportJobListItemAdmin({ job }: { job: EHIApp.ExportJob }) {
   const { id, status, attachments } = job;
