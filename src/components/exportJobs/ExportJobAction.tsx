@@ -1,47 +1,14 @@
 import LinkButton from "../generic/LinkButton";
-import {
-  getExportJobLink,
-  abortExportJob,
-  deleteExportJob,
-} from "../../api/patientApiHandlers";
+import { getExportJobLink, abortExportJob } from "../../api/patientApiHandlers";
 import Button from "../generic/Button";
 import { getCustomizeUrl } from "../../lib/jobHelpers";
 import { useNotificationContext } from "../../context/notificationContext";
+import DeleteExportJobButton from "./DeleteExportJobButton";
 
 type ExportJobActionProps = {
   job: EHIApp.PatientExportJob;
   refreshJobs: (requestOptions?: RequestInit) => Promise<void>;
 };
-
-function DeleteButton({ job, refreshJobs }: ExportJobActionProps) {
-  const { createNotification } = useNotificationContext();
-  const { id } = job;
-  return (
-    <Button
-      variant="danger"
-      className="min-w-fit"
-      onClick={async () => {
-        await deleteExportJob(id)
-          .then(() => {
-            createNotification({
-              title: `Successfully deleted job '${id}'.`,
-              variant: "success",
-            });
-          })
-          .catch((err: Error) =>
-            createNotification({
-              title: `Error deleting job '${id}'.`,
-              errorMessage: err.message,
-              variant: "error",
-            })
-          );
-        refreshJobs();
-      }}
-    >
-      Delete Now
-    </Button>
-  );
-}
 
 export default function ExportJobAction({
   job,
@@ -53,7 +20,7 @@ export default function ExportJobAction({
     case "awaiting-input":
       return (
         <>
-          <DeleteButton job={job} refreshJobs={refreshJobs} />
+          <DeleteExportJobButton job={job} refreshJobs={refreshJobs} />
           <LinkButton className="min-w-fit" to={getCustomizeUrl(job)}>
             Complete Form
           </LinkButton>
@@ -80,7 +47,7 @@ export default function ExportJobAction({
     case "approved":
       return (
         <>
-          <DeleteButton job={job} refreshJobs={refreshJobs} />
+          <DeleteExportJobButton job={job} refreshJobs={refreshJobs} />
           <LinkButton
             className="min-w-fit"
             download
@@ -94,6 +61,12 @@ export default function ExportJobAction({
 
     case "deleted":
     case "aborted":
-      return <DeleteButton job={job} refreshJobs={refreshJobs} />;
+      return (
+        <DeleteExportJobButton
+          job={job}
+          refreshJobs={refreshJobs}
+          ignoreError={true}
+        />
+      );
   }
 }
