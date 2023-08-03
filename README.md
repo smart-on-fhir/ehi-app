@@ -11,12 +11,14 @@ To access the ["Second Opinion App"](https://ehi-app.herokuapp.com/jobs), you mu
 - Username: `patient`
 - Password: `patient-password`
 
+If these patient credentials aren't working, make sure they match the username and hashed password in the relevant `/backend/db/seeds.*.sql` for your deployment environment.
+
 To access the ["EHI Export Admin App"](https://ehi-app.herokuapp.com/admin/jobs), you must login with the following test-admin credentials:
 
 - Username: `admin`
 - Password: `admin-password`
 
-**Note**: if these credentials don't work, [leave an issue](https://github.com/smart-on-fhir/ehi-app/issues/new) to let us know and check the [ehi-server](https://github.com/smart-on-fhir/ehi-server) documentation for any changes that might have taken place; the credentials to access the EHI Export Admin App live on the ehi-server, so there's a chance they may change without being updated here.
+**Note**: if these admin credentials don't work, [leave an issue](https://github.com/smart-on-fhir/ehi-app/issues/new) to let us know and check the [ehi-server](https://github.com/smart-on-fhir/ehi-server) documentation for any changes that might have taken place; the credentials to access the EHI Export Admin App live on the ehi-server, so there's a chance they may change without being updated here.
 
 Lastly, if you are encountering any issues running this project locally, make sure to check the [troubleshooting](#troubleshooting) section below before leaving any issues on the repo.
 
@@ -71,8 +73,8 @@ Once that's complete, you can access the EHI Export API App at [http://127.0.0.1
 There are several testing suites that can be run locally to ensure the application is working as expected:
 
 - Backend tests: `npm run test:server:watch` will run the tests found in `/backend` in watchmode, rerunning tests as files in `/backend` are updated.
-- Frontend tests: `npm run test` will run the tests found in `/src` in watchmode, rerunning tests as files in `/src` are updated.
-- Frontend UI tests: `npm run storybook` will run our [storybook](https://storybook.js.org/docs/react/get-started/install/) stories on [http://localhost:6006/](http://localhost:6006/), allowing review of several frontend components in isolation from the full web application.
+- Frontend code tests: `npm run test` will run the tests found in `/src` in watchmode, rerunning tests as files in `/src` are updated.
+- Frontend UI tests: `npm run storybook` will run our [storybook](https://storybook.js.org/docs/react/get-started/install/) stories on [http://localhost:6006/](http://localhost:6006/), allowing developers to review several frontend components in isolation from the full web application.
 
 ## Troubleshooting
 
@@ -81,4 +83,4 @@ There are several testing suites that can be run locally to ensure the applicati
 - I see `Authorization error` when I select an institution
   - This is usually due to opening the web application on localhost:3000 instead of 127.0.0.1:3000. Because our site uses cookies to manage auth session ids, there are often issues passing those cookies from localhost:3000/institutionSelect to 127.0.0.1:5005/institution/:id. To avoid this, only interact with the application through 127.0.0.1 instead of localhost.
 - Why doesn't `npm start` open the application in a browser?
-  - This is intended behavior. Due to weird cookie behavior above, we want to limit the number of times developers accidentally open the application via localhost. While [one can specify a custom HOST ENV variable](https://stackoverflow.com/questions/66910287/react-npm-start-127-0-0-1-instead-of-localhost-on-windows), this [causes conflicts with our request proxying](https://stackoverflow.com/questions/70374005/invalid-options-object-dev-server-has-been-initialized-using-an-options-object) that would require more complicated middleware for proxying backend requests then is appropriate at this time.
+  - This is intended behavior. Due to the buggy localhost-cookie behavior above, we want to limit the number of times developers accidentally open the application via localhost. While [one can specify a custom HOST ENV variable](https://stackoverflow.com/questions/66910287/react-npm-start-127-0-0-1-instead-of-localhost-on-windows) to launch the app on a non-localhost HOST, this [causes conflicts with our request proxying](https://stackoverflow.com/questions/70374005/invalid-options-object-dev-server-has-been-initialized-using-an-options-object) that would require more complicated proxying middleware then is appropriate at this time. For your local build, you should feel free to experiment with the approached detailed in the second link.
