@@ -5,9 +5,13 @@ import { AlertTriangle } from "react-feather";
 import SpinningLoader from "../components/generic/SpinningLoader";
 
 export default function Login() {
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const { login, authLoading, authError, isAdminRoute } = useAuthConsumer();
+  // Set some default login values, based on if this is an admin or patient page
+  const defaultCredentials = isAdminRoute
+    ? ["admin", "admin-password"]
+    : ["patient", "patient-password"];
+  const [username, setUsername] = useState<string>(defaultCredentials[0]);
+  const [password, setPassword] = useState<string>(defaultCredentials[1]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,6 +28,19 @@ export default function Login() {
             {isAdminRoute ? "Admin" : "Patient"} Login
           </HeadingOne>
         </div>
+        <p className="mb-6">
+          Please use the following default credentials
+          <ul className="ml-8 list-[circle]">
+            <li>
+              username:{" "}
+              <span className="font-bold">{defaultCredentials[0]}</span>
+            </li>
+            <li>
+              password:{" "}
+              <span className="font-bold">{defaultCredentials[1]}</span>
+            </li>
+          </ul>
+        </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="flex w-full flex-col">
             <span className="after:content-['*']">Username</span>
