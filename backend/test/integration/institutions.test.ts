@@ -114,8 +114,8 @@ describe.skip("GET /api/institutions/:id/redirect", () => {
         },
         key: "MY_TEST_KEY",
         registrationUri: "",
-        authorizeUri: "https://ehi-server.herokuapp.com/auth/authorize",
-        tokenUri: "https://ehi-server.herokuapp.com/auth/token",
+        authorizeUri: "https://ehi-server.smarthealthit.org/auth/authorize",
+        tokenUri: "https://ehi-server.smarthealthit.org/auth/token",
         codeChallengeMethods: [],
         expiresAt: 1690917683
       }
