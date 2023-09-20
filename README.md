@@ -2,18 +2,18 @@
 
 A web application and client implementation for [Argonaut's EHI Export API Implementation Guide](https://build.fhir.org/ig/argonautproject/ehi-api/), used in conjunction with the [EHI Export Server Reference Implementation](https://github.com/smart-on-fhir/ehi-server).
 
-Note that this project implements both a client implementation for EHI Export – the ["Second Opinion App"](https://ehi-app.herokuapp.com/jobs) – and a custom EHI-server admin UI for reviewing export requests – the ["EHI Export Admin App"](https://ehi-app.herokuapp.com/admin/jobs).
+Note that this project implements both a client implementation for EHI Export – the ["Second Opinion App"](https://ehi-app.smarthealthit.org/jobs) – and a custom EHI-server admin UI for reviewing export requests – the ["EHI Export Admin App"](https://ehi-app.smarthealthit.org/admin/jobs).
 
 ## Live Demo
 
-To access the ["Second Opinion App"](https://ehi-app.herokuapp.com/jobs), you must login with the following test-patient credentials:
+To access the ["Second Opinion App"](https://ehi-app.smarthealthit.org/jobs), you must login with the following test-patient credentials:
 
 - Username: `patient`
 - Password: `patient-password`
 
 If these patient credentials aren't working, make sure they match the username and hashed password in the relevant `/backend/db/seeds.*.sql` for your deployment environment.
 
-To access the ["EHI Export Admin App"](https://ehi-app.herokuapp.com/admin/jobs), you must login with the following test-admin credentials:
+To access the ["EHI Export Admin App"](https://ehi-app.smarthealthit.org/admin/jobs), you must login with the following test-admin credentials:
 
 - Username: `admin`
 - Password: `admin-password`
