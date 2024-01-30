@@ -1,12 +1,7 @@
 {
-  "cSpell.words": [
-    "AUTOINCREMENT",
-    "fhirclient",
-    "fieldname",
-    "tailwindcss"
-  ],
+  "cSpell.words": ["AUTOINCREMENT", "fhirclient", "fieldname", "tailwindcss"],
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
