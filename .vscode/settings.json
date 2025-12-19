@@ -1,10 +1,5 @@
 {
-  "cSpell.words": [
-    "AUTOINCREMENT",
-    "fhirclient",
-    "fieldname",
-    "tailwindcss"
-  ],
+  "cSpell.words": ["AUTOINCREMENT", "fhirclient", "fieldname", "tailwindcss"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },

@@ -3,7 +3,7 @@ INSERT INTO "users" ("id","username","password") VALUES
 
 
 INSERT INTO "institutions" ("displayName","fhirUrl","location","disabled","clientId","scope") VALUES 
-('New York Gerontology Hospital'     , 'https://ehi-server.herokuapp.com/fhir', '211 Shortsteel Blvd New York, NY 10001', 0, 'test_client_id', 'offline_access patient/$ehi-export'),
+('New York Gerontology Hospital'     , 'https://ehi-server.smarthealthit.org/fhir', '211 Shortsteel Blvd New York, NY 10001', 0, 'test_client_id', 'offline_access patient/$ehi-export'),
 ('Fana Darber'                       , 'http://example.com/fhir'              , NULL                                    , 1, 'test_client_id', 'offline_access patient/$ehi-export'),
 ('Journey Assessments'               , 'http://example.com/fhir'              , NULL                                    , 1, 'test_client_id', 'offline_access patient/$ehi-export'),
 ('Billows Medicine'                  , 'http://example.com/fhir'              , NULL                                    , 1, 'test_client_id', 'offline_access patient/$ehi-export'),
